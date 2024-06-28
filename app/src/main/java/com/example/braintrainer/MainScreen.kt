@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 
+//Este archivo hará de pantalla de inicio en un futuro no muy lejano
 @Composable
 fun MainScreen() {
     Column(
