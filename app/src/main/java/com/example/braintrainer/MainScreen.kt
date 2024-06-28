@@ -17,7 +17,7 @@ fun MainScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text("Pantalla principal")
+        Text("Pantalla de inicio")
     }
 }
 @Preview(showBackground = true)
