@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "794704105067",
+    "project_id": "brain-trainer-2024",
+    "storage_bucket": "brain-trainer-2024.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:794704105067:android:ef3cda29ce631bdcc16b2e",
+        "android_client_info": {
+          "package_name": "com.example.braintrainer"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRX6JwIVkgXVNU8NtTw5EV1gH4hIQ2Rc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
