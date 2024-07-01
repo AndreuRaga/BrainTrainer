@@ -39,7 +39,8 @@ fun Splash() {
     ) {
         Text(text = "Bienvenido/a a",
             style = MaterialTheme.typography.headlineSmall,
-            color = Color.Black)
+            color = Color.Black
+        )
         Image(
             painter = painterResource(id = R.drawable.app_icon),
             contentDescription = "Logo",
