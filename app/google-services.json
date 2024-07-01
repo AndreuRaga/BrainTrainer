@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "794704105067-3t0v3pj0080ee5e9pmnftpp4a3acdpad.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.braintrainer",
+            "certificate_hash": "c934b9f028e96a1fd64ba10c297ef645ddda4345"
+          }
+        },
+        {
           "client_id": "794704105067-crclh9gp6m36frubpulagpgjjc3tjuub.apps.googleusercontent.com",
           "client_type": 3
         }
