@@ -1,5 +1,6 @@
 package com.example.braintrainer
 
+import android.app.AlertDialog
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,14 +13,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 
-//Este archivo hará de pantalla de inicio en un futuro no muy lejano
+//Este archivo hará de pantalla de autenticación en un futuro no muy lejano
 @Composable
-fun MainScreen() {
+fun AuthScreen() {
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,8 +54,27 @@ fun MainScreen() {
         }
     }
 }
+
+//@Composable
+//private fun googleSignIn() {
+//    val gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//        .requestEmail()
+//        .build()
+//    val googleClient: GoogleSignInClient = GogleSignIn.getClient(LocalContext.current, gso)
+//}
+
+@Composable
+private fun ShowAlert() {
+    val builder = AlertDialog.Builder(LocalContext.current)
+    builder.setTitle("Error")
+    builder.setMessage("Se ha procucido un error autenticando al usuario")
+    builder.setPositiveButton("Aceptar", null)
+    val dialog: AlertDialog = builder.create()
+    dialog.show()
+}
+
 @Preview(showBackground = true)
 @Composable
 fun MainScreenPreview() {
-    MainScreen()
+    AuthScreen()
 }

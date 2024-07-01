@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.braintrainer.MainScreen
+import com.example.braintrainer.AuthScreen
 import com.example.braintrainer.SplashScreen
 
 @Composable
@@ -17,7 +17,7 @@ fun AppNavigation() {
             SplashScreen(navController)
         }
         composable(AppScreens.MainScreen.route) {
-            MainScreen()
+            AuthScreen()
         }
     }
 }

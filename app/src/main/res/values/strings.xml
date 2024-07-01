@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Brain Trainer</string>
+    <string name="prefs_file">com.example.braintrainer.PREFERENCE_FILE_KEY</string>
 </resources>
