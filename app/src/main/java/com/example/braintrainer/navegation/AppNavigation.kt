@@ -8,7 +8,7 @@ import com.example.braintrainer.MainScreen
 import com.example.braintrainer.SplashScreen
 
 @Composable
-fun AppNavegation() {
+fun AppNavigation() {
     val navController = rememberNavController()
     NavHost(navController = navController,
         startDestination = AppScreens.SplashScreen.route
