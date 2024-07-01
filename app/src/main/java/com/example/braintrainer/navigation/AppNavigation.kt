@@ -1,4 +1,4 @@
-package com.example.braintrainer.navegation
+package com.example.braintrainer.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost

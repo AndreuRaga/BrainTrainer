@@ -1,4 +1,4 @@
-package com.example.braintrainer.navegation
+package com.example.braintrainer.navigation
 
 sealed class AppScreens(val route: String) {
     object SplashScreen : AppScreens("splash_screen")
