@@ -12,7 +12,12 @@
           "package_name": "com.example.braintrainer"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "794704105067-crclh9gp6m36frubpulagpgjjc3tjuub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBRX6JwIVkgXVNU8NtTw5EV1gH4hIQ2Rc8"
@@ -20,7 +25,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "794704105067-crclh9gp6m36frubpulagpgjjc3tjuub.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
