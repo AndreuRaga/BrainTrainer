@@ -1,6 +1,8 @@
 package com.example.braintrainer
 
 import android.app.AlertDialog
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,12 +21,33 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.braintrainer.navigation.AppScreens
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import androidx.credentials.ClearCredentialStateRequest
+import androidx.credentials.CredentialManager
+import androidx.credentials.CustomCredential
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetCredentialResponse
+import androidx.credentials.PasswordCredential
+import androidx.credentials.PublicKeyCredential
+import androidx.credentials.exceptions.GetCredentialException
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.google.android.libraries.identity.googleid.GetGoogleIdOption
+import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
+import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
+import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
+const val WEB_CLIENT_ID = "794704105067-crclh9gp6m36frubpulagpgjjc3tjuub.apps.googleusercontent.com"
 
 //Este archivo hará de pantalla de autenticación en un futuro no muy lejano
 @Composable
 fun AuthScreen() {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val credentialManager = CredentialManager.create(context)
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -46,7 +70,9 @@ fun AuthScreen() {
         verticalArrangement = Arrangement.Center
     ) {
         Text("¿Ya tienes cuenta?")
-        Button(onClick = { /* Acción al hacer clic */ }) {
+        Button(onClick = {
+            scope.launch { googleOneTap(context, credentialManager) }
+        }) {
             Text("Inicia sesión")
         }
         Text("¿No tienes cuenta?")
@@ -63,6 +89,96 @@ fun AuthScreen() {
 //        .build()
 //    val googleClient: GoogleSignInClient = GogleSignIn.getClient(LocalContext.current, gso)
 //}
+suspend fun googleOneTap(context: Context, credentialManager: CredentialManager) {
+
+    val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+
+    // Check if the user has already signed in
+    val googleIdOptionAlreadySignedIn = GetGoogleIdOption.Builder()
+        .setFilterByAuthorizedAccounts(true)
+        .setServerClientId(WEB_CLIENT_ID)
+        .setAutoSelectEnabled(false)
+        .setNonce(String(CharArray(16) { allowedChars.random() }))
+        .build()
+
+    // Check if the user has not signed in
+    val googleIdOptionNotSignedIn = GetGoogleIdOption.Builder()
+        .setFilterByAuthorizedAccounts(false)
+        .setServerClientId(WEB_CLIENT_ID)
+        .setAutoSelectEnabled(false)
+        .setNonce(String(CharArray(16) { allowedChars.random() }))
+        .build()
+
+    val signInWithGoogleOption =
+        GetSignInWithGoogleOption.Builder(WEB_CLIENT_ID)
+            .setNonce(String(CharArray(16) { allowedChars.random() }))
+            .build()
+
+
+    val requestSignedIn = GetCredentialRequest.Builder()
+        .addCredentialOption(googleIdOptionAlreadySignedIn)
+        .build()
+
+    val requestNotSignedIn = GetCredentialRequest.Builder()
+        .addCredentialOption(googleIdOptionNotSignedIn)
+        .build()
+
+    val requestSignedInWithGoogle = GetCredentialRequest.Builder()
+        .addCredentialOption(signInWithGoogleOption)
+        .build()
+
+
+    withContext(Dispatchers.IO) {
+        try {
+            val result = credentialManager.getCredential(context, requestSignedIn)
+            Log.d("SignedIn", "The user already signed in!!!")
+            handleSignIn(result)
+        } catch (e: GetCredentialException) {
+            Log.d("SignedIn", "The user has not signed in yet!!!")
+            try {
+                val result = credentialManager.getCredential(context, requestNotSignedIn)
+                handleSignIn(result)
+            } catch (e: GetCredentialException) {
+                Log.d("SignedIn", "Something went very, very, very wrong!!!")
+
+            }
+
+        }
+    }
+}
+
+fun handleSignIn(result: GetCredentialResponse) {
+    val credential = result.credential
+    when (credential) {
+        is PublicKeyCredential -> {
+            // Not our case
+            Log.d("Credentials", "PublicKeyCredential: ${credential.authenticationResponseJson}")
+        }
+
+        is PasswordCredential -> {
+            // Not our case
+            Log.d("Credentials", "PublicKeyCredential: ${credential.id} ${credential.password}")
+        }
+
+        is CustomCredential -> {
+            if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+                try {
+                    val googleIdTokenCredential =
+                        GoogleIdTokenCredential.createFrom(credential.data)
+                    Log.d("Credentials", "User successfully signed in!")
+                } catch (e: GoogleIdTokenParsingException) {
+                    Log.e("Credentials", "Invalid Google ID Token response", e)
+                }
+            } else {
+                Log.e("Credentials", "Unexpected type of credential")
+            }
+        }
+
+        else -> {
+            Log.e("Credentials", "Unexpected type of credential")
+        }
+    }
+}
 
 @Composable
 private fun ShowAlert() {

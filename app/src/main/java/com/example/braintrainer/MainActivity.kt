@@ -11,8 +11,6 @@ import androidx.compose.ui.Modifier
 import com.example.braintrainer.navigation.AppNavigation
 import com.example.braintrainer.ui.theme.BrainTrainerTheme
 
-const val WEB_CLIENT_ID = "794704105067-crclh9gp6m36frubpulagpgjjc3tjuub.apps.googleusercontent.com"
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
