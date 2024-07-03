@@ -26,6 +26,9 @@ fun ConfigScreen() {
         verticalArrangement = Arrangement.Center
     ) {
         Button(onClick = { /* Acción al hacer clic */ }) {
+            Text("Borrar cuenta")
+        }
+        Button(onClick = { /* Acción al hacer clic */ }) {
             Text("Cerrar sesión")
         }
     }
