@@ -11,12 +11,12 @@ import com.example.braintrainer.SplashScreen
 fun AppNavigation() {
     val navController = rememberNavController()
     NavHost(navController = navController,
-        startDestination = AppScreens.SplashScreen.route
+        startDestination = AppScreens.AuthScreen.route
     ) {
         composable(AppScreens.SplashScreen.route) {
             SplashScreen(navController)
         }
-        composable(AppScreens.MainScreen.route) {
+        composable(AppScreens.AuthScreen.route) {
             AuthScreen()
         }
     }

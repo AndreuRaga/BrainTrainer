@@ -74,6 +74,6 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.play.services.auth)
     // Credential Manager
-    implementation(libs.androidx.credentials)
-    implementation(libs.androidx.credentials.play.services.auth)
+    //implementation(libs.androidx.credentials)
+    //implementation(libs.androidx.credentials.play.services.auth)
 }
