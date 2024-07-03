@@ -5,12 +5,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.braintrainer.AuthScreen
+import com.example.braintrainer.ConfigScreen
 import com.example.braintrainer.SplashScreen
 
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
-    NavHost(navController = navController,
+    NavHost(
+        navController = navController,
         startDestination = AppScreens.AuthScreen.route
     ) {
         composable(AppScreens.SplashScreen.route) {
@@ -18,6 +20,9 @@ fun AppNavigation() {
         }
         composable(AppScreens.AuthScreen.route) {
             AuthScreen()
+        }
+        composable(AppScreens.ConfigScreen.route) {
+            ConfigScreen()
         }
     }
 }
