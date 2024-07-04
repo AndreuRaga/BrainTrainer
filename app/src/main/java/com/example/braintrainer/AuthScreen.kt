@@ -102,11 +102,9 @@ suspend fun googleOneTap(context: Context, credentialManager: CredentialManager)
         .setNonce(String(CharArray(16) { allowedChars.random() }))
         .build()
 
-    val signInWithGoogleOption =
-        GetSignInWithGoogleOption.Builder(WEB_CLIENT_ID)
-            .setNonce(String(CharArray(16) { allowedChars.random() }))
-            .build()
-
+    val signInWithGoogleOption = GetSignInWithGoogleOption.Builder(WEB_CLIENT_ID)
+        .setNonce(String(CharArray(16) { allowedChars.random() }))
+        .build()
 
     val requestSignedIn = GetCredentialRequest.Builder()
         .addCredentialOption(googleIdOptionAlreadySignedIn)
@@ -120,7 +118,6 @@ suspend fun googleOneTap(context: Context, credentialManager: CredentialManager)
         .addCredentialOption(signInWithGoogleOption)
         .build()
 
-
     withContext(Dispatchers.IO) {
         try {
             val result = credentialManager.getCredential(context, requestSignedIn)
@@ -133,9 +130,7 @@ suspend fun googleOneTap(context: Context, credentialManager: CredentialManager)
                 handleSignIn(result)
             } catch (e: GetCredentialException) {
                 Log.d("SignedIn", "Something went very, very, very wrong!!!")
-
             }
-
         }
     }
 }
