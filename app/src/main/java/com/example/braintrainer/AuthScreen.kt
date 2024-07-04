@@ -82,13 +82,6 @@ fun AuthScreen() {
     }
 }
 
-//@Composable
-//private fun googleSignIn() {
-//    val gso: GoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//        .requestEmail()
-//        .build()
-//    val googleClient: GoogleSignInClient = GogleSignIn.getClient(LocalContext.current, gso)
-//}
 suspend fun googleOneTap(context: Context, credentialManager: CredentialManager) {
 
     val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
