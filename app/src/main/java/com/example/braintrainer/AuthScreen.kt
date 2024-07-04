@@ -152,10 +152,12 @@ fun handleSignIn(result: GetCredentialResponse) {
             // Not our case
             Log.d("Credentials", "PublicKeyCredential: ${credential.id} ${credential.password}")
         }
-
+        // GoogleIdToken credential
         is CustomCredential -> {
             if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                 try {
+                    // Use googleIdTokenCredential and extract id to validate and
+                    // authenticate on your server.
                     val googleIdTokenCredential =
                         GoogleIdTokenCredential.createFrom(credential.data)
                     Log.d("Credentials", "User successfully signed in!")
