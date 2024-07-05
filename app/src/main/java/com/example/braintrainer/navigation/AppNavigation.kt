@@ -22,7 +22,7 @@ fun AppNavigation() {
             AuthScreen(navController)
         }
         composable(AppScreens.ConfigScreen.route) {
-            ConfigScreen()
+            ConfigScreen(navController)
         }
     }
 }

@@ -22,15 +22,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.credentials.ClearCredentialStateRequest
 import androidx.credentials.CredentialManager
 import androidx.credentials.CustomCredential
 import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
-import androidx.credentials.PasswordCredential
-import androidx.credentials.PublicKeyCredential
 import androidx.credentials.exceptions.GetCredentialException
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.braintrainer.navigation.AppScreens
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
@@ -46,13 +42,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 const val WEB_CLIENT_ID = "794704105067-crclh9gp6m36frubpulagpgjjc3tjuub.apps.googleusercontent.com"
-private var auth: FirebaseAuth = Firebase.auth
+var auth: FirebaseAuth = Firebase.auth
 
 @Composable
 fun AuthScreen(navController: NavHostController) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val credentialManager = CredentialManager.create(context)
+    //Bug: No cambia de pantalla cuando se inicia sesión correctamente
     LaunchedEffect(auth.currentUser) {
         if (auth.currentUser != null) {
             navController.navigate(AppScreens.ConfigScreen.route)
