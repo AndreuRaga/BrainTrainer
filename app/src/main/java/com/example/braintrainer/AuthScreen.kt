@@ -34,6 +34,8 @@ import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
@@ -41,13 +43,14 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 const val WEB_CLIENT_ID = "794704105067-crclh9gp6m36frubpulagpgjjc3tjuub.apps.googleusercontent.com"
+private var auth: FirebaseAuth = Firebase.auth
 
-//Este archivo hará de pantalla de autenticación en un futuro no muy lejano
 @Composable
 fun AuthScreen() {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val credentialManager = CredentialManager.create(context)
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -64,6 +67,7 @@ fun AuthScreen() {
             modifier = Modifier.size(150.dp)
         )
     }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -138,15 +142,6 @@ suspend fun googleOneTap(context: Context, credentialManager: CredentialManager)
 fun handleSignIn(result: GetCredentialResponse) {
     val credential = result.credential
     when (credential) {
-        is PublicKeyCredential -> {
-            // Not our case
-            Log.d("Credentials", "PublicKeyCredential: ${credential.authenticationResponseJson}")
-        }
-
-        is PasswordCredential -> {
-            // Not our case
-            Log.d("Credentials", "PublicKeyCredential: ${credential.id} ${credential.password}")
-        }
         // GoogleIdToken credential
         is CustomCredential -> {
             if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
@@ -156,6 +151,7 @@ fun handleSignIn(result: GetCredentialResponse) {
                     val googleIdTokenCredential =
                         GoogleIdTokenCredential.createFrom(credential.data)
                     Log.d("Credentials", "User successfully signed in!")
+                    firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
                 } catch (e: GoogleIdTokenParsingException) {
                     Log.e("Credentials", "Invalid Google ID Token response", e)
                 }
@@ -168,6 +164,20 @@ fun handleSignIn(result: GetCredentialResponse) {
             Log.e("Credentials", "Unexpected type of credential")
         }
     }
+}
+
+private fun firebaseAuthWithGoogle(idToken: String) {
+    val credential = GoogleAuthProvider.getCredential(idToken, null)
+    auth.signInWithCredential(credential)
+        .addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // Sign in success
+                Log.d("Success", "signInWithCredential:success")
+            } else {
+                // Sign in fails
+                Log.w("Failure", "signInWithCredential:failure", task.exception)
+            }
+        }
 }
 
 @Composable
