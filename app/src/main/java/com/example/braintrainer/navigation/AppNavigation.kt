@@ -19,7 +19,7 @@ fun AppNavigation() {
             SplashScreen(navController)
         }
         composable(AppScreens.AuthScreen.route) {
-            AuthScreen()
+            AuthScreen(navController)
         }
         composable(AppScreens.ConfigScreen.route) {
             ConfigScreen()

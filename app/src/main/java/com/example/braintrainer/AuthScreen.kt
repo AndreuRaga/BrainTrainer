@@ -12,6 +12,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,8 @@ import androidx.credentials.PasswordCredential
 import androidx.credentials.PublicKeyCredential
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import com.example.braintrainer.navigation.AppScreens
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -46,10 +49,15 @@ const val WEB_CLIENT_ID = "794704105067-crclh9gp6m36frubpulagpgjjc3tjuub.apps.go
 private var auth: FirebaseAuth = Firebase.auth
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(navController: NavHostController) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val credentialManager = CredentialManager.create(context)
+    LaunchedEffect(auth.currentUser) {
+        if (auth.currentUser != null) {
+            navController.navigate(AppScreens.ConfigScreen.route)
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -193,5 +201,5 @@ private fun ShowAlert() {
 @Preview(showBackground = true)
 @Composable
 fun AuthScreenPreview() {
-    AuthScreen()
+    //AuthScreen()
 }
