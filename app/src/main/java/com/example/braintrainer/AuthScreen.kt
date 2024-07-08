@@ -53,7 +53,7 @@ fun AuthScreen(navController: NavHostController) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val credentialManager = CredentialManager.create(context)
-    //Bug: No cambia de pantalla cuando se inicia sesión correctamente
+    //Bug: No cambia de pantalla cuando se inicia sesión correctamente, solo al lanzar la aplicación con una sesión iniciada
     LaunchedEffect(auth.currentUser) {
         if (auth.currentUser != null) {
             navController.navigate(AppScreens.ConfigScreen.route)
