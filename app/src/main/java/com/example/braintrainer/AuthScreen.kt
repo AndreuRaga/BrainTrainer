@@ -54,9 +54,11 @@ fun AuthScreen(navController: NavHostController) {
     val scope = rememberCoroutineScope()
     val credentialManager = CredentialManager.create(context)
     var showDialog by remember { mutableStateOf(false) }
-    //Bug: No cambia de pantalla cuando se inicia sesión correctamente, solo al lanzar la aplicación con una sesión iniciada
-    LaunchedEffect(auth.currentUser) {
-        if (auth.currentUser != null) {
+
+    var userSignedIn by remember { mutableStateOf(auth.currentUser != null) }
+    // LaunchedEffect para navegar a ConfigScreen cuando el usuario inicie sesión
+    LaunchedEffect(userSignedIn) {
+        if (userSignedIn) {
             navController.navigate(AppScreens.ConfigScreen.route)
         }
     }
@@ -85,7 +87,13 @@ fun AuthScreen(navController: NavHostController) {
     ) {
         Text("¿Ya tienes cuenta?")
         Button(onClick = {
-            scope.launch { googleOneTap(context, credentialManager) }
+            scope.launch {
+                googleOneTap(context, credentialManager) { success ->
+                    if (success) {
+                        userSignedIn = true
+                    }
+                }
+            }
         }) {
             Text("Inicia sesión")
         }
@@ -99,7 +107,7 @@ fun AuthScreen(navController: NavHostController) {
     }
 }
 
-suspend fun googleOneTap(context: Context, credentialManager: CredentialManager) {
+suspend fun googleOneTap(context: Context, credentialManager: CredentialManager, onSignInComplete: (Boolean) -> Unit) {
 
     val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
 
@@ -139,12 +147,16 @@ suspend fun googleOneTap(context: Context, credentialManager: CredentialManager)
         try {
             val result = credentialManager.getCredential(context, requestSignedIn)
             Log.d("SignedIn", "The user already signed in!!!")
-            handleSignIn(result)
+            handleSignIn(result) { success ->
+                onSignInComplete(success) // Notifica a AuthScreen sobre el resultado del inicio de sesión
+            }
         } catch (e: GetCredentialException) {
             Log.d("SignedIn", "The user has not signed in yet!!!")
             try {
                 val result = credentialManager.getCredential(context, requestNotSignedIn)
-                handleSignIn(result)
+                handleSignIn(result) { success ->
+                    onSignInComplete(success) // Notifica a AuthScreen sobre el resultado del inicio de sesión
+                }
             } catch (e: GetCredentialException) {
                 Log.d("SignedIn", "Something went very, very, very wrong!!!")
             }
@@ -152,7 +164,7 @@ suspend fun googleOneTap(context: Context, credentialManager: CredentialManager)
     }
 }
 
-fun handleSignIn(result: GetCredentialResponse) {
+fun handleSignIn(result: GetCredentialResponse, onSignInComplete: (Boolean) -> Unit) {
     val credential = result.credential
     when (credential) {
         // GoogleIdToken credential
@@ -164,7 +176,7 @@ fun handleSignIn(result: GetCredentialResponse) {
                     val googleIdTokenCredential =
                         GoogleIdTokenCredential.createFrom(credential.data)
                     Log.d("Credentials", "User successfully signed in!")
-                    firebaseAuthWithGoogle(googleIdTokenCredential.idToken)
+                    firebaseAuthWithGoogle(googleIdTokenCredential.idToken, onSignInComplete)
                 } catch (e: GoogleIdTokenParsingException) {
                     Log.e("Credentials", "Invalid Google ID Token response", e)
                 }
@@ -179,16 +191,18 @@ fun handleSignIn(result: GetCredentialResponse) {
     }
 }
 
-private fun firebaseAuthWithGoogle(idToken: String) {
+private fun firebaseAuthWithGoogle(idToken: String, onSignInComplete: (Boolean) -> Unit) {
     val credential = GoogleAuthProvider.getCredential(idToken, null)
     auth.signInWithCredential(credential)
         .addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 // Sign in success
                 Log.d("Success", "signInWithCredential:success")
+                onSignInComplete(true) // Notifica éxito
             } else {
                 // Sign in fails
                 Log.w("Failure", "signInWithCredential:failure", task.exception)
+                onSignInComplete(false) // Notifica fallo
             }
         }
 }
