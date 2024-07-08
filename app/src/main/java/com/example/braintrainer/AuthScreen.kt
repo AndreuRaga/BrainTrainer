@@ -1,6 +1,5 @@
 package com.example.braintrainer
 
-import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -8,12 +7,17 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -55,7 +59,7 @@ fun AuthScreen(navController: NavHostController) {
             navController.navigate(AppScreens.ConfigScreen.route)
         }
     }
-
+    var showDialog by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -87,6 +91,9 @@ fun AuthScreen(navController: NavHostController) {
         Text("¿No tienes cuenta?")
         Button(onClick = { /* Acción al hacer clic */ }) {
             Text("Regístrate con Google")
+        }
+        if (showDialog) {
+            ShowAlert { showDialog = false }
         }
     }
 }
@@ -186,13 +193,16 @@ private fun firebaseAuthWithGoogle(idToken: String) {
 }
 
 @Composable
-private fun ShowAlert() {
-    val builder = AlertDialog.Builder(LocalContext.current)
-    builder.setTitle("Error")
-    builder.setMessage("Se ha procucido un error autenticando al usuario")
-    builder.setPositiveButton("Aceptar", null)
-    val dialog: AlertDialog = builder.create()
-    dialog.show()
+fun ShowAlert(onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Error") },
+        text = { Text("Se ha procucido un error autenticando al usuario.") },
+        confirmButton = {
+            Button(onClick = onDismiss) {
+                Text("Aceptar")
+            }
+        })
 }
 
 @Preview(showBackground = true)
