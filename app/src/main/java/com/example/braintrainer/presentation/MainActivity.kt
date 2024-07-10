@@ -1,4 +1,4 @@
-package com.example.braintrainer
+package com.example.braintrainer.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
