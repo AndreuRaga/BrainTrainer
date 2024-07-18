@@ -1,4 +1,4 @@
-package com.example.braintrainer
+package com.example.braintrainer.presentation
 
 import android.content.Context
 import android.util.Log
@@ -32,6 +32,7 @@ import androidx.credentials.GetCredentialRequest
 import androidx.credentials.GetCredentialResponse
 import androidx.credentials.exceptions.GetCredentialException
 import androidx.navigation.NavHostController
+import com.example.braintrainer.R
 import com.example.braintrainer.presentation.navigation.AppScreens
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption

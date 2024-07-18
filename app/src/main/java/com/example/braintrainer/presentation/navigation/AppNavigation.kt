@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.braintrainer.AuthScreen
-import com.example.braintrainer.ConfigScreen
+import com.example.braintrainer.presentation.AuthScreen
+import com.example.braintrainer.presentation.ConfigScreen
 
 @Composable
 fun AppNavigation() {
