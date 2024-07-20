@@ -1,7 +1,5 @@
 package com.example.braintrainer.presentation
 
-import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,11 +11,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,40 +21,19 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.credentials.CredentialManager
-import androidx.credentials.CustomCredential
-import androidx.credentials.GetCredentialRequest
-import androidx.credentials.GetCredentialResponse
-import androidx.credentials.exceptions.GetCredentialException
 import androidx.navigation.NavHostController
 import com.example.braintrainer.R
+import com.example.braintrainer.presentation.ViewModels.AuthViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
-import com.google.android.libraries.identity.googleid.GetGoogleIdOption
-import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
-import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
-import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-
-const val WEB_CLIENT_ID = "794704105067-crclh9gp6m36frubpulagpgjjc3tjuub.apps.googleusercontent.com"
-var auth: FirebaseAuth = Firebase.auth
 
 @Composable
-fun AuthScreen(navController: NavHostController) {
+fun AuthScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val credentialManager = CredentialManager.create(context)
-    var showDialog by remember { mutableStateOf(false) }
+    val uiState by authViewModel.uiState.collectAsState()
 
-    var userSignedIn by remember { mutableStateOf(auth.currentUser != null) }
-    // LaunchedEffect para navegar a ConfigScreen cuando el usuario inicie sesión
-    LaunchedEffect(userSignedIn) {
-        if (userSignedIn) {
+    // Manejo de navegación basado en el estado del usuario
+    LaunchedEffect(uiState.isUserSignedIn) {
+        if (uiState.isUserSignedIn) {
             navController.navigate(AppScreens.ConfigScreen.route)
         }
     }
@@ -87,138 +61,27 @@ fun AuthScreen(navController: NavHostController) {
         verticalArrangement = Arrangement.Center
     ) {
         Text("¿Ya tienes cuenta?")
-        Button(onClick = {
-            scope.launch {
-                googleOneTap(context, credentialManager) { success ->
-                    if (success) {
-                        userSignedIn = true
-                    }
-                }
-            }
-        }) {
+        Button(onClick = { authViewModel.handleGoogleSignIn(context) }) {
             Text("Inicia sesión")
         }
         Text("¿No tienes cuenta?")
         Button(onClick = { /* Acción al hacer clic */ }) {
             Text("Regístrate con Google")
         }
-        if (showDialog) {
-            ShowAlert { showDialog = false }
-        }
-    }
-}
-
-suspend fun googleOneTap(context: Context, credentialManager: CredentialManager, onSignInComplete: (Boolean) -> Unit) {
-
-    val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-
-    // Check if the user has already signed in
-    val googleIdOptionAlreadySignedIn = GetGoogleIdOption.Builder()
-        .setFilterByAuthorizedAccounts(true)
-        .setServerClientId(WEB_CLIENT_ID)
-        .setAutoSelectEnabled(false)
-        .setNonce(String(CharArray(16) { allowedChars.random() }))
-        .build()
-
-    // Check if the user has not signed in
-    val googleIdOptionNotSignedIn = GetGoogleIdOption.Builder()
-        .setFilterByAuthorizedAccounts(false)
-        .setServerClientId(WEB_CLIENT_ID)
-        .setAutoSelectEnabled(false)
-        .setNonce(String(CharArray(16) { allowedChars.random() }))
-        .build()
-
-    val signInWithGoogleOption = GetSignInWithGoogleOption.Builder(WEB_CLIENT_ID)
-        .setNonce(String(CharArray(16) { allowedChars.random() }))
-        .build()
-
-    val requestSignedIn = GetCredentialRequest.Builder()
-        .addCredentialOption(googleIdOptionAlreadySignedIn)
-        .build()
-
-    val requestNotSignedIn = GetCredentialRequest.Builder()
-        .addCredentialOption(googleIdOptionNotSignedIn)
-        .build()
-
-    val requestSignedInWithGoogle = GetCredentialRequest.Builder()
-        .addCredentialOption(signInWithGoogleOption)
-        .build()
-
-    withContext(Dispatchers.IO) {
-        try {
-            val result = credentialManager.getCredential(context, requestSignedIn)
-            Log.d("SignedIn", "The user already signed in!!!")
-            handleSignIn(result) { success ->
-                onSignInComplete(success) // Notifica a AuthScreen sobre el resultado del inicio de sesión
-            }
-        } catch (e: GetCredentialException) {
-            Log.d("SignedIn", "The user has not signed in yet!!!")
-            try {
-                val result = credentialManager.getCredential(context, requestNotSignedIn)
-                handleSignIn(result) { success ->
-                    onSignInComplete(success) // Notifica a AuthScreen sobre el resultado del inicio de sesión
+        // Mostrar diálogo de error si es necesario
+        if (uiState.showErrorDialog) {
+            AlertDialog(
+                onDismissRequest = { authViewModel.showErrorDialog(false) },
+                title = { Text("Error") },
+                text = { Text(uiState.errorMessage ?: "Error desconocido") },
+                confirmButton = {
+                    Button(onClick = { authViewModel.showErrorDialog(false) }) {
+                        Text("Aceptar")
+                    }
                 }
-            } catch (e: GetCredentialException) {
-                Log.d("SignedIn", "Something went very, very, very wrong!!!")
-            }
+            )
         }
     }
-}
-
-fun handleSignIn(result: GetCredentialResponse, onSignInComplete: (Boolean) -> Unit) {
-    val credential = result.credential
-    when (credential) {
-        // GoogleIdToken credential
-        is CustomCredential -> {
-            if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-                try {
-                    // Use googleIdTokenCredential and extract id to validate and
-                    // authenticate on your server.
-                    val googleIdTokenCredential =
-                        GoogleIdTokenCredential.createFrom(credential.data)
-                    Log.d("Credentials", "User successfully signed in!")
-                    firebaseAuthWithGoogle(googleIdTokenCredential.idToken, onSignInComplete)
-                } catch (e: GoogleIdTokenParsingException) {
-                    Log.e("Credentials", "Invalid Google ID Token response", e)
-                }
-            } else {
-                Log.e("Credentials", "Unexpected type of credential")
-            }
-        }
-
-        else -> {
-            Log.e("Credentials", "Unexpected type of credential")
-        }
-    }
-}
-
-private fun firebaseAuthWithGoogle(idToken: String, onSignInComplete: (Boolean) -> Unit) {
-    val credential = GoogleAuthProvider.getCredential(idToken, null)
-    auth.signInWithCredential(credential)
-        .addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                // Sign in success
-                Log.d("Success", "signInWithCredential:success")
-                onSignInComplete(true) // Notifica éxito
-            } else {
-                // Sign in fails
-                Log.w("Failure", "signInWithCredential:failure", task.exception)
-                onSignInComplete(false) // Notifica fallo
-            }
-        }
-}
-
-@Composable
-fun ShowAlert(onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Error") },
-        text = { Text("Se ha procucido un error autenticando al usuario.") },
-        confirmButton = {
-            Button(onClick = onDismiss) {
-                Text("Aceptar")
-            }
-        })
 }
 
 @Preview(showBackground = true)
