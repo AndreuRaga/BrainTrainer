@@ -1,5 +1,7 @@
 package com.example.braintrainer
 
+import android.content.Context
+import androidx.credentials.CredentialManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -8,6 +10,7 @@ import com.example.braintrainer.domain.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -21,4 +24,8 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAuthRepository(firebaseAuth: FirebaseAuth): AuthRepository = AuthRepositoryImpl(firebaseAuth)
+
+    @Provides
+    @Singleton
+    fun provideCredentialManager(@ApplicationContext context: Context): CredentialManager = CredentialManager.create(context)
 }
