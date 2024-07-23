@@ -1,4 +1,4 @@
-package com.example.braintrainer.presentation
+package com.example.braintrainer.presentation.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

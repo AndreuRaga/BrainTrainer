@@ -3,6 +3,7 @@ package com.example.braintrainer.presentation.ViewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.braintrainer.domain.AuthRepository
+import com.example.braintrainer.presentation.uiStates.AuthUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

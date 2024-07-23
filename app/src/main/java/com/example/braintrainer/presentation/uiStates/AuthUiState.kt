@@ -1,4 +1,4 @@
-package com.example.braintrainer.presentation.ViewModels
+package com.example.braintrainer.presentation.uiStates
 
 data class AuthUiState(
     val isUserSignedIn: Boolean = false,

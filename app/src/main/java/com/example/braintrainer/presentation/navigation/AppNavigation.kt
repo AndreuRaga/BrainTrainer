@@ -5,8 +5,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.braintrainer.presentation.AuthScreen
-import com.example.braintrainer.presentation.ConfigScreen
+import com.example.braintrainer.presentation.screens.AuthScreen
+import com.example.braintrainer.presentation.screens.ConfigScreen
 import com.example.braintrainer.presentation.ViewModels.AuthViewModel
 import com.example.braintrainer.presentation.ViewModels.ConfigViewModel
 
