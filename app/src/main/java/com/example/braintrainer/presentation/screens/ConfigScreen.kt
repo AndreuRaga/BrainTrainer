@@ -1,6 +1,5 @@
 package com.example.braintrainer.presentation.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,20 +31,13 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Button(onClick = {
-            authViewModel.deleteUser()
-            Log.d("ConfigScreen", "Pantalla de inicio")
-        }) {
+        Button(onClick = { authViewModel.deleteUser() }) {
             Text("Borrar cuenta")
         }
-        Button(onClick = {
-            authViewModel.signOut()
-            navController.navigate(AppScreens.AuthScreen.route) {
-                popUpTo(AppScreens.AuthScreen.route) { inclusive = true }
-            }
-        }) {
+        Button(onClick = { authViewModel.signOut() }) {
             Text("Cerrar sesión")
         }
+        // Navegación después de cerrar sesión o borrar cuenta
         LaunchedEffect(uiState.isUserSignedIn) {
             if (!uiState.isUserSignedIn) {
                 navController.navigate(AppScreens.AuthScreen.route) {
