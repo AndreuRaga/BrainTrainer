@@ -33,6 +33,12 @@ class AuthViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState = _uiState.asStateFlow()
 
+    init {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isUserSignedIn = authRepository.isUserSignedIn())
+        }
+    }
+
     fun handleGoogleSignIn(context: Context) {
         viewModelScope.launch {
             googleOneTap(context) { success ->

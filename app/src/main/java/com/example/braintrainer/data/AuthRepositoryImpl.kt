@@ -29,4 +29,8 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             false
         }
     }
+
+    override fun isUserSignedIn(): Boolean {
+        return firebaseAuth.currentUser != null
+    }
 }
