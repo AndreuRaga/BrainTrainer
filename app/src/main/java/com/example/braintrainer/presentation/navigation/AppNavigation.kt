@@ -5,15 +5,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.braintrainer.presentation.ViewModels.AuthViewModel
 import com.example.braintrainer.presentation.screens.AuthScreen
 import com.example.braintrainer.presentation.screens.ConfigScreen
-import com.example.braintrainer.presentation.ViewModels.AuthViewModel
-import com.example.braintrainer.presentation.ViewModels.ConfigViewModel
 
 @Composable
 fun AppNavigation() {
     val authViewModel: AuthViewModel = viewModel()
-    val configViewModel: ConfigViewModel = viewModel()
     val navController = rememberNavController()
     NavHost(
         navController = navController,
@@ -23,7 +21,7 @@ fun AppNavigation() {
             AuthScreen(navController, authViewModel)
         }
         composable(AppScreens.ConfigScreen.route) {
-            ConfigScreen(navController, configViewModel)
+            ConfigScreen(navController, authViewModel)
         }
     }
 }

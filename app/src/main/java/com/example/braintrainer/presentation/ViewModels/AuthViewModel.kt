@@ -137,6 +137,25 @@ class AuthViewModel @Inject constructor(
         }
     }
 
+    fun signOut() {
+        authRepository.signOut()
+        _uiState.value = _uiState.value.copy(isUserSignedIn = false)
+    }
+
+    fun deleteUser() {
+        viewModelScope.launch {
+            val success = authRepository.deleteUser()
+            if (success) {
+                _uiState.value = _uiState.value.copy(isUserSignedIn = false)
+            } else {
+                _uiState.value = _uiState.value.copy(
+                    showErrorDialog = true,
+                    errorMessage = "Error al borrar la cuenta"
+                )
+            }
+        }
+    }
+
     fun showErrorDialog(show: Boolean) {
         _uiState.value = _uiState.value.copy(showErrorDialog = show)
     }
