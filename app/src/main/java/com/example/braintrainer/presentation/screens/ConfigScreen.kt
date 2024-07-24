@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -71,20 +71,20 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
                 overflow = TextOverflow.Ellipsis
             )
         }
-        Spacer(modifier = Modifier.height(16.dp)) // Espacio entre el email y los botones
+        Spacer(modifier = Modifier.height(50.dp)) // Espacio entre el email y los botones
         Button(
             onClick = { authViewModel.deleteUser() },
             modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp)) // Bordes circulares
+                .fillMaxWidth(),
+            shape = RectangleShape
         ) {
             Text("Borrar cuenta")
         }
         Button(
             onClick = { authViewModel.signOut() },
             modifier = Modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(16.dp)) // Bordes circulares
+                .fillMaxWidth(), // Bordes circulares
+            shape = RectangleShape
         ) {
             Text("Cerrar sesión")
         }
