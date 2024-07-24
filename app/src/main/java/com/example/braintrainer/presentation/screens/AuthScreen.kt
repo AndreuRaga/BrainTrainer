@@ -1,12 +1,19 @@
 package com.example.braintrainer.presentation.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,9 +46,11 @@ fun AuthScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.
+        fillMaxSize().
+        padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
+        verticalArrangement = Arrangement.Center
     ) {
         Text(text = "¡Bienvenido/a a Brain Trainer!",
             style = MaterialTheme.typography.headlineMedium,
@@ -53,15 +62,25 @@ fun AuthScreen(navController: NavHostController, authViewModel: AuthViewModel) {
             contentDescription = "Logo",
             modifier = Modifier.size(150.dp)
         )
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
+        Spacer(modifier = Modifier.height(50.dp))
         Text("¿Ya tienes cuenta?")
-        Button(onClick = { authViewModel.handleGoogleSignIn(context) }) {
+        Button(
+            onClick = { authViewModel.handleGoogleSignIn(context) },
+            modifier = Modifier
+                .fillMaxWidth(),
+            shape = CircleShape,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.White,
+                contentColor = Color.Black
+            ),
+            border = BorderStroke(1.dp, Color.Black)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.google_icon),
+                contentDescription = "Google Icon",
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.size(8.dp))
             Text("Inicia sesión")
         }
         Text("¿No tienes cuenta?")
