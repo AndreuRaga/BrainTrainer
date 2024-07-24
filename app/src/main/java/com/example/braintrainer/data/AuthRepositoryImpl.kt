@@ -2,6 +2,7 @@ package com.example.braintrainer.data
 
 import com.example.braintrainer.domain.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -33,4 +34,9 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
     override fun isUserSignedIn(): Boolean {
         return firebaseAuth.currentUser != null
     }
+
+    override fun getCurrentUser(): FirebaseUser? {
+        return firebaseAuth.currentUser
+    }
+
 }

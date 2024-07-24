@@ -35,15 +35,24 @@ class AuthViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(isUserSignedIn = authRepository.isUserSignedIn())
+            _uiState.value = _uiState.value.copy(
+                isUserSignedIn = authRepository.isUserSignedIn(),
+                profilePictureUrl = authRepository.getCurrentUser()?.photoUrl.toString(),
+                userName = authRepository.getCurrentUser()?.displayName,
+                userEmail = authRepository.getCurrentUser()?.email
+            )
         }
     }
 
     fun handleGoogleSignIn(context: Context) {
         viewModelScope.launch {
             googleOneTap(context) { success ->
+                val user = authRepository.getCurrentUser()
                 _uiState.value = _uiState.value.copy(
                     isUserSignedIn = success,
+                    profilePictureUrl = user?.photoUrl.toString(),
+                    userName = user?.displayName,
+                    userEmail = user?.email,
                     showErrorDialog = !success,
                     errorMessage = if (!success) "Error al iniciar sesión" else null
                 )
