@@ -2,8 +2,10 @@ package com.example.braintrainer.presentation.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -38,7 +40,9 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
     }
 
     Column(
-        modifier = Modifier.fillMaxSize().padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp), // Margen general
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -46,12 +50,14 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
             AsyncImage(
                 model = it,
                 contentDescription = "Foto de perfil",
-                modifier = Modifier.size(100.dp).clip(CircleShape)
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(CircleShape)
             )
         }
+        Spacer(modifier = Modifier.height(16.dp)) // Espacio entre la foto y el nombre
         uiState.userName?.let {
-            Text(
-                text = it,
+            Text(text = it,
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 maxLines = 1,
@@ -65,11 +71,12 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
                 overflow = TextOverflow.Ellipsis
             )
         }
+        Spacer(modifier = Modifier.height(16.dp)) // Espacio entre el email y los botones
         Button(
             onClick = { authViewModel.deleteUser() },
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(1.dp)) // Bordes circulares
+                .clip(RoundedCornerShape(16.dp)) // Bordes circulares
         ) {
             Text("Borrar cuenta")
         }
@@ -77,7 +84,7 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
             onClick = { authViewModel.signOut() },
             modifier = Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(1.dp)), // Bordes circulares
+                .clip(RoundedCornerShape(16.dp)) // Bordes circulares
         ) {
             Text("Cerrar sesión")
         }
