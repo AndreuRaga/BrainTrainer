@@ -3,8 +3,11 @@ package com.example.braintrainer.presentation.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -35,7 +38,7 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -62,10 +65,20 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
                 overflow = TextOverflow.Ellipsis
             )
         }
-        Button(onClick = { authViewModel.deleteUser() }) {
+        Button(
+            onClick = { authViewModel.deleteUser() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(1.dp)) // Bordes circulares
+        ) {
             Text("Borrar cuenta")
         }
-        Button(onClick = { authViewModel.signOut() }) {
+        Button(
+            onClick = { authViewModel.signOut() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(1.dp)), // Bordes circulares
+        ) {
             Text("Cerrar sesión")
         }
         // Navegación después de cerrar sesión o borrar cuenta
