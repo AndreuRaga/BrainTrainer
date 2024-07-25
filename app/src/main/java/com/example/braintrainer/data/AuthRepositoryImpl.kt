@@ -35,8 +35,12 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
         }
     }
     override suspend fun reauthUser(password: String?): Boolean {
-
-        val credential = GoogleAuthProvider.getCredential(getCurrentUser()?.email, password)
+        val email = getCurrentUser()?.email
+        if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
+            Log.d("AuthRepository", "Email o contraseña inválidos")
+            return false
+        }
+        val credential = GoogleAuthProvider.getCredential(email, password)
         return try {
             getCurrentUser()?.reauthenticate(credential)?.await()
             Log.d("AuthRepository", "User reauthenticated")
