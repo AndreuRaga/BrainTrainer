@@ -158,11 +158,29 @@ class AuthViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(isUserSignedIn = false)
             } else {
                 _uiState.value = _uiState.value.copy(
-                    showErrorDialog = true,
-                    errorMessage = "Error al borrar la cuenta"
+                    showDialog = true,
+                    requiresReauthentication = true
                 )
             }
         }
+    }
+
+    fun reauthUser(password: String) {
+        viewModelScope.launch {
+            val success = authRepository.reauthUser(password)
+            if (success) {
+                deleteUser()
+            } else {
+                _uiState.value = _uiState.value.copy(
+                    showErrorDialog = true,
+                    errorMessage = "Contraseña incorrecta"
+                )
+            }
+        }
+    }
+
+    fun showDialog(show: Boolean) {
+        _uiState.value = _uiState.value.copy(showDialog = show)
     }
 
     fun showErrorDialog(show: Boolean) {

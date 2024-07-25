@@ -1,7 +1,10 @@
 package com.example.braintrainer.data
 
+import android.util.Log
 import com.example.braintrainer.domain.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
@@ -23,10 +26,23 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
     }
 
     override suspend fun deleteUser(): Boolean {
+        //Log.d("AuthRepository", getCurrentUser()?.getIdToken(true).toString())
         return try {
             firebaseAuth.currentUser?.delete()?.await()
             true
-        } catch (e: Exception) {
+        } catch (e: FirebaseAuthRecentLoginRequiredException) {
+            false
+        }
+    }
+    override suspend fun reauthUser(password: String?): Boolean {
+
+        val credential = GoogleAuthProvider.getCredential(getCurrentUser()?.email, password)
+        return try {
+            getCurrentUser()?.reauthenticate(credential)?.await()
+            Log.d("AuthRepository", "User reauthenticated")
+            true
+        } catch (e: FirebaseAuthInvalidCredentialsException) {
+            Log.d("AuthRepository", "User not reauthenticated")
             false
         }
     }

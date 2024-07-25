@@ -12,16 +12,21 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -37,6 +42,13 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
         ErrorAlertDialog(errorMessage = uiState.errorMessage ?: "Error desconocido") {
             authViewModel.showErrorDialog(false)
         }
+    }
+    if (uiState.showDialog) {
+        ReauthDialog(
+            onConfirm = { password ->
+                authViewModel.reauthUser(password)
+            }
+        ) { authViewModel.showDialog(false) }
     }
 
     Column(
@@ -98,7 +110,35 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
         }
     }
 }
-
+@Composable
+fun ReauthDialog(onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
+    var password by remember { mutableStateOf("") }
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Re-autenticación") },
+        text = {
+            Column {
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text("Contraseña") },
+                    visualTransformation = PasswordVisualTransformation(),
+                    singleLine = true
+                )
+            }
+        },
+        confirmButton = {
+            Button(onClick = { onConfirm(password) }) {
+                Text("Confirmar")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) {
+                Text("Cancelar")
+            }
+        }
+    )
+}
 @Composable
 fun ErrorAlertDialog(errorMessage: String, onDismiss: () -> Unit) {
     AlertDialog(
