@@ -8,6 +8,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.braintrainer.presentation.ViewModels.AuthViewModel
 import com.example.braintrainer.presentation.screens.AuthScreen
 import com.example.braintrainer.presentation.screens.ConfigScreen
+import com.example.braintrainer.presentation.screens.GamesScreen
+import com.example.braintrainer.presentation.screens.StatsScreen
 
 @Composable
 fun AppNavigation() {
@@ -19,6 +21,12 @@ fun AppNavigation() {
     ) {
         composable(AppScreens.AuthScreen.route) {
             AuthScreen(navController, authViewModel)
+        }
+        composable(AppScreens.GamesScreen.route) {
+            GamesScreen(navController)
+        }
+        composable(AppScreens.StatsScreen.route) {
+            StatsScreen(navController)
         }
         composable(AppScreens.ConfigScreen.route) {
             ConfigScreen(navController, authViewModel)
