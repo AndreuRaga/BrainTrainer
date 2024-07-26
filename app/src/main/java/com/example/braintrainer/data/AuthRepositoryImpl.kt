@@ -34,6 +34,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             false
         }
     }
+
     override suspend fun reauthUser(password: String?): Boolean {
         val email = getCurrentUser()?.email
         if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
@@ -58,5 +59,4 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
     override fun getCurrentUser(): FirebaseUser? {
         return firebaseAuth.currentUser
     }
-
 }

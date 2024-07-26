@@ -37,13 +37,7 @@ import com.example.braintrainer.presentation.navigation.AppScreens
 @Composable
 fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val uiState by authViewModel.uiState.collectAsState()
-    /*
-    if (uiState.showErrorDialog) {
-        ErrorAlertDialog(errorMessage = uiState.errorMessage ?: "Error desconocido") {
-            authViewModel.showErrorDialog(false)
-        }
-    }
-    */
+
     if (uiState.showDialog) {
         ReauthDialog(
             errorPassword = uiState.showErrorDialog,
@@ -144,19 +138,3 @@ fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss:
         }
     )
 }
-
-/*
-@Composable
-fun ErrorAlertDialog(errorMessage: String, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("Error") },
-        text = { Text(errorMessage) },
-        confirmButton = {
-            Button(onClick = onDismiss) {
-                Text("Aceptar")
-            }
-        }
-    )
-}
- */

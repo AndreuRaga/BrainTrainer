@@ -171,10 +171,7 @@ class AuthViewModel @Inject constructor(
             if (success) {
                 deleteUser()
             } else {
-                _uiState.value = _uiState.value.copy(
-                    showErrorDialog = true,
-                    errorMessage = "Contraseña incorrecta"
-                )
+                _uiState.value = _uiState.value.copy(showErrorDialog = true)
             }
         }
     }
