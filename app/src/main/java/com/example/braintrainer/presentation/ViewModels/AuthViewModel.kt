@@ -180,7 +180,7 @@ class AuthViewModel @Inject constructor(
     }
 
     fun showDialog(show: Boolean) {
-        _uiState.value = _uiState.value.copy(showDialog = show)
+        _uiState.value = _uiState.value.copy(showDialog = show, showErrorDialog = show)
     }
 
     fun showErrorDialog(show: Boolean) {
