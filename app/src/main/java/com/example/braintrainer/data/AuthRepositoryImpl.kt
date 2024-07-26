@@ -29,6 +29,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
         //Log.d("AuthRepository", getCurrentUser()?.getIdToken(true).toString())
         return try {
             firebaseAuth.currentUser?.delete()?.await()
+            Log.d("AuthRepository", "User deleted")
             true
         } catch (e: FirebaseAuthRecentLoginRequiredException) {
             false
