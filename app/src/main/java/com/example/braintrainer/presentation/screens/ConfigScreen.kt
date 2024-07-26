@@ -9,8 +9,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -26,7 +32,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -109,6 +117,8 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
 @Composable
 fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
     var password by remember { mutableStateOf("") }
+    var passwordVisible by remember { mutableStateOf(false) }
+    val visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("¡Atención!") },
@@ -119,10 +129,21 @@ fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss:
                     value = password,
                     onValueChange = { password = it },
                     label = { Text("Introduce tu contraseña") },
-                    visualTransformation = PasswordVisualTransformation(),
+                    visualTransformation = visualTransformation,
                     singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     supportingText = { if (errorPassword) Text("Contraseña incorrecta.") },
-                    isError = errorPassword
+                    isError = errorPassword,
+                    trailingIcon = {
+                        val image = if (passwordVisible) Icons.Filled.VisibilityOff
+                        else Icons.Filled.Visibility
+
+                        val description = if (passwordVisible) "Hide password" else "Show password"
+
+                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                            Icon(imageVector  = image, description)
+                        }
+                    }
                 )
             }
         },

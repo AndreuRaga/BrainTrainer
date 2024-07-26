@@ -84,6 +84,8 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     //
     implementation(libs.coil.compose)
+    //Iconos extendidos
+    implementation(libs.androidx.material.icons.extended)
 }
 
 // Allow references to generated code
