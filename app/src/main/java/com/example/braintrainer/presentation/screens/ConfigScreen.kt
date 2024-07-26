@@ -117,9 +117,10 @@ fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss:
     var password by remember { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Re-autenticación") },
+        title = { Text("¡Atención!") },
         text = {
             Column {
+                Text("Ten en cuenta que si borras tu cuenta se perderá todo tu pogreso en Brain Trainer.")
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
