@@ -37,14 +37,16 @@ import com.example.braintrainer.presentation.navigation.AppScreens
 @Composable
 fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val uiState by authViewModel.uiState.collectAsState()
-
+    /*
     if (uiState.showErrorDialog) {
         ErrorAlertDialog(errorMessage = uiState.errorMessage ?: "Error desconocido") {
             authViewModel.showErrorDialog(false)
         }
     }
+    */
     if (uiState.showDialog) {
         ReauthDialog(
+            errorPassword = uiState.showErrorDialog,
             onConfirm = { password ->
                 authViewModel.reauthUser(password)
             }
@@ -111,7 +113,7 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
     }
 }
 @Composable
-fun ReauthDialog(onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
+fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
     var password by remember { mutableStateOf("") }
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -121,9 +123,11 @@ fun ReauthDialog(onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("Contraseña") },
+                    label = { Text("Introduce tu contraseña") },
                     visualTransformation = PasswordVisualTransformation(),
-                    singleLine = true
+                    singleLine = true,
+                    supportingText = { if (errorPassword) Text("Contraseña incorrecta.") },
+                    isError = errorPassword
                 )
             }
         },
@@ -139,6 +143,8 @@ fun ReauthDialog(onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
         }
     )
 }
+
+/*
 @Composable
 fun ErrorAlertDialog(errorMessage: String, onDismiss: () -> Unit) {
     AlertDialog(
@@ -152,3 +158,4 @@ fun ErrorAlertDialog(errorMessage: String, onDismiss: () -> Unit) {
         }
     )
 }
+ */
