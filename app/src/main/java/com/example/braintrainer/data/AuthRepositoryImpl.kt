@@ -17,21 +17,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             firebaseAuth.signInWithCredential(credential).await()
             true
         } catch (e: Exception) {
-            false
-        }
-    }
-
-    override fun signOut() {
-        firebaseAuth.signOut()
-    }
-
-    override suspend fun deleteUser(): Boolean {
-        //Log.d("AuthRepository", getCurrentUser()?.getIdToken(true).toString())
-        return try {
-            firebaseAuth.currentUser?.delete()?.await()
-            Log.d("AuthRepository", "User deleted")
-            true
-        } catch (e: FirebaseAuthRecentLoginRequiredException) {
+            Log.e("AuthRepository", "Error during sign in", e)
             false
         }
     }
@@ -42,13 +28,28 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             Log.d("AuthRepository", "Email o contraseña inválidos")
             return false
         }
-        val credential = GoogleAuthProvider.getCredential(email, password)
         return try {
+            val credential = GoogleAuthProvider.getCredential(email, password)
             getCurrentUser()?.reauthenticate(credential)?.await()
             Log.d("AuthRepository", "User reauthenticated")
             true
         } catch (e: FirebaseAuthInvalidCredentialsException) {
             Log.d("AuthRepository", "User not reauthenticated")
+            false
+        }
+    }
+
+    override fun signOut() {
+        firebaseAuth.signOut()
+    }
+
+    override suspend fun deleteUser(): Boolean {
+        return try {
+            firebaseAuth.currentUser?.delete()?.await()
+            Log.d("AuthRepository", "User deleted")
+            true
+        } catch (e: FirebaseAuthRecentLoginRequiredException) {
+            Log.e("AuthRepository","User deletion failed", e)
             false
         }
     }
