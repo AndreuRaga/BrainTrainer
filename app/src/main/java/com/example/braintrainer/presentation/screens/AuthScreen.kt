@@ -1,5 +1,6 @@
 package com.example.braintrainer.presentation.screens
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -45,62 +46,97 @@ fun AuthScreen(navController: NavHostController, authViewModel: AuthViewModel) {
         }
     }
 
+    // Mostrar diálogo de error si es necesario
+    if (uiState.showErrorDialog) {
+        ErrorDialog(
+            errorMessage = uiState.errorMessage ?: "Error desconocido",
+            onDismiss = { authViewModel.showErrorDialog(false) }
+        )
+    }
+
     Column(
-        modifier = Modifier.
-        fillMaxSize().
-        padding(16.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "¡Bienvenido/a a Brain Trainer!",
-            style = MaterialTheme.typography.headlineMedium,
-            fontWeight = FontWeight.Bold,
-            color = Color.Black
-        )
-        Image(
-            painter = painterResource(id = R.drawable.app_icon),
-            contentDescription = "Logo",
-            modifier = Modifier.size(150.dp)
-        )
+        WelcomeText()
+        AppIcon()
         Spacer(modifier = Modifier.height(50.dp))
-        Text("¿Ya tienes cuenta?")
-        Button(
-            onClick = { authViewModel.handleGoogleSignIn(context) },
-            modifier = Modifier
-                .fillMaxWidth(),
-            shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = Color.Black
-            ),
-            border = BorderStroke(1.dp, Color.Black)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.google_icon),
-                contentDescription = "Google Icon",
-                modifier = Modifier.size(24.dp)
-            )
-            Spacer(modifier = Modifier.size(8.dp))
-            Text("Inicia sesión")
-        }
-        Text("¿No tienes cuenta?")
-        Button(onClick = { /* Acción al hacer clic */ }) {
-            Text("Regístrate con Google")
-        }
-        // Mostrar diálogo de error si es necesario
-        if (uiState.showErrorDialog) {
-            AlertDialog(
-                onDismissRequest = { authViewModel.showErrorDialog(false) },
-                title = { Text("Error") },
-                text = { Text(uiState.errorMessage ?: "Error desconocido") },
-                confirmButton = {
-                    Button(onClick = { authViewModel.showErrorDialog(false) }) {
-                        Text("Aceptar")
-                    }
-                }
-            )
-        }
+        SignInSection(authViewModel, context)
+        Spacer(modifier = Modifier.height(16.dp))
+        SignUpSection()
     }
+}
+
+@Composable
+fun WelcomeText() {
+    Text(
+        text = "¡Bienvenido/a a Brain Trainer!",
+        style = MaterialTheme.typography.headlineMedium,
+        fontWeight = FontWeight.Bold,
+        color = Color.Black
+    )
+}
+
+@Composable
+fun AppIcon() {
+    Image(
+        painter = painterResource(id = R.drawable.app_icon), // Reemplaza con tu icono
+        contentDescription = "Logo",
+        modifier = Modifier.size(150.dp)
+    )
+}
+
+@Composable
+fun SignInSection(authViewModel: AuthViewModel, context: Context) {
+    Text("¿Ya tienes cuenta?")
+    GoogleSignInButton(authViewModel, context)
+}
+
+@Composable
+fun GoogleSignInButton(authViewModel: AuthViewModel, context: Context) {
+    Button(
+        onClick = { authViewModel.handleGoogleSignIn(context) },
+        modifier = Modifier.fillMaxWidth(),
+        shape = CircleShape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.White,
+            contentColor = Color.Black
+        ),
+        border = BorderStroke(1.dp, Color.Black)
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.google_icon),
+            contentDescription = "Google Icon",
+            modifier = Modifier.size(24.dp)
+        )
+        Spacer(modifier = Modifier.size(8.dp))
+        Text("Inicia sesión")
+    }
+}
+
+@Composable
+fun SignUpSection() {
+    Text("¿No tienes cuenta?")
+    Button(onClick = { /* Acción al hacer clic */ }) {
+        Text("Regístrate con Google")
+    }
+}
+
+@Composable
+fun ErrorDialog(errorMessage: String, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Error") },
+        text = { Text(errorMessage) },
+        confirmButton = {
+            Button(onClick = onDismiss) {
+                Text("Aceptar")
+            }
+        }
+    )
 }
 
 @Preview(showBackground = true)
