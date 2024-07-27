@@ -32,7 +32,7 @@ class AuthViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState = _uiState.asStateFlow()
-
+    /*
     init {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
@@ -43,6 +43,7 @@ class AuthViewModel @Inject constructor(
             )
         }
     }
+    */
 
     fun handleGoogleSignIn(context: Context) {
         viewModelScope.launch {
