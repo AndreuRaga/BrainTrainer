@@ -47,7 +47,7 @@ class AuthViewModel @Inject constructor(
 
     fun handleGoogleSignIn(context: Context) {
         viewModelScope.launch {
-            googleOneTap(context) { success ->
+            googleOneTapSignIn(context) { success ->
                 val user = authRepository.getCurrentUser()
                 _uiState.value = _uiState.value.copy(
                     isUserSignedIn = success,
@@ -55,88 +55,75 @@ class AuthViewModel @Inject constructor(
                     userName = user?.displayName,
                     userEmail = user?.email,
                     showErrorDialog = !success,
-                    errorMessage = if (!success) "Error al iniciar sesión" else null
+                    errorMessage = if (!success) "Error al iniciar sesión." else null
                 )
             }
         }
     }
 
-    private suspend fun googleOneTap(context: Context, onSignInComplete: (Boolean) -> Unit) {
-        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
-
-        // Check if the user has already signed in
-        val googleIdOptionAlreadySignedIn = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(true)
-            .setServerClientId(WEB_CLIENT_ID)
-            .setAutoSelectEnabled(false)
-            .setNonce(String(CharArray(16) { allowedChars.random() }))
-            .build()
-
-        // Check if the user has not signed in
-        val googleIdOptionNotSignedIn = GetGoogleIdOption.Builder()
-            .setFilterByAuthorizedAccounts(false)
-            .setServerClientId(WEB_CLIENT_ID)
-            .setAutoSelectEnabled(false)
-            .setNonce(String(CharArray(16) { allowedChars.random() }))
-            .build()
-
-        val signInWithGoogleOption = GetSignInWithGoogleOption.Builder(WEB_CLIENT_ID)
-            .setNonce(String(CharArray(16) { allowedChars.random() }))
-            .build()
-
-        val requestSignedIn = GetCredentialRequest.Builder()
-            .addCredentialOption(googleIdOptionAlreadySignedIn)
-            .build()
-
-        val requestNotSignedIn = GetCredentialRequest.Builder()
-            .addCredentialOption(googleIdOptionNotSignedIn)
-            .build()
-
-        val requestSignedInWithGoogle = GetCredentialRequest.Builder()
-            .addCredentialOption(signInWithGoogleOption)
-            .build()
-
+    private suspend fun googleOneTapSignIn(context: Context, onSignInComplete: (Boolean) -> Unit) {
         withContext(Dispatchers.IO) {
             try {
-                val result = credentialManager.getCredential(context, requestSignedIn)
+                val request = createGoogleIdRequest(true)
+                val result = credentialManager.getCredential(context, request)
                 Log.d("SignedIn", "The user already signed in!!!")
-                handleSignIn(result, onSignInComplete)
+                handleSignInResult(result, onSignInComplete)
             } catch (e: GetCredentialException) {
                 Log.d("SignedIn", "The user has not signed in yet!!!")
                 try {
-                    val result = credentialManager.getCredential(context, requestNotSignedIn)
-                    handleSignIn(result, onSignInComplete)
+                    val request = createGoogleIdRequest(false)
+                    val result = credentialManager.getCredential(context, request)
+                    handleSignInResult(result, onSignInComplete)
                 } catch (e: GetCredentialException) {
                     Log.d("SignedIn", "Something went very, very, very wrong!!!")
-                    onSignInComplete(false) // Notifica fallo si ocurre un error
+                    onSignInComplete(false)
                 }
             }
         }
     }
 
-    private fun handleSignIn(result: GetCredentialResponse, onSignInComplete: (Boolean) -> Unit) {
+    private fun createAccessWithGoogleIdRequest(): GetCredentialRequest {
+        val nonce = generateNonce()
+        val signInWithGoogleOption = GetSignInWithGoogleOption.Builder(WEB_CLIENT_ID)
+            .setNonce(nonce)
+            .build()
+        return GetCredentialRequest.Builder()
+            .addCredentialOption(signInWithGoogleOption)
+            .build()
+    }
+
+    private fun createGoogleIdRequest(filterByAuthorizedAccounts: Boolean): GetCredentialRequest {
+        val nonce = generateNonce()
+        val googleIdOption = GetGoogleIdOption.Builder()
+            .setFilterByAuthorizedAccounts(filterByAuthorizedAccounts)
+            .setServerClientId(WEB_CLIENT_ID)
+            .setAutoSelectEnabled(false)
+            .setNonce(nonce)
+            .build()
+        return GetCredentialRequest.Builder()
+            .addCredentialOption(googleIdOption)
+            .build()
+    }
+
+    private fun generateNonce(): String {
+        val allowedChars = ('A'..'Z') + ('a'..'z') + ('0'..'9')
+        return String(CharArray(16) { allowedChars.random() })
+    }
+
+    private fun handleSignInResult(result: GetCredentialResponse, onSignInComplete: (Boolean) -> Unit) {
         val credential = result.credential
-        when (credential) {
-            is CustomCredential -> {
-                if (credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
+        if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
                     try {
-                        val googleIdTokenCredential =
-                            GoogleIdTokenCredential.createFrom(credential.data)
+                        val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
                         Log.d("Credentials", "User successfully signed in!")
                         firebaseAuthWithGoogle(googleIdTokenCredential.idToken, onSignInComplete)
                     } catch (e: GoogleIdTokenParsingException) {
                         Log.e("Credentials", "Invalid Google ID Token response", e)
-                        onSignInComplete(false) // Notifica fallo si ocurre un error
+                        onSignInComplete(false)
                     }
-                } else {
-                    Log.e("Credentials", "Unexpected type of credential")
-                    onSignInComplete(false) // Notifica fallo si ocurre un error
-                }
-            }
-            else -> {
-                Log.e("Credentials", "Unexpected type of credential")
-                onSignInComplete(false) // Notifica fallo si ocurre un error
-            }
+        } else {
+            Log.e("Credentials", "Unexpected type of credential")
+            onSignInComplete(false)
         }
     }
 
