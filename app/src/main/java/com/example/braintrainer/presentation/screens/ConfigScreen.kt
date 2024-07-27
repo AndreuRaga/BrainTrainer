@@ -41,18 +41,19 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.braintrainer.presentation.ViewModels.AuthViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
+import com.example.braintrainer.presentation.uiStates.AuthUiState
 
 @Composable
 fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val uiState by authViewModel.uiState.collectAsState()
 
+    // Mostrar diálogo de re-autenticación si es necesario
     if (uiState.showDialog) {
         ReauthDialog(
             errorPassword = uiState.showErrorDialog,
-            onConfirm = { password ->
-                authViewModel.reauthUser(password)
-            }
-        ) { authViewModel.showDialog(false) }
+            onConfirm = { password -> authViewModel.reauthUser(password) },
+            onDismiss = { authViewModel.showDialog(false) }
+        )
     }
 
     Column(
@@ -62,63 +63,78 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        uiState.profilePictureUrl?.let {
-            AsyncImage(
-                model = it,
-                contentDescription = "Foto de perfil",
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp)) // Espacio entre la foto y el nombre
-        uiState.userName?.let {
-            Text(text = it,
-                style = MaterialTheme.typography.headlineMedium,
-                fontWeight = FontWeight.Bold,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
-        uiState.userEmail?.let {
-            Text(
-                text = it,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis
-            )
-        }
+        ProfileInfoSection(uiState)
         Spacer(modifier = Modifier.height(50.dp)) // Espacio entre el email y los botones
-        Button(
-            onClick = { authViewModel.deleteUser() },
+        AccountActionsSection(authViewModel)
+        NavigateOnSignOut(uiState, navController)
+    }
+}
+
+@Composable
+fun ProfileInfoSection(uiState: AuthUiState) {
+    uiState.profilePictureUrl?.let {
+        AsyncImage(
+            model = it,
+            contentDescription = "Foto de perfil",
             modifier = Modifier
-                .fillMaxWidth(),
-            shape = RectangleShape
-        ) {
-            Text("Borrar cuenta")
-        }
-        Button(
-            onClick = { authViewModel.signOut() },
-            modifier = Modifier
-                .fillMaxWidth(), // Bordes circulares
-            shape = RectangleShape
-        ) {
-            Text("Cerrar sesión")
-        }
-        // Navegación después de cerrar sesión o borrar cuenta
-        LaunchedEffect(uiState.isUserSignedIn) {
-            if (!uiState.isUserSignedIn) {
-                navController.navigate(AppScreens.AuthScreen.route) {
-                    popUpTo(AppScreens.AuthScreen.route) { inclusive = true }
-                }
+                .size(100.dp)
+                .clip(CircleShape)
+        )
+    }
+    Spacer(modifier = Modifier.height(16.dp))
+    uiState.userName?.let {
+        Text(
+            text = it,
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+    uiState.userEmail?.let {
+        Text(
+            text = it,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Composable
+fun AccountActionsSection(authViewModel: AuthViewModel) {
+    Button(
+        onClick = { authViewModel.deleteUser() },
+        modifier = Modifier.fillMaxWidth(),
+        shape = RectangleShape
+    ) {
+        Text("Borrar cuenta")
+    }
+    Button(
+        onClick = { authViewModel.signOut() },
+        modifier = Modifier.fillMaxWidth(),
+        shape = RectangleShape
+    ) {
+        Text("Cerrar sesión")
+    }
+}
+
+@Composable
+fun NavigateOnSignOut(uiState: AuthUiState, navController: NavHostController) {
+    LaunchedEffect(uiState.isUserSignedIn) {
+        if (!uiState.isUserSignedIn) {
+            navController.navigate(AppScreens.AuthScreen.route) {
+                popUpTo(AppScreens.AuthScreen.route) { inclusive = true }
             }
         }
     }
 }
+
 @Composable
 fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     val visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text("¡Atención!") },
@@ -134,15 +150,8 @@ fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss:
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     supportingText = { if (errorPassword) Text("Contraseña incorrecta.") },
                     isError = errorPassword,
-                    trailingIcon = {
-                        val image = if (passwordVisible) Icons.Filled.VisibilityOff
-                        else Icons.Filled.Visibility
-
-                        val description = if (passwordVisible) "Hide password" else "Show password"
-
-                        IconButton(onClick = { passwordVisible = !passwordVisible }) {
-                            Icon(imageVector  = image, description)
-                        }
+                    trailingIcon =  {
+                        PasswordVisibilityToggle(passwordVisible) { passwordVisible = !it }
                     }
                 )
             }
@@ -158,4 +167,14 @@ fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss:
             }
         }
     )
+}
+
+@Composable
+fun PasswordVisibilityToggle(isVisible: Boolean, onToggle: (Boolean) -> Unit) {
+    val image = if (isVisible) Icons.Filled.VisibilityOff else Icons.Filled.Visibility
+    val description = if (isVisible) "Hide password" else "Show password"
+
+    IconButton(onClick = { onToggle(isVisible) }) {
+        Icon(imageVector = image, contentDescription = description)
+    }
 }
