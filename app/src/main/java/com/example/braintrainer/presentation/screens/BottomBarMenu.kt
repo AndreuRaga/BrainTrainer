@@ -1,8 +1,7 @@
 package com.example.braintrainer.presentation.screens
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -16,7 +15,7 @@ fun BottomBarMenu(navController: NavController) {
     val items = listOf(AppScreens.GamesScreen, AppScreens.StatsScreen, AppScreens.ConfigScreen)
     Scaffold(
         bottomBar = {
-            BottomAppBar {
+            NavigationBar {
                 items.forEach { screen ->
                     NavigationBarItem(
                         selected = navController.currentDestination?.route == screen.route,
@@ -35,16 +34,10 @@ fun BottomBarMenu(navController: NavController) {
     ) {
         it
     }
-
 }
 
 @Preview(showBackground = true)
 @Composable
 fun BottomBarMenuPreview() {
-    Column {
-        Text(text = "BottomBarMenu")
-        BottomAppBar {
 
-        }
-    }
 }
