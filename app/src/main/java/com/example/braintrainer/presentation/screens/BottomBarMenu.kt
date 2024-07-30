@@ -7,11 +7,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
-fun BottomBarMenu(navController: NavController) {
+fun BottomBarMenu(navController: NavHostController) {
     val items = listOf(AppScreens.GamesScreen, AppScreens.StatsScreen, AppScreens.ConfigScreen)
     Scaffold(
         bottomBar = {
