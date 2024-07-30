@@ -9,7 +9,10 @@ import com.example.braintrainer.presentation.ViewModels.AuthViewModel
 import com.example.braintrainer.presentation.screens.AuthScreen
 import com.example.braintrainer.presentation.screens.BottomBarMenu
 import com.example.braintrainer.presentation.screens.ConfigScreen
+import com.example.braintrainer.presentation.screens.EndGameScreen
 import com.example.braintrainer.presentation.screens.GamesScreen
+import com.example.braintrainer.presentation.screens.InstructionsScreen
+import com.example.braintrainer.presentation.screens.PlayScreen
 import com.example.braintrainer.presentation.screens.StatsScreen
 
 @Composable
@@ -28,6 +31,15 @@ fun AppNavigation() {
         }
         composable(AppScreens.GamesScreen.route) {
             GamesScreen(navController)
+        }
+        composable(AppScreens.InstructionsScreen.route) {
+            InstructionsScreen(navController)
+        }
+        composable(AppScreens.PlayScreen.route) {
+            PlayScreen(navController)
+        }
+        composable(AppScreens.EndGameScreen.route) {
+            EndGameScreen(navController)
         }
         composable(AppScreens.StatsScreen.route) {
             StatsScreen(navController)

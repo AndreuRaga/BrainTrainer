@@ -14,6 +14,9 @@ sealed class AppScreens(
     object AuthScreen : AppScreens("auth_screen")
     object BottomBarMenu : AppScreens("bottom_bar_menu")
     object GamesScreen : AppScreens("games_screen", "Juegos", Icons.Default.Games)
+    object InstructionsScreen : AppScreens("instructions_screen")
+    object PlayScreen : AppScreens("play_screen")
+    object EndGameScreen : AppScreens("end_game_screen")
     object StatsScreen : AppScreens("stats_screen", "Estadísticas", Icons.Default.QueryStats)
     object ConfigScreen : AppScreens("config_screen", "Configuración", Icons.Default.Settings)
 }
