@@ -2,13 +2,16 @@ package com.example.braintrainer.presentation.screens
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.navigation.AppScreens
@@ -25,14 +28,24 @@ fun GamesScreen(navController: NavHostController) {
         items(gameCategories) { category ->
             Text(
                 text = category.name,
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
+                fontWeight = FontWeight.Bold
             )
             category.games.forEach { game ->
-                Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = MaterialTheme.shapes.medium,
-                    onClick = { navController.navigate(AppScreens.InstructionsScreen.route + "/$game") }) {
-                    Text(game)
+                Card(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 4.dp),
+                    shape = RoundedCornerShape(8.dp),
+                    onClick = {
+                        navController.navigate(AppScreens.InstructionsScreen.route + "/$game")
+                    }
+                ) {
+                    Text(
+                        text = game,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(16.dp)
+                    )
                 }
             }
         }
