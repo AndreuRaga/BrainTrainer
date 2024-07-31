@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +33,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -61,12 +63,12 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding), // Margen general
+                .padding(innerPadding).padding(16.dp), // Margen general
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             ProfileInfoSection(uiState)
-            Spacer(modifier = Modifier.height(50.dp)) // Espacio entre el email y los botones
+            Spacer(modifier = Modifier.height(32.dp)) // Espacio entre el email y los botones
             AccountActionsSection(authViewModel)
             NavigateOnSignOut(uiState, navController)
         }
@@ -107,15 +109,18 @@ fun ProfileInfoSection(uiState: AuthUiState) {
 fun AccountActionsSection(authViewModel: AuthViewModel) {
     Button(
         onClick = { authViewModel.deleteUser() },
-        modifier = Modifier.fillMaxWidth(),
-        shape = RectangleShape
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        shape = RoundedCornerShape(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color.Red // Cambiar color del botón
+        )
     ) {
         Text("Borrar cuenta")
     }
     Button(
         onClick = { authViewModel.signOut() },
-        modifier = Modifier.fillMaxWidth(),
-        shape = RectangleShape
+        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        shape = RoundedCornerShape(8.dp)
     ) {
         Text("Cerrar sesión")
     }
@@ -140,10 +145,11 @@ fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss:
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("¡Atención!") },
+        title = { Text("¡Atención!", fontWeight = FontWeight.Bold) },
         text = {
             Column {
                 Text("Ten en cuenta que si borras tu cuenta se perderá todo tu pogreso en Brain Trainer.")
+                Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
@@ -151,24 +157,33 @@ fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss:
                     visualTransformation = visualTransformation,
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    supportingText = { if (errorPassword) Text("Contraseña incorrecta.") },
+                    supportingText = { if (errorPassword) Text("Contraseña incorrecta.", color = Color.Red) },
                     isError = errorPassword,
                     trailingIcon =  {
                         PasswordVisibilityToggle(passwordVisible) { passwordVisible = !it }
-                    }
+                    },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         },
         confirmButton = {
-            Button(onClick = { onConfirm(password) }) {
+            Button(
+                onClick = { onConfirm(password) },
+                shape = RoundedCornerShape(8.dp)
+            ) {
                 Text("Confirmar")
             }
         },
         dismissButton = {
-            Button(onClick = onDismiss) {
+            Button(
+                onClick = onDismiss,
+                shape = RoundedCornerShape(8.dp)
+            ) {
                 Text("Cancelar")
             }
-        }
+        },
+        shape = RoundedCornerShape(8.dp),
+        containerColor = MaterialTheme.colorScheme.surface
     )
 }
 
