@@ -42,7 +42,7 @@ fun AuthScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     // Manejo de navegación basado en el estado del usuario
     LaunchedEffect(uiState.isUserSignedIn) {
         if (uiState.isUserSignedIn) {
-            navController.navigate(AppScreens.BottomBarMenu.route)
+            navController.navigate(AppScreens.GamesScreen.route)
         }
     }
 

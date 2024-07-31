@@ -19,6 +19,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -55,18 +56,20 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
             onDismiss = { authViewModel.showDialog(false) }
         )
     }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp), // Margen general
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        ProfileInfoSection(uiState)
-        Spacer(modifier = Modifier.height(50.dp)) // Espacio entre el email y los botones
-        AccountActionsSection(authViewModel)
-        NavigateOnSignOut(uiState, navController)
+    Scaffold(bottomBar = { BottomBarMenu(navController) }) {
+        innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding), // Margen general
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            ProfileInfoSection(uiState)
+            Spacer(modifier = Modifier.height(50.dp)) // Espacio entre el email y los botones
+            AccountActionsSection(authViewModel)
+            NavigateOnSignOut(uiState, navController)
+        }
     }
 }
 

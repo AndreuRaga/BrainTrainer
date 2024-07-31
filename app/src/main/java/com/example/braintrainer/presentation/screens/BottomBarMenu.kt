@@ -3,7 +3,6 @@ package com.example.braintrainer.presentation.screens
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
@@ -13,26 +12,20 @@ import com.example.braintrainer.presentation.navigation.AppScreens
 @Composable
 fun BottomBarMenu(navController: NavHostController) {
     val items = listOf(AppScreens.GamesScreen, AppScreens.StatsScreen, AppScreens.ConfigScreen)
-    Scaffold(
-        bottomBar = {
-            NavigationBar {
-                items.forEach { screen ->
-                    NavigationBarItem(
-                        selected = navController.currentDestination?.route == screen.route,
-                        onClick = { navController.navigate(screen.route) {
-                            popUpTo(navController.graph.startDestinationId) {
-                                saveState = true
-                            }
-                            launchSingleTop = true
-                        } },
-                        icon = { Icon(imageVector = screen.icon!!, contentDescription = screen.title) },
-                        label = { Text(text = screen.title ?: "") }
-                    )
-                }
-            }
+    NavigationBar {
+        items.forEach { screen ->
+            NavigationBarItem(
+                selected = navController.currentDestination?.route == screen.route,
+                onClick = { navController.navigate(screen.route) {
+                    popUpTo(navController.graph.startDestinationId) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                } },
+                icon = { Icon(imageVector = screen.icon!!, contentDescription = screen.title) },
+                label = { Text(text = screen.title ?: "") }
+            )
         }
-    ) {
-        it
     }
 }
 
