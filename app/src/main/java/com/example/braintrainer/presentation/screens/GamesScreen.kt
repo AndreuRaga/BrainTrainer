@@ -1,11 +1,13 @@
 package com.example.braintrainer.presentation.screens
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -25,7 +27,12 @@ fun GamesScreen(navController: NavHostController) {
     )
     Scaffold(bottomBar = { BottomBarMenu(navController) }) {
         innerPadding ->
-        LazyColumn(contentPadding = innerPadding) {
+        LazyColumn(contentPadding = PaddingValues(
+            top = 16.dp,
+            start = 16.dp,
+            end = 16.dp,
+            bottom = innerPadding.calculateBottomPadding() + 16.dp
+        )) {
             items(gameCategories) { category ->
                 Text(
                     text = category.name,
@@ -38,6 +45,9 @@ fun GamesScreen(navController: NavHostController) {
                             .fillMaxWidth()
                             .padding(vertical = 4.dp),
                         shape = RoundedCornerShape(8.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                        ),
                         onClick = {
                             navController.navigate(AppScreens.InstructionsScreen.route + "/$game")
                         }
@@ -45,7 +55,8 @@ fun GamesScreen(navController: NavHostController) {
                         Text(
                             text = game,
                             style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(16.dp)
+                            modifier = Modifier.padding(16.dp),
+                            fontWeight = FontWeight.Medium
                         )
                     }
                 }
