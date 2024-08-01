@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.braintrainer.presentation.navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -92,7 +93,7 @@ fun InstructionsScreen(navController: NavHostController, gameName: String) {
             }
             Spacer(modifier = Modifier.height(32.dp))
             Button(
-                onClick = { /* Acción para empezar a jugar */ },
+                onClick = { navController.navigate(AppScreens.PlayScreen.route + "/$gameName") },
                 modifier = Modifier.width(200.dp),
                 shape = RoundedCornerShape(20.dp)
             ) {
