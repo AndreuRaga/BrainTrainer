@@ -39,7 +39,8 @@ fun AppNavigation() {
         }
         composable(
             AppScreens.PlayScreen.route + "/{gameName}",
-            arguments = listOf(navArgument("gameName") { type = NavType.StringType })) {
+            arguments = listOf(navArgument("gameName") { type = NavType.StringType })
+        ) {
             backStackEntry ->
             PlayScreen(navController, backStackEntry.arguments?.getString("gameName") ?: "")
         }
