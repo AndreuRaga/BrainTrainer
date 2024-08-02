@@ -1,4 +1,4 @@
-package com.example.braintrainer.presentation.screens
+package com.example.braintrainer.presentation.screens.gamesOpt
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.example.braintrainer.presentation.screens
+package com.example.braintrainer.presentation.screens.statsOpt
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.navigation.AppScreens
+import com.example.braintrainer.presentation.screens.BottomBarMenu
 
 @Composable
 fun StatsScreen(navController: NavHostController) {

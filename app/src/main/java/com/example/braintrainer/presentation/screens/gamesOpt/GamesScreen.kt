@@ -1,4 +1,4 @@
-package com.example.braintrainer.presentation.screens
+package com.example.braintrainer.presentation.screens.gamesOpt
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,6 +17,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.navigation.AppScreens
+import com.example.braintrainer.presentation.screens.BottomBarMenu
+import com.example.braintrainer.presentation.screens.GameCategory
 
 @Composable
 fun GamesScreen(navController: NavHostController) {

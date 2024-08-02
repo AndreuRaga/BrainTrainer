@@ -10,13 +10,13 @@ import androidx.navigation.navArgument
 import com.example.braintrainer.presentation.ViewModels.AuthViewModel
 import com.example.braintrainer.presentation.screens.AuthScreen
 import com.example.braintrainer.presentation.screens.ConfigScreen
-import com.example.braintrainer.presentation.screens.EndGameScreen
-import com.example.braintrainer.presentation.screens.GameStatsScreen
-import com.example.braintrainer.presentation.screens.GamesScreen
-import com.example.braintrainer.presentation.screens.GeneralStatsScreen
-import com.example.braintrainer.presentation.screens.InstructionsScreen
-import com.example.braintrainer.presentation.screens.PlayScreen
-import com.example.braintrainer.presentation.screens.StatsScreen
+import com.example.braintrainer.presentation.screens.gamesOpt.EndGameScreen
+import com.example.braintrainer.presentation.screens.statsOpt.GameStatsScreen
+import com.example.braintrainer.presentation.screens.gamesOpt.GamesScreen
+import com.example.braintrainer.presentation.screens.statsOpt.GeneralStatsScreen
+import com.example.braintrainer.presentation.screens.gamesOpt.InstructionsScreen
+import com.example.braintrainer.presentation.screens.gamesOpt.PlayScreen
+import com.example.braintrainer.presentation.screens.statsOpt.StatsScreen
 
 @Composable
 fun AppNavigation() {

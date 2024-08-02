@@ -1,4 +1,4 @@
-package com.example.braintrainer.presentation.screens
+package com.example.braintrainer.presentation.screens.statsOpt
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.braintrainer.presentation.screens.GameCategory
 
 @Composable
 fun GameStatsScreen(navController: NavHostController) {
