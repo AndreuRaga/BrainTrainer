@@ -1,11 +1,14 @@
 package com.example.braintrainer.presentation.screens
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.navigation.AppScreens
@@ -24,25 +27,28 @@ fun BottomBarMenu(navController: NavHostController) {
                     launchSingleTop = true
                 } },
                 icon = {
-                    Icon(
-                        imageVector = screen.icon!!,
-                        contentDescription = screen.title,
-                        tint = if (navController.currentDestination?.route == screen.route) {
-                            MaterialTheme.colorScheme.primary // Color del icono seleccionado
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant // Color del icono no seleccionado
-                        }
-                    )
-                },
-                label = {
-                    Text(
-                        text = screen.title ?: "",
-                        color = if (navController.currentDestination?.route == screen.route) {
-                            MaterialTheme.colorScheme.primary // Color del texto seleccionado
-                        } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant // Color del texto no seleccionado
-                        }
-                    )
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Icon(
+                            imageVector = screen.icon!!,
+                            contentDescription = screen.title,
+                            tint = if (navController.currentDestination?.route == screen.route) {
+                                MaterialTheme.colorScheme.primary // Color del icono seleccionado
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant // Color del icono no seleccionado
+                            }
+                        )
+                        Text(
+                            text = screen.title ?: "",
+                            color = if (navController.currentDestination?.route == screen.route) {
+                                MaterialTheme.colorScheme.primary // Color del texto seleccionado
+                            } else {
+                                MaterialTheme.colorScheme.onSurfaceVariant // Color del texto no seleccionado
+                            }
+                        )
+                    }
                 }
             )
         }
