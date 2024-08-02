@@ -37,7 +37,7 @@ fun StatsScreen(navController: NavHostController) {
                 }
             }
         }) { innerPadding ->
-        Column(Modifier.padding(innerPadding).padding(16.dp)) {
+        Column(Modifier.padding(innerPadding)) {
             when (selectedTabIndex) {
                 0 -> GeneralStatsScreen(navController)
                 1 -> GameStatsScreen(navController)
