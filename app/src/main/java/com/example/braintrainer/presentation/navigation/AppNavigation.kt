@@ -11,7 +11,9 @@ import com.example.braintrainer.presentation.ViewModels.AuthViewModel
 import com.example.braintrainer.presentation.screens.AuthScreen
 import com.example.braintrainer.presentation.screens.ConfigScreen
 import com.example.braintrainer.presentation.screens.EndGameScreen
+import com.example.braintrainer.presentation.screens.GameStatsScreen
 import com.example.braintrainer.presentation.screens.GamesScreen
+import com.example.braintrainer.presentation.screens.GeneralStatsScreen
 import com.example.braintrainer.presentation.screens.InstructionsScreen
 import com.example.braintrainer.presentation.screens.PlayScreen
 import com.example.braintrainer.presentation.screens.StatsScreen
@@ -49,6 +51,12 @@ fun AppNavigation() {
         }
         composable(AppScreens.StatsScreen.route) {
             StatsScreen(navController)
+        }
+        composable(AppScreens.GeneralStatsScreen.route) {
+            GeneralStatsScreen(navController)
+        }
+        composable(AppScreens.GameStatsScreen.route) {
+            GameStatsScreen(navController)
         }
         composable(AppScreens.ConfigScreen.route) {
             ConfigScreen(navController, authViewModel)

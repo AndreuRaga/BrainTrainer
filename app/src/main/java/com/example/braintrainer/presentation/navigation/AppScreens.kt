@@ -17,5 +17,7 @@ sealed class AppScreens(
     object PlayScreen : AppScreens("play_screen")
     object EndGameScreen : AppScreens("end_game_screen")
     object StatsScreen : AppScreens("stats_screen", "Estadísticas", Icons.Default.QueryStats)
+    object GeneralStatsScreen : AppScreens("general_stats_screen", "Generales")
+    object GameStatsScreen : AppScreens("game_stats_screen", "Por juego")
     object ConfigScreen : AppScreens("config_screen", "Configuración", Icons.Default.Settings)
 }
