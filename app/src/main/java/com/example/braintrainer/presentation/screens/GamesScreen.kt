@@ -64,5 +64,3 @@ fun GamesScreen(navController: NavHostController) {
         }
     }
 }
-
-data class GameCategory(val name: String, val games: List<String>)

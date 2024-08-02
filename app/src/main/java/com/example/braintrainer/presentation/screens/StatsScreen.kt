@@ -10,11 +10,14 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun StatsScreen(navController: NavHostController) {
+    val gameCategories = listOf(
+        GameCategory("Matemáticas", listOf("Suma", "Resta", "Multiplicación", "División")),
+        GameCategory("Memoria", listOf("Cartas", "Números", "Secuencias")),
+        GameCategory("Lógica", listOf("Sudokus", "Puzzles", "Acertijos"))
+    )
     Scaffold(bottomBar = { BottomBarMenu(navController) }) { innerPadding ->
         Column(Modifier.padding(innerPadding)) {
             Text("Estadísticas")
         }
     }
-
-
 }
