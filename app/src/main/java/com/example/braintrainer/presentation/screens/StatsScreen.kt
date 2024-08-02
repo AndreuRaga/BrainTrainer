@@ -12,28 +12,33 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
 fun StatsScreen(navController: NavHostController) {
-    var state by remember { mutableIntStateOf(0) }
-    val items = listOf(AppScreens.GeneralStatsScreen, AppScreens.GameStatsScreen)
+    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    val tabs = listOf(AppScreens.GeneralStatsScreen, AppScreens.GameStatsScreen)
     Scaffold(
         bottomBar = { BottomBarMenu(navController) },
         topBar = {
-            TabRow(selectedTabIndex = state) {
-                items.forEachIndexed { index, screen ->
+            TabRow(
+                modifier = Modifier.padding(16.dp),
+                selectedTabIndex = selectedTabIndex
+                ) {
+                tabs.forEachIndexed { index, screen ->
                     Tab(
-                        text = { Text(screen.title ?: "") },
-                        selected = state == index,
-                        onClick = { state = index }
+                        text = { Text(screen.title!!, fontWeight = FontWeight.Bold) },
+                        selected = selectedTabIndex == index,
+                        onClick = { selectedTabIndex = index }
                     )
                 }
             }
         }) { innerPadding ->
-        Column(Modifier.padding(innerPadding)) {
-            when (state) {
+        Column(Modifier.padding(innerPadding).padding(16.dp)) {
+            when (selectedTabIndex) {
                 0 -> GeneralStatsScreen(navController)
                 1 -> GameStatsScreen(navController)
             }
