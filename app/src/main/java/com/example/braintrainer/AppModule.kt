@@ -7,8 +7,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.braintrainer.data.AuthRepositoryImpl
 import com.example.braintrainer.data.UserRepositoryImpl
-import com.example.braintrainer.domain.AuthRepository
-import com.example.braintrainer.domain.UserRepository
+import com.example.braintrainer.data.AuthRepository
+import com.example.braintrainer.data.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

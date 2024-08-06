@@ -1,7 +1,6 @@
 package com.example.braintrainer.data
 
 import android.util.Log
-import com.example.braintrainer.domain.AuthRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
@@ -10,7 +9,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
-class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseAuth) : AuthRepository {
+class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseAuth) :
+    AuthRepository {
     override suspend fun signInWithCredential(idToken: String): Boolean {
         return try {
             val credential = GoogleAuthProvider.getCredential(idToken, null)

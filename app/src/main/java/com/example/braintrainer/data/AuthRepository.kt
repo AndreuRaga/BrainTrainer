@@ -1,4 +1,4 @@
-package com.example.braintrainer.domain
+package com.example.braintrainer.data
 
 import com.google.firebase.auth.FirebaseUser
 

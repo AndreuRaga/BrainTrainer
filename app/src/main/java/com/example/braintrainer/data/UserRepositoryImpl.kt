@@ -1,6 +1,5 @@
 package com.example.braintrainer.data
 
-import com.example.braintrainer.domain.UserRepository
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
