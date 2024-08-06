@@ -6,7 +6,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.example.braintrainer.data.AuthRepositoryImpl
+import com.example.braintrainer.data.UserRepositoryImpl
 import com.example.braintrainer.domain.AuthRepository
+import com.example.braintrainer.domain.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,6 +26,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideAuthRepository(firebaseAuth: FirebaseAuth): AuthRepository = AuthRepositoryImpl(firebaseAuth)
+
+    @Provides
+    @Singleton
+    fun provideUserRepository(): UserRepository = UserRepositoryImpl()
+
 
     @Provides
     @Singleton

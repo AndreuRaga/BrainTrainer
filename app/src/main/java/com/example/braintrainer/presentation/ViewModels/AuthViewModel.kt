@@ -10,11 +10,13 @@ import androidx.credentials.exceptions.GetCredentialException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.braintrainer.domain.AuthRepository
+import com.example.braintrainer.domain.UserRepository
 import com.example.braintrainer.presentation.uiStates.AuthUiState
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GetSignInWithGoogleOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,7 +30,8 @@ const val WEB_CLIENT_ID = "794704105067-crclh9gp6m36frubpulagpgjjc3tjuub.apps.go
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val credentialManager: CredentialManager,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(AuthUiState())
     val uiState = _uiState.asStateFlow()
@@ -57,8 +60,17 @@ class AuthViewModel @Inject constructor(
                     showErrorDialog = !success,
                     errorMessage = if (!success) "Error al iniciar sesión." else null
                 )
+                viewModelScope.launch {
+                    if (success) {
+                            createUser(user!!)
+                    }
+                }
             }
         }
+    }
+
+    private suspend fun createUser(user: FirebaseUser) {
+        userRepository.createUser(user)
     }
 
     private suspend fun googleOneTapSignIn(context: Context, onSignInComplete: (Boolean) -> Unit) {
@@ -141,8 +153,10 @@ class AuthViewModel @Inject constructor(
 
     fun deleteUser() {
         viewModelScope.launch {
+            val uid = authRepository.getCurrentUser()!!.uid
             val success = authRepository.deleteUser()
             if (success) {
+                userRepository.deleteUser(uid)
                 _uiState.value = _uiState.value.copy(isUserSignedIn = false)
             } else {
                 _uiState.value = _uiState.value.copy(
