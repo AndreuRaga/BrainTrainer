@@ -1,5 +1,7 @@
 package com.example.braintrainer.data
 
+import android.util.Log
+import com.example.braintrainer.domain.dataModels.User
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -10,15 +12,23 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
     private val db = Firebase.firestore
 
     override suspend fun createUser(user: FirebaseUser) {
-        db.collection("users").document(user.uid).set(
-            hashMapOf(
-                "name" to user.displayName,
-                "email" to user.email
-            )).await()
+        try {
+            val userData = User(user.displayName, user.email)
+            db.collection("users").document(user.uid).set(userData).await()
+            Log.d("UserRepository", "User created successfully")
+        } catch (e: Exception) {
+            Log.w("UserRepository", "Error creating user", e)
+        }
     }
 
-    override fun getUserById(userId: String): FirebaseUser? {
-        return null
+    override suspend fun getUserById(userId: String): User? {
+        return try {
+            val document = db.collection("users").document(userId).get().await()
+            if (document.exists()) document.toObject(User::class.java) else null
+        } catch (e: Exception) {
+            Log.w("UserRepository", "Error getting user", e)
+            null
+        }
     }
 
     override fun updateUser(user: FirebaseUser) {
@@ -26,6 +36,11 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
     }
 
     override suspend fun deleteUser(userId: String) {
-        db.collection("users").document(userId).delete().await()
+        try {
+            db.collection("users").document(userId).delete().await()
+            Log.d("UserRepository", "User deleted successfully")
+        } catch (e: Exception) {
+            Log.w("UserRepository", "Error deleting user", e)
+        }
     }
 }

@@ -1,10 +1,11 @@
 package com.example.braintrainer.data
 
+import com.example.braintrainer.domain.dataModels.User
 import com.google.firebase.auth.FirebaseUser
 
 interface UserRepository {
     suspend fun createUser(user: FirebaseUser)
-    fun getUserById(userId: String): FirebaseUser?
+    suspend fun getUserById(userId: String): User?
     fun updateUser(user: FirebaseUser)
     suspend fun deleteUser(userId: String)
 }
