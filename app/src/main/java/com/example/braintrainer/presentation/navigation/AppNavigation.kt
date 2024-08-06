@@ -15,6 +15,7 @@ import com.example.braintrainer.presentation.screens.statsOpt.GameStatsScreen
 import com.example.braintrainer.presentation.screens.gamesOpt.GamesScreen
 import com.example.braintrainer.presentation.screens.statsOpt.GeneralStatsScreen
 import com.example.braintrainer.presentation.screens.gamesOpt.InstructionsScreen
+import com.example.braintrainer.presentation.screens.gamesOpt.MathScreen
 import com.example.braintrainer.presentation.screens.gamesOpt.PlayScreen
 import com.example.braintrainer.presentation.screens.statsOpt.StatsScreen
 
@@ -45,6 +46,9 @@ fun AppNavigation() {
         ) {
             backStackEntry ->
             PlayScreen(navController, backStackEntry.arguments?.getString("gameName") ?: "")
+        }
+        composable(AppScreens.MathScreen.route) {
+            MathScreen(navController)
         }
         composable(AppScreens.EndGameScreen.route) {
             EndGameScreen(navController)

@@ -23,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.braintrainer.presentation.navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,9 +52,9 @@ fun PlayScreen(navController: NavHostController, gameName: String) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("Jugar a $gameName")
-            Button(onClick = { navController.navigate(AppScreens.EndGameScreen.route) }) {
-                Text("Mostrar resultados")
+            when (gameName) {
+                "Suma" -> MathScreen(navController)
+                else -> Text("Juego no disponible")
             }
             if (showDialog) {
                 AlertDialog(
