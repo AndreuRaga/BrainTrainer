@@ -12,16 +12,20 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.braintrainer.presentation.ViewModels.MathViewModel
 
 @Composable
-fun MathScreen(navController: NavHostController) {
+fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = viewModel()) {
+    val uiState = mathViewModel.uiState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -29,11 +33,30 @@ fun MathScreen(navController: NavHostController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Juego de matemáticas")
-        // Aquí puedes añadir lalógica del juego de resta
-        Button(onClick = { navController.navigate("end_game_screen") }) {
-            Text("Finalizar juego")
+        Row {
+            Text("30s")
+            Spacer(modifier = Modifier.width(16.dp))
+            Text("Puntos: 0")
         }
+        Text(uiState.value.num1.toString() + " + " + uiState.value.num2.toString(), fontSize = 30.sp)
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            Button(onClick = { /*TODO*/ }) { Text("15") }
+            Button(onClick = { /*TODO*/ }) { Text("20") }
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
+            Button(onClick = { /*TODO*/ }) { Text("10") }
+            Button(onClick = { /*TODO*/ }) { Text("5") }
+        }
+        Text("¡Correcto!", fontSize = 20.sp, color = Color.Green)
+        Text("¡Incorrecto!", fontSize = 20.sp, color = Color.Red)
     }
 }
 
