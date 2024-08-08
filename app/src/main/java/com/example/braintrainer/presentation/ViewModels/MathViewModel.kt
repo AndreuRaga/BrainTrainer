@@ -1,6 +1,5 @@
 package com.example.braintrainer.presentation.ViewModels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.example.braintrainer.presentation.uiStates.MathUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,8 +35,8 @@ class MathViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun checkAnswer(selectedAnswer: Int) {
+    fun checkAnswer(selectedAnswer: Int): Boolean {
         val correctAnswer = _uiState.value.num1 + _uiState.value.num2
-        Log.d("MathViewModel", "Correct answer: $correctAnswer")
+        return selectedAnswer == correctAnswer
     }
 }

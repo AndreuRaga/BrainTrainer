@@ -13,6 +13,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,10 +32,9 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
     val uiState = mathViewModel.uiState.collectAsState()
     val num1 = uiState.value.num1
     val num2 = uiState.value.num2
-    val answer0 = uiState.value.answers[0]
-    val answer1 = uiState.value.answers[1]
-    val answer2 = uiState.value.answers[2]
-    val answer3 = uiState.value.answers[3]
+    val answers = uiState.value.answers
+    var showResult by remember { mutableStateOf(false) }
+    var isCorrect by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,23 +49,28 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
         }
         Text("$num1 + $num2", fontSize = 30.sp)
         Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            Button(onClick = { mathViewModel.checkAnswer(answer0) }) { Text(answer0.toString()) }
-            Button(onClick = { mathViewModel.checkAnswer(answer1) }) { Text(answer1.toString()) }
+        for (i in 0..1) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround
+            ) {
+                for (j in 0..1) {
+                    val answerIndex = i * 2 + j
+                    Button(onClick = {
+                        isCorrect = mathViewModel.checkAnswer(answers[answerIndex])
+                        showResult = true
+                    }) { Text(answers[answerIndex].toString()) }
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            Button(onClick = { mathViewModel.checkAnswer(answer2) }) { Text(answer2.toString()) }
-            Button(onClick = { mathViewModel.checkAnswer(answer3) }) { Text(answer3.toString()) }
+        if (showResult) {
+            Text(
+                if (isCorrect) "¡Correcto!" else "¡Incorrecto!",
+                fontSize = 20.sp,
+                color = if (isCorrect) Color.Green else Color.Red
+            )
         }
-        Text("¡Correcto!", fontSize = 20.sp, color = Color.Green)
-        Text("¡Incorrecto!", fontSize = 20.sp, color = Color.Red)
     }
 }
 
