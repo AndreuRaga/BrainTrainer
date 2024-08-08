@@ -21,5 +21,17 @@ class MathViewModel @Inject constructor() : ViewModel() {
         val num1 = Random.nextInt(21)
         val num2 = Random.nextInt(21)
         _uiState.value = MathUiState(num1, num2)
+        val correctAnswerPosition = Random.nextInt(4)
+        for (i in 0..3) {
+            if (i == correctAnswerPosition) {
+                _uiState.value.answers[i] = num1 + num2
+            } else {
+                var incorrectAnswer = Random.nextInt(41)
+                while (incorrectAnswer == num1 + num2) {
+                    incorrectAnswer = Random.nextInt(41)
+                }
+                _uiState.value.answers[i] = incorrectAnswer
+            }
+        }
     }
 }

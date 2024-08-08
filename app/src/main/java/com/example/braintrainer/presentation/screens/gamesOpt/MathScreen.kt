@@ -44,16 +44,16 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Button(onClick = { /*TODO*/ }) { Text("15") }
-            Button(onClick = { /*TODO*/ }) { Text("20") }
+            Button(onClick = { /*TODO*/ }) { Text(uiState.value.answers[0].toString()) }
+            Button(onClick = { /*TODO*/ }) { Text(uiState.value.answers[1].toString()) }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Button(onClick = { /*TODO*/ }) { Text("10") }
-            Button(onClick = { /*TODO*/ }) { Text("5") }
+            Button(onClick = { /*TODO*/ }) { Text(uiState.value.answers[2].toString()) }
+            Button(onClick = { /*TODO*/ }) { Text(uiState.value.answers[3].toString()) }
         }
         Text("¡Correcto!", fontSize = 20.sp, color = Color.Green)
         Text("¡Incorrecto!", fontSize = 20.sp, color = Color.Red)
