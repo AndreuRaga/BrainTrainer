@@ -37,6 +37,9 @@ class MathViewModel @Inject constructor() : ViewModel() {
 
     fun checkAnswer(selectedAnswer: Int): Boolean {
         val correctAnswer = _uiState.value.num1 + _uiState.value.num2
+        if (selectedAnswer == correctAnswer) {
+            _uiState.value = _uiState.value.copy(points = _uiState.value.points + 1)
+        }
         return selectedAnswer == correctAnswer
     }
 }

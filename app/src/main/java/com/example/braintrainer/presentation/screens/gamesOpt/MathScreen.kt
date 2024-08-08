@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -33,6 +32,7 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
     val num1 = uiState.value.num1
     val num2 = uiState.value.num2
     val answers = uiState.value.answers
+    val points = uiState.value.points
     var showResult by remember { mutableStateOf(false) }
     var isCorrect by remember { mutableStateOf(false) }
     Column(
@@ -45,7 +45,7 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
         Row {
             Text("30s")
             Spacer(modifier = Modifier.width(16.dp))
-            Text("Puntos: 0")
+            Text("Puntos: $points")
         }
         Text("$num1 + $num2", fontSize = 30.sp)
         Spacer(modifier = Modifier.height(16.dp))
@@ -71,42 +71,5 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
                 color = if (isCorrect) Color.Green else Color.Red
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun MathScreenPreview() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row {
-            Text("30s")
-            Spacer(modifier = Modifier.width(16.dp))
-            Text("Puntos: 0")
-        }
-        Text("10 + 5", fontSize = 30.sp)
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            Button(onClick = { /*TODO*/ }) { Text("15") }
-            Button(onClick = { /*TODO*/ }) { Text("20") }
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
-        ) {
-            Button(onClick = { /*TODO*/ }) { Text("10") }
-            Button(onClick = { /*TODO*/ }) { Text("5") }
-        }
-        Text("¡Correcto!", fontSize = 20.sp, color = Color.Green)
-        Text("¡Incorrecto!", fontSize = 20.sp, color = Color.Red)
     }
 }
