@@ -26,6 +26,12 @@ import com.example.braintrainer.presentation.ViewModels.MathViewModel
 @Composable
 fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = viewModel()) {
     val uiState = mathViewModel.uiState.collectAsState()
+    val num1 = uiState.value.num1
+    val num2 = uiState.value.num2
+    val answer0 = uiState.value.answers[0]
+    val answer1 = uiState.value.answers[1]
+    val answer2 = uiState.value.answers[2]
+    val answer3 = uiState.value.answers[3]
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -38,22 +44,22 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
             Spacer(modifier = Modifier.width(16.dp))
             Text("Puntos: 0")
         }
-        Text(uiState.value.num1.toString() + " + " + uiState.value.num2.toString(), fontSize = 30.sp)
+        Text("$num1 + $num2", fontSize = 30.sp)
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Button(onClick = { /*TODO*/ }) { Text(uiState.value.answers[0].toString()) }
-            Button(onClick = { /*TODO*/ }) { Text(uiState.value.answers[1].toString()) }
+            Button(onClick = { /*TODO*/ }) { Text(answer0.toString()) }
+            Button(onClick = { /*TODO*/ }) { Text(answer1.toString()) }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Button(onClick = { /*TODO*/ }) { Text(uiState.value.answers[2].toString()) }
-            Button(onClick = { /*TODO*/ }) { Text(uiState.value.answers[3].toString()) }
+            Button(onClick = { /*TODO*/ }) { Text(answer2.toString()) }
+            Button(onClick = { /*TODO*/ }) { Text(answer3.toString()) }
         }
         Text("¡Correcto!", fontSize = 20.sp, color = Color.Green)
         Text("¡Incorrecto!", fontSize = 20.sp, color = Color.Red)
