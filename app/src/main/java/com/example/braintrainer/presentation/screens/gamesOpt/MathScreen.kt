@@ -50,16 +50,16 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Button(onClick = { /*TODO*/ }) { Text(answer0.toString()) }
-            Button(onClick = { /*TODO*/ }) { Text(answer1.toString()) }
+            Button(onClick = { mathViewModel.checkAnswer(answer0) }) { Text(answer0.toString()) }
+            Button(onClick = { mathViewModel.checkAnswer(answer1) }) { Text(answer1.toString()) }
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceAround
         ) {
-            Button(onClick = { /*TODO*/ }) { Text(answer2.toString()) }
-            Button(onClick = { /*TODO*/ }) { Text(answer3.toString()) }
+            Button(onClick = { mathViewModel.checkAnswer(answer2) }) { Text(answer2.toString()) }
+            Button(onClick = { mathViewModel.checkAnswer(answer3) }) { Text(answer3.toString()) }
         }
         Text("¡Correcto!", fontSize = 20.sp, color = Color.Green)
         Text("¡Incorrecto!", fontSize = 20.sp, color = Color.Red)
