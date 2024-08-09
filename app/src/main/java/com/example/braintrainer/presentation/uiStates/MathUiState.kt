@@ -6,5 +6,7 @@ data class MathUiState(
     val answers: MutableList<Int> = mutableListOf(0, 0, 0, 0),
     val points: Int = 0,
     val showResult: Boolean = false,
-    val timer: Int = 0
+    val timer: Int = 0,
+    val operationCount: Int = 1,
+    val maxOperations: Int = 25
 )

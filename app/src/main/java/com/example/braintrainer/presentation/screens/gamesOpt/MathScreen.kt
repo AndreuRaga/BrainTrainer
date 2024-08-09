@@ -34,6 +34,8 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
     val answers = uiState.value.answers
     val points = uiState.value.points
     val timer = uiState.value.timer
+    val operationCount = uiState.value.operationCount
+    val maxOperations = uiState.value.maxOperations
     var showResult = uiState.value.showResult
     var isCorrect by remember { mutableStateOf(false) }
     Column(
@@ -48,7 +50,7 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
             Spacer(modifier = Modifier.width(16.dp))
             Text("Puntos: $points")
             Spacer(modifier = Modifier.width(16.dp))
-            Text("1/25")
+            Text("$operationCount/$maxOperations")
 
         }
         Text("$num1 + $num2", fontSize = 30.sp)

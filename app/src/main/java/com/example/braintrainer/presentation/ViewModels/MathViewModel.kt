@@ -56,7 +56,10 @@ class MathViewModel @Inject constructor() : ViewModel() {
         viewModelScope.launch {
             delay(500)
             _uiState.value = _uiState.value.copy(showResult = false)
-            generateNewOperation()
+            if (_uiState.value.operationCount < _uiState.value.maxOperations) {
+                _uiState.value = _uiState.value.copy(operationCount = _uiState.value.operationCount + 1)
+                generateNewOperation()
+            }
         }
         return selectedAnswer == correctAnswer
     }
