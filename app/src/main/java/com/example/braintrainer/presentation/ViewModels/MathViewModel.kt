@@ -69,7 +69,7 @@ class MathViewModel @Inject constructor() : ViewModel() {
             remainingTime = _uiState.value.timer
             delay(500)
             _uiState.value = _uiState.value.copy(showResult = false)
-            if (_uiState.value.operationCount < _uiState.value.maxOperations) {
+            if (_uiState.value.operationCount < _uiState.value.maxOperations && remainingTime > 0) {
                 _uiState.value = _uiState.value.copy(operationCount = _uiState.value.operationCount + 1)
                 generateNewOperation()
                 startTimer() // Reinicia el temporizador si no ha llegado a 0
