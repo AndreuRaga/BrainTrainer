@@ -17,14 +17,23 @@ class MathViewModel @Inject constructor() : ViewModel() {
     val uiState = _uiState.asStateFlow()
 
     init {
+        startTimer()
         generateNewOperation()
+    }
+
+    private fun startTimer() {
+        viewModelScope.launch {
+            for (i in 35 downTo 0) {
+                _uiState.value = _uiState.value.copy(timer = i)
+                delay(1000)
+            }
+        }
     }
 
     private fun generateNewOperation() {
         val num1 = Random.nextInt(21)
         val num2 = Random.nextInt(21)
-        val currentPoints = _uiState.value.points
-        _uiState.value = MathUiState(num1, num2, points = currentPoints)
+        _uiState.value = _uiState.value.copy(num1 = num1, num2 = num2)
         val correctAnswerPosition = Random.nextInt(4)
         for (i in 0..3) {
             if (i == correctAnswerPosition) {

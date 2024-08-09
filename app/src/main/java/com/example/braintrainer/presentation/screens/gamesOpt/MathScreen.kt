@@ -33,6 +33,7 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
     val num2 = uiState.value.num2
     val answers = uiState.value.answers
     val points = uiState.value.points
+    val timer = uiState.value.timer
     var showResult = uiState.value.showResult
     var isCorrect by remember { mutableStateOf(false) }
     Column(
@@ -43,11 +44,11 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row {
-            Text("30s")
+            Text("$timer s")
             Spacer(modifier = Modifier.width(16.dp))
             Text("Puntos: $points")
             Spacer(modifier = Modifier.width(16.dp))
-            Text("1/20")
+            Text("1/25")
 
         }
         Text("$num1 + $num2", fontSize = 30.sp)
