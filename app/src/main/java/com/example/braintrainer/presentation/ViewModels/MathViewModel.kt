@@ -45,7 +45,7 @@ class MathViewModel @Inject constructor() : ViewModel() {
             _uiState.value = _uiState.value.copy(points = _uiState.value.points + 1, showResult = true)
         }
         viewModelScope.launch {
-            delay(1000)
+            delay(500)
             _uiState.value = _uiState.value.copy(showResult = false)
             generateNewOperation()
         }
