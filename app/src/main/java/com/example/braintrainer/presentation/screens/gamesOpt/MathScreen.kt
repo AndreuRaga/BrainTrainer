@@ -33,7 +33,7 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
     val num2 = uiState.value.num2
     val answers = uiState.value.answers
     val points = uiState.value.points
-    var showResult by remember { mutableStateOf(false) }
+    var showResult = uiState.value.showResult
     var isCorrect by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier
