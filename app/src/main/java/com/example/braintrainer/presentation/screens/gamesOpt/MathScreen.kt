@@ -46,6 +46,9 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
             Text("30s")
             Spacer(modifier = Modifier.width(16.dp))
             Text("Puntos: $points")
+            Spacer(modifier = Modifier.width(16.dp))
+            Text("1/20")
+
         }
         Text("$num1 + $num2", fontSize = 30.sp)
         Spacer(modifier = Modifier.height(16.dp))
