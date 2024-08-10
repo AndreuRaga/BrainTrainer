@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -18,7 +19,7 @@ import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
-fun EndGameScreen(navController: NavHostController) {
+fun EndGameScreen(navController: NavHostController, points: Int) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,9 +31,9 @@ fun EndGameScreen(navController: NavHostController) {
             text = "Mejores puntuaciones:",
             style = MaterialTheme.typography.headlineSmall
         )
-        Text("1. 100 puntos")
-        Text("2. 80 puntos")
-        Text("3. 50 puntos")
+        Text("1. $points puntos")
+        Text("2. __ puntos")
+        Text("3. __ puntos")
         Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = "¡Enhorabuena!",
