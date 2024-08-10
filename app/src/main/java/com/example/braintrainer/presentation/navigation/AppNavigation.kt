@@ -51,8 +51,11 @@ fun AppNavigation() {
         composable(AppScreens.MathScreen.route) {
             MathScreen(navController)
         }
-        composable(AppScreens.EndGameScreen.route) {
-            EndGameScreen(navController)
+        composable(
+            route = AppScreens.EndGameScreen.route,
+            arguments = listOf(navArgument("points") { type = NavType.IntType })
+        ) { backStackEntry ->
+            EndGameScreen(navController = navController, points = backStackEntry.arguments?.getInt("points") ?: 0)
         }
         composable(AppScreens.StatsScreen.route) {
             StatsScreen(navController)

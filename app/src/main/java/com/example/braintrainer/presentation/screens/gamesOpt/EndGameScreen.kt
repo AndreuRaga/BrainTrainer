@@ -18,7 +18,7 @@ import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
-fun EndGameScreen(navController: NavHostController) {
+fun EndGameScreen(navController: NavHostController, points: Int) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -30,9 +30,9 @@ fun EndGameScreen(navController: NavHostController) {
             text = "Mejores puntuaciones:",
             style = MaterialTheme.typography.headlineSmall
         )
-        Text("1. 100 puntos")
-        Text("2. 80 puntos")
-        Text("3. 50 puntos")
+        Text("1. $points puntos")
+        Text("2. __ puntos")
+        Text("3. __ puntos")
         Spacer(modifier = Modifier.height(32.dp))
         Text(
             text = "¡Enhorabuena!",

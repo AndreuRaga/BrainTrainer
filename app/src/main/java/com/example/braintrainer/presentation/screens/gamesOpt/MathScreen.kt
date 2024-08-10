@@ -44,7 +44,7 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
     val isCorrect = uiState.value.isCorrect
     LaunchedEffect(currentOperation, timer) {
         if (currentOperation >= maxOperations || timer <= 0) {
-            navController.navigate(AppScreens.EndGameScreen.route)
+            navController.navigate(AppScreens.EndGameScreen.passPoints(points))
             Log.d("MathScreen", "Fin del juego")
         }
     }
