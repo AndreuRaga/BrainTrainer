@@ -1,5 +1,6 @@
 package com.example.braintrainer.presentation.screens.gamesOpt
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.ViewModels.MathViewModel
+import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
 fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = viewModel()) {
@@ -39,6 +42,12 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
     val maxOperations = uiState.value.maxOperations
     val showResult = uiState.value.showResult
     val isCorrect = uiState.value.isCorrect
+    LaunchedEffect(currentOperation, timer) {
+        if (currentOperation >= maxOperations || timer <= 0) {
+            navController.navigate(AppScreens.EndGameScreen.route)
+            Log.d("MathScreen", "Fin del juego")
+        }
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
