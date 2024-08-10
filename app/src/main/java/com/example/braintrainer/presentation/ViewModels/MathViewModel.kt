@@ -42,39 +42,43 @@ class MathViewModel @Inject constructor() : ViewModel() {
     private fun generateNewOperation() {
         val num1 = Random.nextInt(21)
         val num2 = Random.nextInt(21)
-        _uiState.value = _uiState.value.copy(num1 = num1, num2 = num2)
-        val correctAnswerPosition = Random.nextInt(4)
-        for (i in 0..3) {
-            if (i == correctAnswerPosition) {
-                _uiState.value.answers[i] = num1 + num2
-            } else {
-                var incorrectAnswer = Random.nextInt(41)
-                while (incorrectAnswer == num1 + num2) {
-                    incorrectAnswer = Random.nextInt(41)
-                }
-                _uiState.value.answers[i] = incorrectAnswer
+        val correctAnswer = num1 + num2
+        val answers = mutableListOf(correctAnswer)
+        while (answers.size < 4) {
+            val incorrectAnswer = Random.nextInt(41)
+            if (incorrectAnswer != correctAnswer && !answers.contains(incorrectAnswer)) {
+                answers.add(incorrectAnswer)
             }
         }
+        answers.shuffle()
+
+        _uiState.value = _uiState.value.copy(num1 = num1, num2 = num2, answers = answers)
     }
 
-    fun checkAnswer(selectedAnswer: Int): Boolean {
+    fun checkAnswer(selectedAnswer: Int) {
         val correctAnswer = _uiState.value.num1 + _uiState.value.num2
-        if (selectedAnswer == correctAnswer) {
+        val isCorrect = selectedAnswer == correctAnswer
+
+        if (isCorrect) {
             _uiState.value = _uiState.value.copy(points = _uiState.value.points + 1)
         }
-        _uiState.value = _uiState.value.copy(showResult = true)
+
+        _uiState.value = _uiState.value.copy(showResult = true, isCorrect = isCorrect)
+
         viewModelScope.launch {
             timerJob?.cancel()
-            isTimerRunning = false // Indica que el temporizador no se está ejecutando
+            isTimerRunning = false
             remainingTime = _uiState.value.timer
             delay(500)
             _uiState.value = _uiState.value.copy(showResult = false)
-            if (_uiState.value.operationCount < _uiState.value.maxOperations && remainingTime > 0) {
-                _uiState.value = _uiState.value.copy(operationCount = _uiState.value.operationCount + 1)
+
+            if (_uiState.value.currentOperation < _uiState.value.maxOperations && remainingTime > 0) {
+                _uiState.value = _uiState.value.copy(currentOperation = _uiState.value.currentOperation + 1)
                 generateNewOperation()
-                startTimer() // Reinicia el temporizador si no ha llegado a 0
+                startTimer()
+            } else {
+                // Lógica para finalizar el juego
             }
         }
-        return selectedAnswer == correctAnswer
     }
 }
