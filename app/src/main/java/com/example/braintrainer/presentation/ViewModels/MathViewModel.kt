@@ -34,7 +34,6 @@ class MathViewModel @Inject constructor() : ViewModel() {
                     delay(1000)
                     remainingTime--
                 }
-                // Lógica para cuando el temporizador llega a 0
             }
         }
     }
@@ -76,8 +75,6 @@ class MathViewModel @Inject constructor() : ViewModel() {
                 _uiState.value = _uiState.value.copy(currentOperation = _uiState.value.currentOperation + 1)
                 generateNewOperation()
                 startTimer()
-            } else {
-                // Lógica para finalizar el juego
             }
         }
     }
