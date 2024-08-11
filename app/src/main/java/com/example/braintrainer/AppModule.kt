@@ -5,10 +5,10 @@ import androidx.credentials.CredentialManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.example.braintrainer.data.AuthRepositoryImpl
-import com.example.braintrainer.data.UserRepositoryImpl
-import com.example.braintrainer.data.AuthRepository
-import com.example.braintrainer.data.UserRepository
+import com.example.braintrainer.data.repositories.AuthRepositoryImpl
+import com.example.braintrainer.data.repositories.UserRepositoryImpl
+import com.example.braintrainer.data.repositories.AuthRepository
+import com.example.braintrainer.data.repositories.UserRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
