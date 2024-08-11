@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.navigation.AppScreens
 import com.example.braintrainer.presentation.screens.BottomBarMenu
-import com.example.braintrainer.presentation.screens.GameCategory
+import com.example.braintrainer.data.models.GameCategory
 
 @Composable
 fun GamesScreen(navController: NavHostController) {

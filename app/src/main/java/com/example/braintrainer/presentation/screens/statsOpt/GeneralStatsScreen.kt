@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.braintrainer.presentation.screens.GameCategory
+import com.example.braintrainer.data.models.GameCategory
 
 @Composable
 fun GeneralStatsScreen(navController: NavHostController) {
