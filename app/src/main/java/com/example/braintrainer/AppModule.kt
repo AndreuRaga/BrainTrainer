@@ -8,6 +8,8 @@ import com.google.firebase.ktx.Firebase
 import com.example.braintrainer.data.repositories.AuthRepositoryImpl
 import com.example.braintrainer.data.repositories.UserRepositoryImpl
 import com.example.braintrainer.data.repositories.AuthRepository
+import com.example.braintrainer.data.repositories.GameCategoryRepository
+import com.example.braintrainer.data.repositories.GameCategoryRepositoryImpl
 import com.example.braintrainer.data.repositories.UserRepository
 import dagger.Module
 import dagger.Provides
@@ -31,6 +33,9 @@ object AppModule {
     @Singleton
     fun provideUserRepository(): UserRepository = UserRepositoryImpl()
 
+    @Provides
+    @Singleton
+    fun provideGameCategoryRepository(): GameCategoryRepository = GameCategoryRepositoryImpl()
 
     @Provides
     @Singleton

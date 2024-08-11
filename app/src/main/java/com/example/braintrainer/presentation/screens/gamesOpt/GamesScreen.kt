@@ -15,18 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.braintrainer.presentation.ViewModels.GamesViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 import com.example.braintrainer.presentation.screens.BottomBarMenu
-import com.example.braintrainer.data.models.GameCategoryR
 
 @Composable
-fun GamesScreen(navController: NavHostController) {
-    val gameCategories = listOf(
-        GameCategoryR("Matemáticas", listOf("Suma", "Resta", "Multiplicación", "División")),
-        GameCategoryR("Memoria", listOf("Cartas", "Números", "Secuencias")),
-        GameCategoryR("Lógica", listOf("Sudokus", "Puzzles", "Acertijos"))
-    )
+fun GamesScreen(navController: NavHostController, gamesViewModel: GamesViewModel = viewModel()) {
+    val gameCategories = gamesViewModel.uiState
     Scaffold(bottomBar = { BottomBarMenu(navController) }) {
         innerPadding ->
         LazyColumn(contentPadding = PaddingValues(
@@ -35,7 +32,7 @@ fun GamesScreen(navController: NavHostController) {
             end = 16.dp,
             bottom = innerPadding.calculateBottomPadding() + 16.dp
         )) {
-            items(gameCategories) { category ->
+            items(gameCategories.value.gameCategories) { category ->
                 Text(
                     text = category.name,
                     style = MaterialTheme.typography.headlineMedium,
@@ -51,11 +48,11 @@ fun GamesScreen(navController: NavHostController) {
                             containerColor = MaterialTheme.colorScheme.surfaceVariant
                         ),
                         onClick = {
-                            navController.navigate(AppScreens.InstructionsScreen.route + "/$game")
+                            navController.navigate(AppScreens.InstructionsScreen.route + "/${game.id}")
                         }
                     ) {
                         Text(
-                            text = game,
+                            text = game.name,
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(16.dp),
                             fontWeight = FontWeight.Medium
