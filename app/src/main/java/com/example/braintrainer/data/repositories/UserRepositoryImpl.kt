@@ -1,7 +1,7 @@
 package com.example.braintrainer.data.repositories
 
 import android.util.Log
-import com.example.braintrainer.domain.dataModels.User
+import com.example.braintrainer.data.models.User
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase

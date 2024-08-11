@@ -1,4 +1,4 @@
-package com.example.braintrainer.domain.dataModels
+package com.example.braintrainer.data.models
 
 data class User(
     val name: String? = null,
