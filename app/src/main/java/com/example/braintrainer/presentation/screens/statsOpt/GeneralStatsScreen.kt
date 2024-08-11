@@ -18,14 +18,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.braintrainer.data.models.GameCategory
+import com.example.braintrainer.data.models.GameCategoryR
 
 @Composable
 fun GeneralStatsScreen(navController: NavHostController) {
     val gameCategories = listOf(
-        GameCategory("Matemáticas"),
-        GameCategory("Memoria"),
-        GameCategory("Lógica")
+        GameCategoryR("Matemáticas"),
+        GameCategoryR("Memoria"),
+        GameCategoryR("Lógica")
     )
     LazyColumn(
         modifier = Modifier
