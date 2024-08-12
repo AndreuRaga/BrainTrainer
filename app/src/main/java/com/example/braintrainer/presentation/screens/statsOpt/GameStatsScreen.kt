@@ -16,16 +16,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.braintrainer.data.models.GameCategoryR
+import com.example.braintrainer.presentation.ViewModels.GameStatsViewModel
 
 @Composable
-fun GameStatsScreen(navController: NavHostController) {
-    val gameCategories = listOf(
-        GameCategoryR("Matemáticas", listOf("Suma", "Resta", "Multiplicación", "División")),
-        GameCategoryR("Memoria", listOf("Cartas", "Números", "Secuencias")),
-        GameCategoryR("Lógica", listOf("Sudokus", "Puzzles", "Acertijos"))
-    )
+fun GameStatsScreen(navController: NavHostController, gameStatsViewModel: GameStatsViewModel = hiltViewModel()) {
+    val gameCategories = gameStatsViewModel.getGameCategories()
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -39,7 +37,7 @@ fun GameStatsScreen(navController: NavHostController) {
                     .padding(vertical = 8.dp)
             )
             category.games.forEach { game ->
-                GameStatsItem(game)
+                GameStatsItem(game.name)
             }
         }
     }
