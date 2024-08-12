@@ -35,6 +35,7 @@ fun AddSubScreen(navController: NavHostController, addSubViewModel: AddSubViewMo
     val uiState = addSubViewModel.uiState.collectAsState()
     val num1 = uiState.value.num1
     val num2 = uiState.value.num2
+    val operation = uiState.value.operation
     val answers = uiState.value.answers
     val points = uiState.value.points
     val timer = uiState.value.timer
@@ -70,7 +71,7 @@ fun AddSubScreen(navController: NavHostController, addSubViewModel: AddSubViewMo
         }
 
         Text(
-            "$num1 + $num2",
+            "$num1 $operation $num2",
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )

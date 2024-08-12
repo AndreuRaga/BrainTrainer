@@ -41,21 +41,27 @@ class AddSubViewModel @Inject constructor() : ViewModel() {
     private fun generateNewOperation() {
         val num1 = Random.nextInt(21)
         val num2 = Random.nextInt(21)
-        val correctAnswer = num1 + num2
+        // Randomly choose between addition and subtraction
+        val operation = if (Random.nextBoolean()) "+" else "-"
+        val correctAnswer = if (operation == "+") num1 + num2 else num1 - num2
         val answers = mutableListOf(correctAnswer)
         while (answers.size < 4) {
-            val incorrectAnswer = Random.nextInt(41)
+            val incorrectAnswer = Random.nextInt(41) - 20
             if (incorrectAnswer != correctAnswer && !answers.contains(incorrectAnswer)) {
                 answers.add(incorrectAnswer)
             }
         }
         answers.shuffle()
 
-        _uiState.value = _uiState.value.copy(num1 = num1, num2 = num2, answers = answers)
+        _uiState.value = _uiState.value.copy(num1 = num1, num2 = num2, operation = operation, answers = answers)
     }
 
     fun checkAnswer(selectedAnswer: Int) {
-        val correctAnswer = _uiState.value.num1 + _uiState.value.num2
+        val correctAnswer = if (_uiState.value.operation == "+") {
+            _uiState.value.num1 + _uiState.value.num2
+        } else {
+            _uiState.value.num1 - _uiState.value.num2
+        }
         val isCorrect = selectedAnswer == correctAnswer
 
         if (isCorrect) {
