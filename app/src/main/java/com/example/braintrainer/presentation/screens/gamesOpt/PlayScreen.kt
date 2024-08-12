@@ -22,17 +22,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.braintrainer.presentation.ViewModels.PlayViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlayScreen(navController: NavHostController, gameId: String) {
+fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = hiltViewModel()) {
+    val game = playViewModel.getGame()
     var showDialog by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(gameId)
+                    Text(game?.name ?: "Juego no encontrado")
                 },
                 navigationIcon = {
                     IconButton(onClick = { showDialog = true }) {
@@ -52,7 +55,7 @@ fun PlayScreen(navController: NavHostController, gameId: String) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            when (gameId) {
+            when (game?.id) {
                 "addition_subtraction" -> MathScreen(navController)
                 else -> Text("Juego no disponible")
             }

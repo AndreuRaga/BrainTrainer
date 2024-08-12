@@ -25,13 +25,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.ViewModels.MathViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
-fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = viewModel()) {
+fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = hiltViewModel()) {
     val uiState = mathViewModel.uiState.collectAsState()
     val num1 = uiState.value.num1
     val num2 = uiState.value.num2

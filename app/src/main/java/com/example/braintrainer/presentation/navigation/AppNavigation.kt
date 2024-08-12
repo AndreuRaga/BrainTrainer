@@ -38,15 +38,13 @@ fun AppNavigation() {
             AppScreens.InstructionsScreen.route + "/{gameId}",
             arguments = listOf(navArgument("gameId") { type = NavType.StringType })
         ) {
-            backStackEntry ->
-            InstructionsScreen(navController, backStackEntry.arguments?.getString("gameId") ?: "")
+            InstructionsScreen(navController)
         }
         composable(
             AppScreens.PlayScreen.route + "/{gameId}",
             arguments = listOf(navArgument("gameId") { type = NavType.StringType })
         ) {
-            backStackEntry ->
-            PlayScreen(navController, backStackEntry.arguments?.getString("gameId") ?: "")
+            PlayScreen(navController)
         }
         composable(AppScreens.MathScreen.route) {
             MathScreen(navController)

@@ -25,18 +25,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.braintrainer.presentation.ViewModels.InstructionsViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InstructionsScreen(navController: NavHostController, gameId: String) {
+fun InstructionsScreen(navController: NavHostController, instructionsViewModel: InstructionsViewModel = hiltViewModel()) {
+    val game = instructionsViewModel.getGame()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = gameId,
+                        text = game?.name ?: "Juego no encontrado",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -76,7 +79,7 @@ fun InstructionsScreen(navController: NavHostController, gameId: String) {
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text("Aquí van las instrucciones del juego.")
+                    Text(game?.instructions ?: "Aquí van las instrucciones del juego.")
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -93,7 +96,7 @@ fun InstructionsScreen(navController: NavHostController, gameId: String) {
             }
             Spacer(modifier = Modifier.height(32.dp))
             Button(
-                onClick = { navController.navigate(AppScreens.PlayScreen.route + "/$gameId") },
+                onClick = { navController.navigate(AppScreens.PlayScreen.route + "/${game?.id}") },
                 modifier = Modifier.width(200.dp),
                 shape = RoundedCornerShape(20.dp)
             ) {
