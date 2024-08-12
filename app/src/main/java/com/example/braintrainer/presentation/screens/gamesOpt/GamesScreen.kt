@@ -15,14 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.ViewModels.GamesViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 import com.example.braintrainer.presentation.screens.BottomBarMenu
 
 @Composable
-fun GamesScreen(navController: NavHostController, gamesViewModel: GamesViewModel = viewModel()) {
+fun GamesScreen(navController: NavHostController, gamesViewModel: GamesViewModel = hiltViewModel()) {
     val gameCategories = gamesViewModel.uiState
     Scaffold(bottomBar = { BottomBarMenu(navController) }) {
         innerPadding ->
