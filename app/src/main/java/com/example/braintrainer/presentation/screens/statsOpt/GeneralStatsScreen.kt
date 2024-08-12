@@ -17,16 +17,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.braintrainer.data.models.GameCategoryR
+import com.example.braintrainer.presentation.ViewModels.GeneralStatsViewModel
 
 @Composable
-fun GeneralStatsScreen(navController: NavHostController) {
-    val gameCategories = listOf(
-        GameCategoryR("Matemáticas"),
-        GameCategoryR("Memoria"),
-        GameCategoryR("Lógica")
-    )
+fun GeneralStatsScreen(navController: NavHostController, generalStatsViewModel: GeneralStatsViewModel = hiltViewModel()) {
+    val gameCategories = generalStatsViewModel.getGameCategories()
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
