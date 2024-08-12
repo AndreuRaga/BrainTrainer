@@ -15,7 +15,7 @@ sealed class AppScreens(
     object GamesScreen : AppScreens("games_screen", "Juegos", Icons.Default.Games)
     object InstructionsScreen : AppScreens("instructions_screen")
     object PlayScreen : AppScreens("play_screen")
-    object MathScreen : AppScreens("math_screen")
+    object AddSubScreen : AppScreens("add_sub_screen")
     object EndGameScreen : AppScreens("end_game_screen/{points}") {
         fun passPoints(points: Int) = "end_game_screen/$points"
     }

@@ -13,7 +13,7 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 @HiltViewModel
-class MathViewModel @Inject constructor() : ViewModel() {
+class AddSubViewModel @Inject constructor() : ViewModel() {
     private val _uiState = MutableStateFlow(MathUiState())
     val uiState = _uiState.asStateFlow()
     private var timerJob: Job? = null

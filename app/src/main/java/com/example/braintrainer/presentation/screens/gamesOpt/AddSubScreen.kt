@@ -27,12 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.braintrainer.presentation.ViewModels.MathViewModel
+import com.example.braintrainer.presentation.ViewModels.AddSubViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
-fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = hiltViewModel()) {
-    val uiState = mathViewModel.uiState.collectAsState()
+fun AddSubScreen(navController: NavHostController, addSubViewModel: AddSubViewModel = hiltViewModel()) {
+    val uiState = addSubViewModel.uiState.collectAsState()
     val num1 = uiState.value.num1
     val num2 = uiState.value.num2
     val answers = uiState.value.answers
@@ -86,7 +86,7 @@ fun MathScreen(navController: NavHostController, mathViewModel: MathViewModel = 
             ) {
                 row.forEach { answer ->
                     AnswerButton(answer = answer) {
-                        mathViewModel.checkAnswer(it)
+                        addSubViewModel.checkAnswer(it)
                     }
                 }
             }

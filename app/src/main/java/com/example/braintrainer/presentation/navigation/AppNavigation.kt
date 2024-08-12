@@ -10,10 +10,10 @@ import androidx.navigation.navArgument
 import com.example.braintrainer.presentation.ViewModels.AuthViewModel
 import com.example.braintrainer.presentation.screens.AuthScreen
 import com.example.braintrainer.presentation.screens.ConfigScreen
+import com.example.braintrainer.presentation.screens.gamesOpt.AddSubScreen
 import com.example.braintrainer.presentation.screens.gamesOpt.EndGameScreen
 import com.example.braintrainer.presentation.screens.gamesOpt.GamesScreen
 import com.example.braintrainer.presentation.screens.gamesOpt.InstructionsScreen
-import com.example.braintrainer.presentation.screens.gamesOpt.MathScreen
 import com.example.braintrainer.presentation.screens.gamesOpt.PlayScreen
 import com.example.braintrainer.presentation.screens.statsOpt.GameStatsScreen
 import com.example.braintrainer.presentation.screens.statsOpt.GeneralStatsScreen
@@ -46,8 +46,8 @@ fun AppNavigation() {
         ) {
             PlayScreen(navController)
         }
-        composable(AppScreens.MathScreen.route) {
-            MathScreen(navController)
+        composable(AppScreens.AddSubScreen.route) {
+            AddSubScreen(navController)
         }
         composable(
             route = AppScreens.EndGameScreen.route,
