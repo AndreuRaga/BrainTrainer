@@ -56,7 +56,7 @@ fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = 
             verticalArrangement = Arrangement.Center
         ) {
             when (game?.id) {
-                "addition_subtraction" -> MathScreen(navController)
+                "add_sub" -> MathScreen(navController)
                 else -> Text("Juego no disponible")
             }
             if (showDialog) {

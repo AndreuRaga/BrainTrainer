@@ -7,7 +7,7 @@ object GameData {
             name = "Matemáticas",
             games = listOf(
                 Game(
-                    id = "addition_subtraction",
+                    id = "add_sub",
                     name = "Suma y resta",
                     instructions = "Sumar dos números"
                 )
