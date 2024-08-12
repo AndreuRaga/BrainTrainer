@@ -30,13 +30,13 @@ import com.example.braintrainer.presentation.navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InstructionsScreen(navController: NavHostController, gameName: String) {
+fun InstructionsScreen(navController: NavHostController, gameId: String) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = gameName,
+                        text = gameId,
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -93,7 +93,7 @@ fun InstructionsScreen(navController: NavHostController, gameName: String) {
             }
             Spacer(modifier = Modifier.height(32.dp))
             Button(
-                onClick = { navController.navigate(AppScreens.PlayScreen.route + "/$gameName") },
+                onClick = { navController.navigate(AppScreens.PlayScreen.route + "/$gameId") },
                 modifier = Modifier.width(200.dp),
                 shape = RoundedCornerShape(20.dp)
             ) {

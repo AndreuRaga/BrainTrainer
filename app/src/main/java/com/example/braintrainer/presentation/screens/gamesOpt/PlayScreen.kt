@@ -26,13 +26,13 @@ import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlayScreen(navController: NavHostController, gameName: String) {
+fun PlayScreen(navController: NavHostController, gameId: String) {
     var showDialog by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(gameName)
+                    Text(gameId)
                 },
                 navigationIcon = {
                     IconButton(onClick = { showDialog = true }) {
@@ -52,8 +52,8 @@ fun PlayScreen(navController: NavHostController, gameName: String) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            when (gameName) {
-                "Suma" -> MathScreen(navController)
+            when (gameId) {
+                "addition_subtraction" -> MathScreen(navController)
                 else -> Text("Juego no disponible")
             }
             if (showDialog) {
