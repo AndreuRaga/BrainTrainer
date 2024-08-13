@@ -14,11 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.braintrainer.presentation.ViewModels.EndGameViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
-fun EndGameScreen(navController: NavHostController, points: Int) {
+fun EndGameScreen(navController: NavHostController, points: Int, endGameViewModel: EndGameViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
