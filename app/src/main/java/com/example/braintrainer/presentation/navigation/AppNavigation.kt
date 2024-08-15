@@ -22,7 +22,6 @@ import com.example.braintrainer.presentation.screens.statsOpt.StatsScreen
 @Composable
 fun AppNavigation() {
     val authViewModel: AuthViewModel = viewModel()
-    //val mathViewModel: MathViewModel = viewModel()
     val navController = rememberNavController()
     NavHost(
         navController = navController,
