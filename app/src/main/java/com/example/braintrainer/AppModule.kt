@@ -2,6 +2,8 @@ package com.example.braintrainer
 
 import android.content.Context
 import androidx.credentials.CredentialManager
+import com.example.braintrainer.data.dataSources.GameCategoryDataSource
+import com.example.braintrainer.data.dataSources.GameCategoryDataSourceImpl
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -11,6 +13,8 @@ import com.example.braintrainer.data.repositories.AuthRepository
 import com.example.braintrainer.data.repositories.GameCategoryRepository
 import com.example.braintrainer.data.repositories.GameCategoryRepositoryImpl
 import com.example.braintrainer.data.repositories.UserRepository
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,6 +31,15 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideFirestore(): FirebaseFirestore = Firebase.firestore
+
+    @Provides
+    @Singleton
+    fun provideGameCategoryDataSource(db: FirebaseFirestore): GameCategoryDataSource =
+        GameCategoryDataSourceImpl(db)
+
+    @Provides
+    @Singleton
     fun provideAuthRepository(firebaseAuth: FirebaseAuth): AuthRepository = AuthRepositoryImpl(firebaseAuth)
 
     @Provides
@@ -35,7 +48,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideGameCategoryRepository(): GameCategoryRepository = GameCategoryRepositoryImpl()
+    fun provideGameCategoryRepository(dataSource: GameCategoryDataSource): GameCategoryRepository = GameCategoryRepositoryImpl(dataSource)
 
     @Provides
     @Singleton

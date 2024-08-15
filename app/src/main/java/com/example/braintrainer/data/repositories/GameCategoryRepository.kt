@@ -5,6 +5,6 @@ import com.example.braintrainer.data.models.GameCategory
 
 interface GameCategoryRepository {
     fun getGameCategories(): List<GameCategory>
-    suspend fun getCategoriesFromDB(): List<GameCategory>
+    suspend fun getCategoriesFromDB(): Result<List<GameCategory>>
     fun getGameById(gameId: String): Game?
 }
