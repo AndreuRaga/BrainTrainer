@@ -16,6 +16,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,14 +32,14 @@ import com.example.braintrainer.presentation.ViewModels.PlayViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = hiltViewModel()) {
-    val game = playViewModel.getGame()
+    val game = playViewModel.uiState.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = game?.name ?: "Juego no encontrado",
+                        text = game.value?.name ?: "Nombre del juego",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -61,7 +62,7 @@ fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = 
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            when (game?.id) {
+            when (game.value?.id) {
                 "add_sub" -> AddSubScreen(navController)
                 else -> Text("Juego no disponible")
             }
