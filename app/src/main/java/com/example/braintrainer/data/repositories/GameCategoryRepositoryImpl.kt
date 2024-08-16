@@ -15,6 +15,11 @@ class GameCategoryRepositoryImpl @Inject constructor(private val dataSource: Gam
     override suspend fun getCategoriesFromDB(): Result<List<GameCategory>> {
         return dataSource.getCategories()
     }
+    override suspend fun getGameByIdFromDB(gameId: String): Result<Game?> {
+        val categories = dataSource.getCategories().getOrThrow()
+        val game = categories.flatMap { it.games }.find { it.id == gameId }
+        return Result.success(game)
+    }
 
     override fun getGameById(gameId: String): Game? {
         return GameData.categories.flatMap { it.games }.find { it.id == gameId }

@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -33,13 +34,13 @@ import com.example.braintrainer.presentation.navigation.AppScreens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstructionsScreen(navController: NavHostController, instructionsViewModel: InstructionsViewModel = hiltViewModel()) {
-    val game = instructionsViewModel.getGame()
+    val game = instructionsViewModel.uiState.collectAsState()
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = game?.name ?: "Juego no encontrado",
+                        text = game.value.gameName,
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -79,7 +80,7 @@ fun InstructionsScreen(navController: NavHostController, instructionsViewModel: 
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(game?.instructions ?: "Aquí van las instrucciones del juego.")
+                    Text(game.value.gameInstructions)
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -96,7 +97,7 @@ fun InstructionsScreen(navController: NavHostController, instructionsViewModel: 
             }
             Spacer(modifier = Modifier.height(32.dp))
             Button(
-                onClick = { navController.navigate(AppScreens.PlayScreen.route + "/${game?.id}") },
+                onClick = { navController.navigate(AppScreens.PlayScreen.route + "/${game.value.gameId}") },
                 modifier = Modifier.width(200.dp),
                 shape = RoundedCornerShape(20.dp)
             ) {
