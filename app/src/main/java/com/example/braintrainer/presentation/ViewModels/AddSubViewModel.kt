@@ -1,5 +1,6 @@
 package com.example.braintrainer.presentation.ViewModels
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.braintrainer.presentation.uiStates.MathUiState
@@ -13,14 +14,16 @@ import javax.inject.Inject
 import kotlin.random.Random
 
 @HiltViewModel
-class AddSubViewModel @Inject constructor() : ViewModel() {
+class AddSubViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
     private val _uiState = MutableStateFlow(MathUiState())
     val uiState = _uiState.asStateFlow()
+    private val gameId = checkNotNull(savedStateHandle["gameId"])
     private var timerJob: Job? = null
     private var isTimerRunning = false
     private var remainingTime = _uiState.value.timer
 
     init {
+        _uiState.value = _uiState.value.copy(gameId = gameId.toString())
         startTimer()
         generateNewOperation()
     }

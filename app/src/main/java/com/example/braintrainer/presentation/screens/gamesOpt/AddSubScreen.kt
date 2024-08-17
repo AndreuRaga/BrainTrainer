@@ -33,6 +33,7 @@ import com.example.braintrainer.presentation.navigation.AppScreens
 @Composable
 fun AddSubScreen(navController: NavHostController, addSubViewModel: AddSubViewModel = hiltViewModel()) {
     val uiState = addSubViewModel.uiState.collectAsState()
+    val gameId = uiState.value.gameId
     val num1 = uiState.value.num1
     val num2 = uiState.value.num2
     val operation = uiState.value.operation
@@ -45,7 +46,7 @@ fun AddSubScreen(navController: NavHostController, addSubViewModel: AddSubViewMo
     val isCorrect = uiState.value.isCorrect
     LaunchedEffect(currentOperation, timer) {
         if (currentOperation >= maxOperations || timer <= 0) {
-            navController.navigate(AppScreens.EndGameScreen.passPoints(points))
+            navController.navigate(AppScreens.EndGameScreen.passData(gameId, points))
             Log.d("MathScreen", "Fin del juego")
         }
     }

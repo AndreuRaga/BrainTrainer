@@ -1,6 +1,7 @@
 package com.example.braintrainer.presentation.uiStates
 
 data class MathUiState(
+    val gameId: String = "",
     val num1: Int = 0,
     val num2: Int = 0,
     val operation: String = "+",

@@ -20,7 +20,7 @@ import com.example.braintrainer.presentation.ViewModels.EndGameViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
-fun EndGameScreen(navController: NavHostController, points: Int, endGameViewModel: EndGameViewModel = hiltViewModel()) {
+fun EndGameScreen(navController: NavHostController, gameId: String, points: Int, endGameViewModel: EndGameViewModel = hiltViewModel()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -28,6 +28,7 @@ fun EndGameScreen(navController: NavHostController, points: Int, endGameViewMode
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(gameId)
         Text(
             text = "Mejores puntuaciones:",
             style = MaterialTheme.typography.headlineSmall
