@@ -24,7 +24,6 @@ import com.example.braintrainer.presentation.navigation.AppScreens
 fun EndGameScreen(navController: NavHostController, endGameViewModel: EndGameViewModel = hiltViewModel()
 ) {
     val uiState = endGameViewModel.uiState.collectAsState()
-    val gameId = uiState.value.gameId
     val points = uiState.value.points
     Column(
         modifier = Modifier
@@ -33,7 +32,6 @@ fun EndGameScreen(navController: NavHostController, endGameViewModel: EndGameVie
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(gameId)
         Text(
             text = "Mejores puntuaciones:",
             style = MaterialTheme.typography.headlineSmall
