@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -20,7 +21,11 @@ import com.example.braintrainer.presentation.ViewModels.EndGameViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
-fun EndGameScreen(navController: NavHostController, gameId: String, points: Int, endGameViewModel: EndGameViewModel = hiltViewModel()) {
+fun EndGameScreen(navController: NavHostController, endGameViewModel: EndGameViewModel = hiltViewModel()
+) {
+    val uiState = endGameViewModel.uiState.collectAsState()
+    val gameId = uiState.value.gameId
+    val points = uiState.value.points
     Column(
         modifier = Modifier
             .fillMaxSize()

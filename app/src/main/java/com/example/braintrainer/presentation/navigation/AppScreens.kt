@@ -16,9 +16,7 @@ sealed class AppScreens(
     object InstructionsScreen : AppScreens("instructions_screen")
     object PlayScreen : AppScreens("play_screen")
     object AddSubScreen : AppScreens("add_sub_screen")
-    object EndGameScreen : AppScreens("end_game_screen") {
-        fun passData(gameId: String, points: Int) = "end_game_screen/$gameId/$points"
-    }
+    object EndGameScreen : AppScreens("end_game_screen")
     object StatsScreen : AppScreens("stats_screen", "Estadísticas", Icons.Default.QueryStats)
     object GeneralStatsScreen : AppScreens("general_stats_screen", "Generales")
     object GameStatsScreen : AppScreens("game_stats_screen", "Por juego")

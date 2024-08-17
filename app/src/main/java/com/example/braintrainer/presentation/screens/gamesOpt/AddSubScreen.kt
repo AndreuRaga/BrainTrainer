@@ -46,7 +46,7 @@ fun AddSubScreen(navController: NavHostController, addSubViewModel: AddSubViewMo
     val isCorrect = uiState.value.isCorrect
     LaunchedEffect(currentOperation, timer) {
         if (currentOperation >= maxOperations || timer <= 0) {
-            navController.navigate(AppScreens.EndGameScreen.passData(gameId, points))
+            navController.navigate(AppScreens.EndGameScreen.route + "/$gameId/$points")
             Log.d("MathScreen", "Fin del juego")
         }
     }

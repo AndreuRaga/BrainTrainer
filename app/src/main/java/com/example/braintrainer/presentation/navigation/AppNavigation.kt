@@ -54,12 +54,8 @@ fun AppNavigation() {
                 navArgument("gameId") { type = NavType.StringType },
                 navArgument("points") { type = NavType.IntType }
             )
-        ) { backStackEntry ->
-            EndGameScreen(
-                navController = navController,
-                gameId = backStackEntry.arguments?.getString("gameId") ?: "",
-                points = backStackEntry.arguments?.getInt("points") ?: 0
-            )
+        ) {
+            EndGameScreen(navController)
         }
         composable(AppScreens.StatsScreen.route) {
             StatsScreen(navController)
