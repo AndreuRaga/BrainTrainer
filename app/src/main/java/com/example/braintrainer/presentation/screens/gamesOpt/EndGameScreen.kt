@@ -34,34 +34,51 @@ fun EndGameScreen(navController: NavHostController, endGameViewModel: EndGameVie
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        ScoreSection(bestScore = bestScore, points = points)
+        Spacer(modifier = Modifier.height(32.dp))
+        ResultMessage(isNewRecord = isNewRecord)
+        Spacer(modifier = Modifier.height(16.dp))
+        PlayOtherGamesButton(navController = navController)
+    }
+}
+
+@Composable
+fun ScoreSection(bestScore: Int, points: Int) {
+    Column {
         Text(
             text = "Mejor puntuación:",
             style = MaterialTheme.typography.headlineSmall
         )
-        Text("$bestScore punto(s)") // Mostrar la mejor puntuación
+        Text("$bestScore punto(s)")
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Text(
             text = "Puntuación obtenida:",
             style = MaterialTheme.typography.headlineSmall
         )
-        Text("$points punto(s)") // Mostrar la puntuación actual
+        Text("$points punto(s)")
+    }
+}
 
-        Spacer(modifier = Modifier.height(32.dp))
-        if (isNewRecord) {
-            Text(
-                text = "¡Enhorabuena!\n" + "Has establecido un nuevo récord.",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold
-            )
-        } else {
-            Text(
-                text = "No te preocupes.\n" + "Siempre hay margen de mejora.",
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Bold
-            )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { navController.navigate(AppScreens.GamesScreen.route) }) {
-            Text("Jugar a otros juegos")
-        }
+@Composable
+fun ResultMessage(isNewRecord: Boolean) {
+    val message = if (isNewRecord) {
+        "¡Enhorabuena!\nHas establecido un nuevo récord."
+    } else {
+        "No te preocupes.\nSiempre hay margen de mejora."
+    }
+
+    Text(
+        text = message,
+        style = MaterialTheme.typography.headlineLarge,
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Composable
+fun PlayOtherGamesButton(navController: NavHostController) {
+    Button(onClick = { navController.navigate(AppScreens.GamesScreen.route) }) {
+        Text("Jugar a otros juegos")
     }
 }
