@@ -85,15 +85,13 @@ fun InstructionsScreen(navController: NavHostController, instructionsViewModel: 
             }
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "Mejores puntuaciones:",
+                text = "Mejor puntuación:",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
             Column {
-                Text("Puntuación 1")
-                Text("Puntuación 2")
-                Text("Puntuación 3")
+                Text("Puntuación placeholder") // Puedes mostrar la mejor puntuación aquí
             }
             Spacer(modifier = Modifier.height(32.dp))
             Button(
