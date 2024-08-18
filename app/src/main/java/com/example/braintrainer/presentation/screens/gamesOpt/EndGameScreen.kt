@@ -1,8 +1,10 @@
 package com.example.braintrainer.presentation.screens.gamesOpt
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -62,31 +64,35 @@ fun ScoreSection(bestScore: Int, points: Int) {
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
     ) {
-        Column(
+        Row(
             modifier = Modifier
+                .fillMaxWidth()
                 .padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "Mejor puntuación:",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                text = "$bestScore punto(s)",
-                style = MaterialTheme.typography.headlineSmall
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Text(
-                text = "Puntuación obtenida:",
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                text = "$points punto(s)",
-                style = MaterialTheme.typography.headlineSmall
-            )
+            ScoreColumn("Mejor puntuación", bestScore)
+            Spacer(modifier = Modifier.width(16.dp))
+            ScoreColumn("Puntuación obtenida", points)
         }
+    }
+}
+
+@Composable
+fun ScoreColumn(title: String, score: Int) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = "$score punto(s)",
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
