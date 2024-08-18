@@ -79,7 +79,8 @@ fun ScoreSection(bestScore: Int, points: Int) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
-                text = "Puntuación obtenida:",style = MaterialTheme.typography.titleMedium
+                text = "Puntuación obtenida:",
+                style = MaterialTheme.typography.titleMedium
             )
             Text(
                 text = "$points punto(s)",
