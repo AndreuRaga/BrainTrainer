@@ -23,8 +23,23 @@ class EndGameViewModel @Inject constructor(
     private val gameId: String = checkNotNull(savedStateHandle["gameId"])
     private val points: Int = checkNotNull(savedStateHandle["points"])
     init {
-        _uiState.value = _uiState.value.copy(gameId = gameId, points = points)
-        saveScore()
+        _uiState.value = _uiState.value.copy(gameId = gameId, currentPoints = points)
+        viewModelScope.launch {
+            val userId = authRepository.getCurrentUser()?.uid
+            if (userId != null) {
+                scoreRepository.getScore(userId, gameId)
+                    .onSuccess { bestScore ->
+                        _uiState.value = _uiState.value.copy(bestScore = bestScore ?: 0)
+                        _uiState.value = _uiState.value.copy(isNewRecord = points > (bestScore ?: 0))
+                    }
+                    .onFailure { exception ->
+                        Log.e("EndGameViewModel", "Error al obtener la puntuación", exception)
+                    }
+                saveScore()
+            } else {
+                Log.e("EndGameViewModel", "No se pudo obtener el ID del usuario actual")
+            }
+        }
     }
     private fun saveScore() {
         viewModelScope.launch {
@@ -48,5 +63,7 @@ class EndGameViewModel @Inject constructor(
 //EndGameUiState.kt
 data class EndGameUiState(
     val gameId: String = "",
-    val points: Int = 0
+    val currentPoints: Int = 0,
+    val bestScore: Int = 0,
+    val isNewRecord: Boolean = false
 )

@@ -21,10 +21,12 @@ import com.example.braintrainer.presentation.ViewModels.EndGameViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
-fun EndGameScreen(navController: NavHostController, endGameViewModel: EndGameViewModel = hiltViewModel()
-) {
+fun EndGameScreen(navController: NavHostController, endGameViewModel: EndGameViewModel = hiltViewModel()) {
     val uiState = endGameViewModel.uiState.collectAsState()
-    val points = uiState.value.points
+    val points = uiState.value.currentPoints
+    val bestScore = uiState.value.bestScore
+    val isNewRecord = uiState.value.isNewRecord
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -33,18 +35,30 @@ fun EndGameScreen(navController: NavHostController, endGameViewModel: EndGameVie
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Mejores puntuaciones:",
+            text = "Mejor puntuación:",
             style = MaterialTheme.typography.headlineSmall
         )
-        Text("1. $points puntos")
-        Text("2. __ puntos")
-        Text("3. __ puntos")
-        Spacer(modifier = Modifier.height(32.dp))
+        Text("$bestScore punto(s)") // Mostrar la mejor puntuación
         Text(
-            text = "¡Enhorabuena!",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold
+            text = "Puntuación obtenida:",
+            style = MaterialTheme.typography.headlineSmall
         )
+        Text("$points punto(s)") // Mostrar la puntuación actual
+
+        Spacer(modifier = Modifier.height(32.dp))
+        if (isNewRecord) {
+            Text(
+                text = "¡Enhorabuena!\n" + "Has establecido un nuevo récord.",
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold
+            )
+        } else {
+            Text(
+                text = "No te preocupes.\n" + "Siempre hay margen de mejora.",
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold
+            )
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Button(onClick = { navController.navigate(AppScreens.GamesScreen.route) }) {
             Text("Jugar a otros juegos")

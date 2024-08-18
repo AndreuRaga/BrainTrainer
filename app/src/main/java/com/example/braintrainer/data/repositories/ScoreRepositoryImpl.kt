@@ -15,4 +15,7 @@ class ScoreRepositoryImpl @Inject constructor(private val scoreDataSource: Score
             Result.failure(it)
         }
     }
+    override suspend fun getScore(userId: String, gameId: String): Result<Int?> {
+        return scoreDataSource.getScore(userId, gameId)
+    }
 }
