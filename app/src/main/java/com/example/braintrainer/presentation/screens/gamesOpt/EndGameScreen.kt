@@ -1,12 +1,17 @@
 package com.example.braintrainer.presentation.screens.gamesOpt
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +19,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -27,37 +33,59 @@ fun EndGameScreen(navController: NavHostController, endGameViewModel: EndGameVie
     val bestScore = uiState.value.bestScore
     val isNewRecord = uiState.value.isNewRecord
 
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        contentAlignment = Alignment.Center
     ) {
-        ScoreSection(bestScore = bestScore, points = points)
-        Spacer(modifier = Modifier.height(32.dp))
-        ResultMessage(isNewRecord = isNewRecord)
-        Spacer(modifier = Modifier.height(16.dp))
-        PlayOtherGamesButton(navController = navController)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            ScoreSection(bestScore = bestScore, points = points)
+            Spacer(modifier = Modifier.height(32.dp))
+            ResultMessage(isNewRecord = isNewRecord)
+            Spacer(modifier = Modifier.height(32.dp))
+            PlayOtherGamesButton(navController = navController)
+        }
     }
 }
 
 @Composable
 fun ScoreSection(bestScore: Int, points: Int) {
-    Column {
-        Text(
-            text = "Mejor puntuación:",
-            style = MaterialTheme.typography.headlineSmall
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
-        Text("$bestScore punto(s)")
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Mejor puntuación:",
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = "$bestScore punto(s)",
+                style = MaterialTheme.typography.headlineSmall
+            )
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Text(
-            text = "Puntuación obtenida:",
-            style = MaterialTheme.typography.headlineSmall
-        )
-        Text("$points punto(s)")
+            Text(
+                text = "Puntuación obtenida:",style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = "$points punto(s)",
+                style = MaterialTheme.typography.headlineSmall
+            )
+        }
     }
 }
 
@@ -71,14 +99,18 @@ fun ResultMessage(isNewRecord: Boolean) {
 
     Text(
         text = message,
-        style = MaterialTheme.typography.headlineLarge,
-        fontWeight = FontWeight.Bold
+        style = MaterialTheme.typography.headlineMedium,
+        fontWeight = FontWeight.Bold,
+        textAlign = TextAlign.Center
     )
 }
 
 @Composable
 fun PlayOtherGamesButton(navController: NavHostController) {
-    Button(onClick = { navController.navigate(AppScreens.GamesScreen.route) }) {
+    Button(
+        onClick = { navController.navigate(AppScreens.GamesScreen.route) },
+        modifier = Modifier.width(200.dp)
+    ) {
         Text("Jugar a otros juegos")
     }
 }
