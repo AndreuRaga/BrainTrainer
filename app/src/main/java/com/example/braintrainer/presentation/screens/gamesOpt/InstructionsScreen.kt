@@ -90,8 +90,12 @@ fun InstructionsScreen(navController: NavHostController, instructionsViewModel: 
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Column {
-                Text("Puntuación placeholder") // Puedes mostrar la mejor puntuación aquí
+
+            val bestScore = game.value.bestScore
+            if (bestScore != null) {
+                Text(text = "$bestScore punto(s)")
+            } else {
+                Text(text = "Aún no has jugado a este juego.")
             }
             Spacer(modifier = Modifier.height(32.dp))
             Button(
