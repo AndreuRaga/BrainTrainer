@@ -1,5 +1,6 @@
 package com.example.braintrainer.presentation.screens.statsOpt
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.LinearProgressIndicator
@@ -45,7 +45,7 @@ fun GameStatsScreen(navController: NavHostController, gameStatsViewModel: GameSt
                     } else {
                         0f
                     }
-                    GameStatsItem(game.name, progress)
+                    GameStatsItem(game.name, game.bestScore, progress)
                 }
             }
         }
@@ -55,21 +55,20 @@ fun GameStatsScreen(navController: NavHostController, gameStatsViewModel: GameSt
 }
 
 @Composable
-fun GameStatsItem(gameName: String, progress: Float) {
+fun GameStatsItem(gameName: String, bestScore: Int?, progress: Float) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
+        Text(text = gameName)
         Row(
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Text(
-                text = gameName,
-                modifier = Modifier.weight(1f)
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("${(progress * 100).toInt()}%")
+            Text("$bestScore punto(s)")
+            Text("Rendimiento") //Valores: Bajo, medio-bajo, medio-alto, alto
         }
         Spacer(modifier = Modifier.height(4.dp))
         LinearProgressIndicator(
