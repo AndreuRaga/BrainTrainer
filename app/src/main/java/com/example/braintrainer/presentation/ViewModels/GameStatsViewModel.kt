@@ -51,7 +51,7 @@ class GameStatsViewModel @Inject constructor(
             }
     }
 }
-
+//GameStatsUiState.kt
 data class GameStatsUiState(
     val categories: List<GameCategory> = emptyList(),
 )
