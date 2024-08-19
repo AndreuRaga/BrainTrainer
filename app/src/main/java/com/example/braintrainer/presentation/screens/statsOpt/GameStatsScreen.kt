@@ -24,9 +24,8 @@ import com.example.braintrainer.presentation.ViewModels.GameStatsViewModel
 @Composable
 fun GameStatsScreen(navController: NavHostController, gameStatsViewModel: GameStatsViewModel = hiltViewModel()) {
     val uiState = gameStatsViewModel.uiState.collectAsState()
-
-
     val categories = uiState.value.categories
+
     if (categories.isNotEmpty()) {
         LazyColumn(
             modifier = Modifier
@@ -54,7 +53,6 @@ fun GameStatsScreen(navController: NavHostController, gameStatsViewModel: GameSt
         Text("Error al cargar las estadísticas")
     }
 }
-
 
 @Composable
 fun GameStatsItem(gameName: String, progress: Float) {

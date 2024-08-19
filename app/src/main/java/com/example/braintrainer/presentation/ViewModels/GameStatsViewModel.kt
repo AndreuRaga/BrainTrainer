@@ -23,13 +23,11 @@ class GameStatsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(GameStatsUiState())
     val uiState: StateFlow<GameStatsUiState> = _uiState.asStateFlow()
 
-
     init {
         viewModelScope.launch {
             loadGameStats()
         }
     }
-
 
     private suspend fun loadGameStats() {
         gameCategoryRepository.getCategoriesFromDB()
