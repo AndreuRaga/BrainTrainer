@@ -21,36 +21,47 @@ class InstructionsViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel()  {
-    private val gameId: String = checkNotNull(savedStateHandle["gameId"])
     private val _uiState = MutableStateFlow(InstructionsUiState())
     val uiState = _uiState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            gameCategoryRepository.getGameByIdFromDB(gameId)
-                .onSuccess { game ->
-                    _uiState.value = InstructionsUiState(
-                        gameId = gameId,
-                        gameName = game?.name ?: "",
-                        gameInstructions = game?.instructions ?: ""
-                    )
-                    fetchBestScore(gameId)
-                }
-                .onFailure { exception ->
-                    Log.e("InstructionsViewModel", "Error al obtener el juego", exception)
-                }
+            viewModelScope.launch {
+                val gameId: String = checkNotNull(savedStateHandle["gameId"])
+                loadGameData(gameId)
+            }
         }
     }
 
-    private suspend fun fetchBestScore(gameId: String) {
+    private suspend fun loadGameData(gameId: String) {
+        gameCategoryRepository.getGameByIdFromDB(gameId)
+            .onSuccess { game ->
+                val gameName = game?.name ?: ""
+                val gameInstructions = game?.instructions ?: ""
+                fetchBestScore(gameId, gameName, gameInstructions)
+            }
+            .onFailure { exception ->
+                Log.e("InstructionsViewModel", "Error al obtener el juego", exception)
+            }
+    }
+
+    private suspend fun fetchBestScore(gameId: String, gameName: String, gameInstructions: String) {
         val userId = authRepository.getCurrentUser()?.uid
         if (userId != null) {
             scoreRepository.getScore(userId, gameId)
                 .onSuccess { bestScore ->
-                    _uiState.value = _uiState.value.copy(bestScore = bestScore)
+                    _uiState.value = _uiState.value.copy(
+                        gameId = gameId,
+                        gameName = gameName,
+                        gameInstructions = gameInstructions,
+                        bestScore = bestScore
+                    )
                 }
                 .onFailure { exception ->
-                    Log.e("InstructionsViewModel", "Error al obtener la mejor puntuación", exception)}
+                    Log.e("InstructionsViewModel", "Error al obtener la mejor puntuación", exception)
+                }
+        } else {
+            Log.e("InstructionsViewModel", "Usuario no autenticado")
         }
     }
 }
