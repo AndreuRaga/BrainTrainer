@@ -1,5 +1,6 @@
 package com.example.braintrainer.data.dataSources
 
+import android.util.Log
 import com.example.braintrainer.data.models.Game
 import com.example.braintrainer.data.models.GameCategory
 import com.google.firebase.firestore.FirebaseFirestore
@@ -23,7 +24,9 @@ class GameCategoryDataSourceImpl @Inject constructor(private val db: FirebaseFir
                             val gameId = gameDocument.id
                             val gameName = gameDocument["name"] as String
                             val gameInstructions = gameDocument["instructions"] as String
-                            Game(gameId, gameName, gameInstructions)
+                            val gameMaxScore = gameDocument["maxScore"] as Long
+                            Log.d("GameCategoryDataSource", "Game data: $gameId, $gameName, $gameInstructions, $gameMaxScore")
+                            Game(gameId, gameName, gameInstructions, gameMaxScore.toInt())
                         }
                     GameCategory(categoryId, categoryName, games)
                 }

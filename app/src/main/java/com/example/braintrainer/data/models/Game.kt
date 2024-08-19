@@ -4,4 +4,5 @@ data class Game(
     val id: String,
     val name: String,
     val instructions: String,
+    val maxScore: Int
 )

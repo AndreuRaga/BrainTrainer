@@ -9,7 +9,8 @@ object GameData {
                 Game(
                     id = "add_sub",
                     name = "Suma y resta",
-                    instructions = "Sumar dos números"
+                    instructions = "Sumar dos números",
+                    maxScore = 10
                 )
             )
         ),
@@ -20,7 +21,8 @@ object GameData {
                 Game(
                     id = "cards",
                     name = "Cartas",
-                    instructions = "Reordena las cartas"
+                    instructions = "Reordena las cartas",
+                    maxScore = 10
                 )
             )
         )
