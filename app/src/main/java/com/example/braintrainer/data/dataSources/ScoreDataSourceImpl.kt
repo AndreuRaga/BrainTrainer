@@ -8,7 +8,7 @@ class ScoreDataSourceImpl @Inject constructor(private val db: FirebaseFirestore)
     override suspend fun saveScore(userId: String, gameId: String, points: Int): Result<Unit> {
         return try {
             val scoreData = hashMapOf(
-                "points" to points
+                "bestScore" to points
             )
             db.collection("users").document(userId).collection("scores").document(gameId).set(scoreData).await()
             Result.success(Unit)
@@ -21,7 +21,7 @@ class ScoreDataSourceImpl @Inject constructor(private val db: FirebaseFirestore)
         return try {
             val document = db.collection("users").document(userId).collection("scores").document(gameId).get().await()
             if (document.exists()) {
-                val pointsLong = document.get("points") as Long?
+                val pointsLong = document.get("bestScore") as Long?
                 val pointsInt = pointsLong?.toInt()
                 Result.success(pointsInt)
             } else {
