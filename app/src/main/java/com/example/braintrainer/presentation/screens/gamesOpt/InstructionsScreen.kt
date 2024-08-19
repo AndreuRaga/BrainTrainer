@@ -34,13 +34,14 @@ import com.example.braintrainer.presentation.navigation.AppScreens
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InstructionsScreen(navController: NavHostController, instructionsViewModel: InstructionsViewModel = hiltViewModel()) {
-    val game = instructionsViewModel.uiState.collectAsState()
+    val uiState = instructionsViewModel.uiState.collectAsState()
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = game.value.gameName,
+                        text = uiState.value.gameName,
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -64,47 +65,68 @@ fun InstructionsScreen(navController: NavHostController, instructionsViewModel: 
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = "Instrucciones:",
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(game.value.gameInstructions)
-                }
-            }
+            InstructionsCard(uiState.value.gameInstructions)
             Spacer(modifier = Modifier.height(16.dp))
+            BestScoreSection(uiState.value.bestScore)
+            Spacer(modifier = Modifier.height(32.dp))
+            PlayButton(
+                onClick = { navController.navigate(AppScreens.PlayScreen.route + "/${uiState.value.gameId}") }
+            )
+        }
+    }
+}
+
+@Composable
+fun InstructionsCard(instructions: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        shape = RoundedCornerShape(8.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
             Text(
-                text = "Mejor puntuación:",
+                text = "Instrucciones:",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
-
-            val bestScore = game.value.bestScore
-            if (bestScore != null) {
-                Text(text = "$bestScore punto(s)")
-            } else {
-                Text(text = "Aún no has jugado a este juego.")
-            }
-            Spacer(modifier = Modifier.height(32.dp))
-            Button(
-                onClick = { navController.navigate(AppScreens.PlayScreen.route + "/${game.value.gameId}") },
-                modifier = Modifier.width(200.dp),
-                shape = RoundedCornerShape(20.dp)
-            ) {
-                Text("Jugar")
-            }
+            Text(instructions)
         }
+    }
+}
+
+
+@Composable
+fun BestScoreSection(bestScore: Int?) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "Mejor puntuación:",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        if (bestScore != null) {
+            Text(text = "$bestScore punto(s)")
+        } else {
+            Text(text = "Aún no has jugado a este juego.")
+        }
+    }
+}
+
+
+@Composable
+fun PlayButton(onClick: () -> Unit) {
+    Button(
+        onClick = onClick,
+        modifier = Modifier.width(200.dp),
+        shape = RoundedCornerShape(20.dp)
+    ) {
+        Text("Jugar")
     }
 }
