@@ -93,7 +93,7 @@ fun AddSubScreen(navController: NavHostController, addSubViewModel: AddSubViewMo
                 }
             }
         }
-
+        Spacer(modifier = Modifier.height(if (!showResult) 29.dp else 0.dp))
         if (showResult) {
             ResultText(isCorrect = isCorrect)
         }
