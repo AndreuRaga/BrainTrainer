@@ -58,12 +58,12 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
             onDismiss = { authViewModel.showDialog(false) }
         )
     }
-    Scaffold(bottomBar = { BottomBarMenu(navController) }) {
-        innerPadding ->
+    Scaffold(bottomBar = { BottomBarMenu(navController) }) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding).padding(16.dp), // Margen general
+                .padding(innerPadding)
+                .padding(16.dp), // Margen general
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -109,7 +109,9 @@ fun ProfileInfoSection(uiState: AuthUiState) {
 fun AccountActionsSection(authViewModel: AuthViewModel) {
     Button(
         onClick = { authViewModel.deleteUser() },
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color.Red // Cambiar color del botón
@@ -119,7 +121,9 @@ fun AccountActionsSection(authViewModel: AuthViewModel) {
     }
     Button(
         onClick = { authViewModel.signOut() },
-        modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
         shape = RoundedCornerShape(8.dp)
     ) {
         Text("Cerrar sesión")
@@ -141,7 +145,8 @@ fun NavigateOnSignOut(uiState: AuthUiState, navController: NavHostController) {
 fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
-    val visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
+    val visualTransformation =
+        if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -157,9 +162,14 @@ fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss:
                     visualTransformation = visualTransformation,
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    supportingText = { if (errorPassword) Text("Contraseña incorrecta.", color = Color.Red) },
+                    supportingText = {
+                        if (errorPassword) Text(
+                            "Contraseña incorrecta.",
+                            color = Color.Red
+                        )
+                    },
                     isError = errorPassword,
-                    trailingIcon =  {
+                    trailingIcon = {
                         PasswordVisibilityToggle(passwordVisible) { passwordVisible = !it }
                     },
                     modifier = Modifier.fillMaxWidth()

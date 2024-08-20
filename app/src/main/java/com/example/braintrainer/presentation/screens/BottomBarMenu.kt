@@ -16,16 +16,18 @@ import com.example.braintrainer.presentation.navigation.AppScreens
 @Composable
 fun BottomBarMenu(navController: NavHostController) {
     val items = listOf(AppScreens.GamesScreen, AppScreens.StatsScreen, AppScreens.ConfigScreen)
-    NavigationBar(containerColor =  MaterialTheme.colorScheme.surfaceVariant) {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceVariant) {
         items.forEach { screen ->
             NavigationBarItem(
                 selected = navController.currentDestination?.route == screen.route,
-                onClick = { navController.navigate(screen.route) {
-                    popUpTo(navController.graph.startDestinationId) {
-                        saveState = true
+                onClick = {
+                    navController.navigate(screen.route) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
                     }
-                    launchSingleTop = true
-                } },
+                },
                 icon = {
                     Column(
                         verticalArrangement = Arrangement.Center,
