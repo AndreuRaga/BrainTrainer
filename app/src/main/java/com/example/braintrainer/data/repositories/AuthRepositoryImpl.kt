@@ -49,7 +49,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             Log.d("AuthRepository", "User deleted")
             true
         } catch (e: FirebaseAuthRecentLoginRequiredException) {
-            Log.e("AuthRepository","User deletion failed", e)
+            Log.e("AuthRepository", "User deletion failed", e)
             false
         }
     }
