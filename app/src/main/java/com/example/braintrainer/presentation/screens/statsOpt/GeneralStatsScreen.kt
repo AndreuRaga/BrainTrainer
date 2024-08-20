@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,21 +27,25 @@ import com.example.braintrainer.presentation.ViewModels.GeneralStatsViewModel
 fun GeneralStatsScreen(navController: NavHostController, generalStatsViewModel: GeneralStatsViewModel = hiltViewModel()) {
     val uiState = generalStatsViewModel.uiState.collectAsState()
 
-    when (val state = uiState.value) {
-        is GeneralStatsUiState.Loading -> {
-            Text("Cargando estadísticas...")
-        }
-        is GeneralStatsUiState.Success -> {
-            GeneralStatsList(state.categories)
-        }
-        is GeneralStatsUiState.Error -> {
-            Text("Error: ${state.message}")
-        }
+    when(val state = uiState.value) {
+        is GeneralStatsUiState.Loading -> LoadingScreen()
+        is GeneralStatsUiState.Success -> GeneralStatsList(state.categories)
+        is GeneralStatsUiState.Error -> ErrorScreen(state.message)
     }
 }
 
 @Composable
-fun GeneralStatsList(categories: List<GameCategory>) {
+fun LoadingScreen() {
+    Text("Cargando estadísticas...")
+}
+
+@Composable
+fun ErrorScreen(message: String) {
+    Text("Error: $message")
+}
+
+@Composable
+fun GeneralStatsList(categories: List<GameCategory>){
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
@@ -62,6 +65,7 @@ fun CategoryStatsItem(category: GameCategory) {
         category.progress < 0.75f -> "Medio-alto"
         else -> "Alto"
     }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()

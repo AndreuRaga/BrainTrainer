@@ -56,6 +56,7 @@ class GeneralStatsViewModel @Inject constructor(
     }
 }
 
+//GeneralStatsUiState.kt
 sealed class GeneralStatsUiState {
     object Loading : GeneralStatsUiState()
     data class Success(val categories: List<GameCategory>) : GeneralStatsUiState()
