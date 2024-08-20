@@ -31,17 +31,14 @@ class GeneralStatsViewModel @Inject constructor(
     }
 
     private suspend fun loadGeneralStats() {
-        gameCategoryRepository.getCategoriesFromDB()
-            .onSuccess { categories ->
+        _uiState.update { GeneralStatsUiState.Loading } // Indicar estado de carga
+        val result = gameCategoryRepository.getCategoriesFromDB()
+        result
+            .onSuccess{ categories ->
                 val userId = authRepository.getCurrentUser()?.uid
                 if (userId != null) {
                     val categoriesWithStats = categories.map { category ->
-                        val (totalBestScore, totalMaxScore) = category.games.fold(0 to 0) { acc, game ->
-                            val bestScore = scoreRepository.getScore(userId, game.id).getOrNull() ?: 0
-                            (acc.first + bestScore) to (acc.second + game.maxScore)
-                        }
-                        val categoryProgress = if (totalMaxScore > 0) totalBestScore.toFloat() / totalMaxScore else 0f
-                        category.copy(totalBestScore = totalBestScore, totalMaxScore = totalMaxScore, progress = categoryProgress)
+                        calculateCategoryStats(category, userId)
                     }
                     _uiState.update { GeneralStatsUiState.Success(categoriesWithStats) }
                 } else {
@@ -51,6 +48,19 @@ class GeneralStatsViewModel @Inject constructor(
             .onFailure { e ->
                 _uiState.update { GeneralStatsUiState.Error(e.message ?: "Error al cargar las estadísticas") }
             }
+    }
+
+    private suspend fun calculateCategoryStats(category: GameCategory, userId: String): GameCategory {
+        val (totalBestScore, totalMaxScore) = category.games.fold(0 to 0) { acc, game ->
+            val bestScore = scoreRepository.getScore(userId, game.id).getOrNull() ?: 0
+            (acc.first + bestScore) to (acc.second + game.maxScore)
+        }
+        val categoryProgress = if (totalMaxScore > 0) totalBestScore.toFloat() / totalMaxScore else 0f
+        return category.copy(
+            totalBestScore = totalBestScore,
+            totalMaxScore = totalMaxScore,
+            progress = categoryProgress
+        )
     }
 }
 
