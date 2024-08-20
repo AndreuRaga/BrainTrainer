@@ -64,13 +64,9 @@ fun CategoryStatsItem(category: GameCategory) {
         StatItem(
             title = category.name,
             score = category.totalBestScore.toString(),
-            performance = it
-        ) {
-            LinearProgressIndicator(
-                progress = { category.progress },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+            performance = it,
+            progress = category.progress
+        )
     }
 }
 
@@ -79,22 +75,13 @@ fun OverallPerformanceItem(overallPerformance: OverallPerformance) {
     StatItem(
         title = "Rendimiento general",
         score = overallPerformance.totalBestScore.toString(),
-        performance = getPerformance(overallPerformance.progress)
-    ) {
-        LinearProgressIndicator(
-            progress = { overallPerformance.progress },
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
+        performance = getPerformance(overallPerformance.progress),
+        progress = overallPerformance.progress
+    )
 }
 
 @Composable
-fun StatItem(
-    title: String,
-    score: String,
-    performance: String,
-    progressIndicator: @Composable () -> Unit
-) {
+fun StatItem(title: String, score: String, performance: String, progress: Float) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -110,7 +97,10 @@ fun StatItem(
             Text("Rendimiento: $performance")
         }
         Spacer(modifier = Modifier.height(4.dp))
-        progressIndicator()
+        LinearProgressIndicator(
+            progress = { progress },
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 
