@@ -31,7 +31,10 @@ import com.example.braintrainer.presentation.ViewModels.AddSubViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
-fun AddSubScreen(navController: NavHostController, addSubViewModel: AddSubViewModel = hiltViewModel()) {
+fun AddSubScreen(
+    navController: NavHostController,
+    addSubViewModel: AddSubViewModel = hiltViewModel()
+) {
     val uiState = addSubViewModel.uiState.collectAsState()
     val gameId = uiState.value.gameId
     val num1 = uiState.value.num1

@@ -29,7 +29,10 @@ import com.example.braintrainer.presentation.ViewModels.EndGameViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
-fun EndGameScreen(navController: NavHostController, endGameViewModel: EndGameViewModel = hiltViewModel()) {
+fun EndGameScreen(
+    navController: NavHostController,
+    endGameViewModel: EndGameViewModel = hiltViewModel()
+) {
     val uiState = endGameViewModel.uiState.collectAsState()
     val points = uiState.value.currentPoints
     val bestScore = uiState.value.bestScore

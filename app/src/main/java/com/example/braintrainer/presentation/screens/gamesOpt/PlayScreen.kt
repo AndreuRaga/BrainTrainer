@@ -48,7 +48,8 @@ fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = 
                     IconButton(onClick = { showDialog = true }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Volver")
+                            contentDescription = "Volver"
+                        )
                     }
                 }
             )
@@ -75,13 +76,15 @@ fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = 
                         Button(onClick = {
                             navController.popBackStack()
                             showDialog = false
-                        } ) {
+                        }) {
                             Text("Sí")
                         }
                     },
-                    dismissButton = { Button(onClick = { showDialog = false } ) {
-                        Text("No")
-                    } }
+                    dismissButton = {
+                        Button(onClick = { showDialog = false }) {
+                            Text("No")
+                        }
+                    }
                 )
             }
         }

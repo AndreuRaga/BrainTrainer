@@ -22,16 +22,20 @@ import com.example.braintrainer.presentation.navigation.AppScreens
 import com.example.braintrainer.presentation.screens.BottomBarMenu
 
 @Composable
-fun GamesScreen(navController: NavHostController, gamesViewModel: GamesViewModel = hiltViewModel()) {
+fun GamesScreen(
+    navController: NavHostController,
+    gamesViewModel: GamesViewModel = hiltViewModel()
+) {
     val gameCategories = gamesViewModel.uiState
-    Scaffold(bottomBar = { BottomBarMenu(navController) }) {
-        innerPadding ->
-        LazyColumn(contentPadding = PaddingValues(
-            top = innerPadding.calculateTopPadding() + 16.dp,
-            start = 16.dp,
-            end = 16.dp,
-            bottom = innerPadding.calculateBottomPadding() + 16.dp
-        )) {
+    Scaffold(bottomBar = { BottomBarMenu(navController) }) { innerPadding ->
+        LazyColumn(
+            contentPadding = PaddingValues(
+                top = innerPadding.calculateTopPadding() + 16.dp,
+                start = 16.dp,
+                end = 16.dp,
+                bottom = innerPadding.calculateBottomPadding() + 16.dp
+            )
+        ) {
             items(gameCategories.value.gameCategories) { category ->
                 Text(
                     text = category.name,

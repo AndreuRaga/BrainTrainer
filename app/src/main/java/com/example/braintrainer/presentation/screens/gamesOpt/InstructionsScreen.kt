@@ -33,7 +33,10 @@ import com.example.braintrainer.presentation.navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InstructionsScreen(navController: NavHostController, instructionsViewModel: InstructionsViewModel = hiltViewModel()) {
+fun InstructionsScreen(
+    navController: NavHostController,
+    instructionsViewModel: InstructionsViewModel = hiltViewModel()
+) {
     val uiState = instructionsViewModel.uiState.collectAsState()
 
     Scaffold(
