@@ -20,24 +20,17 @@ import com.example.braintrainer.presentation.screens.BottomBarMenu
 
 @Composable
 fun StatsScreen(navController: NavHostController) {
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    var selectedTabIndex by remember {mutableIntStateOf(0) }
     val tabs = listOf(AppScreens.GeneralStatsScreen, AppScreens.GameStatsScreen)
+
     Scaffold(
         bottomBar = { BottomBarMenu(navController) },
         topBar = {
-            TabRow(
-                modifier = Modifier.padding(16.dp),
-                selectedTabIndex = selectedTabIndex
-                ) {
-                tabs.forEachIndexed { index, screen ->
-                    Tab(
-                        text = { Text(screen.title!!, fontWeight = FontWeight.Bold) },
-                        selected = selectedTabIndex == index,
-                        onClick = { selectedTabIndex = index }
-                    )
-                }
+            StatsTabs(tabs, selectedTabIndex) { index ->
+                selectedTabIndex = index
             }
-        }) { innerPadding ->
+        }
+    ) { innerPadding ->
         Column(Modifier.padding(innerPadding)) {
             when (selectedTabIndex) {
                 0 -> GeneralStatsScreen(navController)
@@ -45,4 +38,18 @@ fun StatsScreen(navController: NavHostController) {
             }
         }
     }
+}
+
+@Composable
+fun StatsTabs(tabs: List<AppScreens>, selectedTabIndex: Int, onTabSelected: (Int) -> Unit) {
+    TabRow(
+        modifier = Modifier.padding(16.dp),
+        selectedTabIndex = selectedTabIndex
+    ) { tabs.forEachIndexed { index, screen ->
+        Tab(
+            text = { Text(screen.title!!, fontWeight = FontWeight.Bold) },
+            selected = selectedTabIndex == index,
+            onClick = { onTabSelected(index) }
+        )
+    } }
 }
