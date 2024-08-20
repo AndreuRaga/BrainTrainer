@@ -31,7 +31,7 @@ class GeneralStatsViewModel @Inject constructor(
     }
 
     private suspend fun loadGeneralStats() {
-        _uiState.update { GeneralStatsUiState.Loading } // Indicar estado de carga
+        _uiState.update { GeneralStatsUiState.Loading }
         val result = gameCategoryRepository.getCategoriesFromDB()
         result
             .onSuccess{ categories ->
