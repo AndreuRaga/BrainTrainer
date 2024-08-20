@@ -56,6 +56,12 @@ fun GameStatsScreen(navController: NavHostController, gameStatsViewModel: GameSt
 
 @Composable
 fun GameStatsItem(gameName: String, bestScore: Int?, progress: Float) {
+    val performance = when {
+        progress < 0.25f -> "Bajo"
+        progress < 0.5f -> "Medio-bajo"
+        progress < 0.75f -> "Medio-alto"
+        else -> "Alto"
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,7 +74,7 @@ fun GameStatsItem(gameName: String, bestScore: Int?, progress: Float) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("$bestScore punto(s)")
-            Text("Rendimiento") //Valores: Bajo, medio-bajo, medio-alto, alto
+            Text("Rendimiento: $performance") //Valores: Bajo, medio-bajo, medio-alto, alto
         }
         Spacer(modifier = Modifier.height(4.dp))
         LinearProgressIndicator(
