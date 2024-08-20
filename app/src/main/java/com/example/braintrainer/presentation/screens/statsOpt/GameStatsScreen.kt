@@ -21,17 +21,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.braintrainer.data.models.Game
 import com.example.braintrainer.data.models.GameCategory
+import com.example.braintrainer.presentation.ViewModels.GameStatsUiState
 import com.example.braintrainer.presentation.ViewModels.GameStatsViewModel
 
 @Composable
 fun GameStatsScreen(navController: NavHostController, gameStatsViewModel: GameStatsViewModel = hiltViewModel()) {
     val uiState = gameStatsViewModel.uiState.collectAsState()
-    val categories = uiState.value.categories
 
-    if (categories.isNotEmpty()) {
-        GameStatsList(categories)
-    } else {
-        Text("Error al cargar las estadísticas")
+    when (val state = uiState.value) {
+        is GameStatsUiState.Loading -> LoadingScreen()
+        is GameStatsUiState.Success -> GameStatsList(state.categories)
+        is GameStatsUiState.Error -> ErrorScreen(state.message)
     }
 }
 
@@ -81,9 +81,9 @@ fun GameStatsItem(game: Game) {
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-        Text("${game.bestScore} punto(s)")
-        Text("Rendimiento: $performance")
-    }
+            Text("${game.bestScore} punto(s)")
+            Text("Rendimiento: $performance")
+        }
         Spacer(modifier = Modifier.height(4.dp))
         LinearProgressIndicator(
             progress = { progress },

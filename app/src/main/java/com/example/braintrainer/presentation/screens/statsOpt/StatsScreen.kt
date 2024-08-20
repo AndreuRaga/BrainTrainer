@@ -53,3 +53,13 @@ fun StatsTabs(tabs: List<AppScreens>, selectedTabIndex: Int, onTabSelected: (Int
         )
     } }
 }
+
+@Composable
+fun LoadingScreen() {
+    Text("Cargando estadísticas...")
+}
+
+@Composable
+fun ErrorScreen(message: String) {
+    Text("Error: $message")
+}

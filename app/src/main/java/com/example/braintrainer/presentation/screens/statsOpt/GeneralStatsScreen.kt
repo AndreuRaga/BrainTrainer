@@ -35,16 +35,6 @@ fun GeneralStatsScreen(navController: NavHostController, generalStatsViewModel: 
 }
 
 @Composable
-fun LoadingScreen() {
-    Text("Cargando estadísticas...")
-}
-
-@Composable
-fun ErrorScreen(message: String) {
-    Text("Error: $message")
-}
-
-@Composable
 fun GeneralStatsList(categories: List<GameCategory>){
     LazyColumn(
         modifier = Modifier
