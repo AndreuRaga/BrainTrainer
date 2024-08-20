@@ -1,11 +1,13 @@
 package com.example.braintrainer.presentation.ViewModels
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.braintrainer.data.models.GameCategory
 import com.example.braintrainer.data.repositories.AuthRepository
 import com.example.braintrainer.data.repositories.GameCategoryRepository
 import com.example.braintrainer.data.repositories.ScoreRepository
+import com.example.braintrainer.presentation.uiStates.OverallPerformance
 import com.example.braintrainer.presentation.uiStates.StatsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -35,13 +37,14 @@ class GeneralStatsViewModel @Inject constructor(
         _uiState.update { StatsUiState.Loading }
         val result = gameCategoryRepository.getCategoriesFromDB()
         result
-            .onSuccess{ categories ->
+            .onSuccess { categories ->
                 val userId = authRepository.getCurrentUser()?.uid
                 if (userId != null) {
                     val categoriesWithStats = categories.map { category ->
                         calculateCategoryStats(category, userId)
                     }
-                    _uiState.update { StatsUiState.Success(categoriesWithStats) }
+                    val overallPerformance = calculateOverallPerformance(categoriesWithStats)
+                    _uiState.update { StatsUiState.Success(categoriesWithStats, overallPerformance) }
                 } else {
                     _uiState.update { StatsUiState.Error("No se pudo obtener el ID del usuario") }
                 }
@@ -62,5 +65,13 @@ class GeneralStatsViewModel @Inject constructor(
             totalMaxScore = totalMaxScore,
             progress = categoryProgress
         )
+    }
+    private fun calculateOverallPerformance(categories: List<GameCategory>): OverallPerformance {
+        val (totalBestScore, totalMaxScore) = categories.fold(0 to 0) { acc, category ->
+            (acc.first + category.totalBestScore!!) to (acc.second + category.totalMaxScore!!)
+        }
+        Log.d("GeneralStatsViewModel", "Total Best Score: $totalBestScore, Total Max Score: $totalMaxScore")
+        val progress = if (totalMaxScore > 0) totalBestScore.toFloat() / totalMaxScore else 0f
+        return OverallPerformance(totalBestScore, totalMaxScore, progress)
     }
 }
