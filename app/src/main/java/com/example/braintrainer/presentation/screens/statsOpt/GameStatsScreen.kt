@@ -21,17 +21,17 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.braintrainer.data.models.Game
 import com.example.braintrainer.data.models.GameCategory
-import com.example.braintrainer.presentation.ViewModels.GameStatsUiState
 import com.example.braintrainer.presentation.ViewModels.GameStatsViewModel
+import com.example.braintrainer.presentation.uiStates.StatsUiState
 
 @Composable
 fun GameStatsScreen(navController: NavHostController, gameStatsViewModel: GameStatsViewModel = hiltViewModel()) {
     val uiState = gameStatsViewModel.uiState.collectAsState()
 
     when (val state = uiState.value) {
-        is GameStatsUiState.Loading -> LoadingScreen()
-        is GameStatsUiState.Success -> GameStatsList(state.categories)
-        is GameStatsUiState.Error -> ErrorScreen(state.message)
+        is StatsUiState.Loading -> LoadingScreen()
+        is StatsUiState.Success -> GameStatsList(state.categories)
+        is StatsUiState.Error -> ErrorScreen(state.message)
     }
 }
 
