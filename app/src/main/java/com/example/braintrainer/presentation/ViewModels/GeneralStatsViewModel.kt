@@ -54,10 +54,6 @@ class GeneralStatsViewModel @Inject constructor(
                 _uiState.update { GeneralStatsUiState.Error(e.message ?: "Error al cargar las estadísticas") }
             }
     }
-
-    fun getGameCategories(): List<GameCategory> {
-        return gameCategoryRepository.getGameCategories()
-    }
 }
 
 sealed class GeneralStatsUiState {
