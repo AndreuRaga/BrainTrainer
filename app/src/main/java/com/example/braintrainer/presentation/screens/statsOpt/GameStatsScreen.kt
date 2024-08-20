@@ -19,6 +19,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.braintrainer.data.models.Game
+import com.example.braintrainer.data.models.GameCategory
 import com.example.braintrainer.presentation.ViewModels.GameStatsViewModel
 
 @Composable
@@ -27,55 +29,61 @@ fun GameStatsScreen(navController: NavHostController, gameStatsViewModel: GameSt
     val categories = uiState.value.categories
 
     if (categories.isNotEmpty()) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            items(categories) { category ->
-                Text(
-                    text = category.name,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                )
-                category.games.forEach { game ->
-                    val progress = if (game.maxScore > 0) {
-                        game.bestScore?.toFloat()?.div(game.maxScore) ?: 0f
-                    } else {
-                        0f
-                    }
-                    GameStatsItem(game.name, game.bestScore, progress)
-                }
-            }
-        }
+        GameStatsList(categories)
     } else {
         Text("Error al cargar las estadísticas")
     }
 }
 
 @Composable
-fun GameStatsItem(gameName: String, bestScore: Int?, progress: Float) {
+fun GameStatsList(categories: List<GameCategory>) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        items(categories) { category ->
+            Text(
+                text = category.name,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+            )
+            category.games.forEach { game ->
+                GameStatsItem(game)
+            }
+        }
+    }
+}
+
+@Composable
+fun GameStatsItem(game: Game) {
+    val progress = if (game.maxScore > 0) {
+        game.bestScore?.toFloat()?.div(game.maxScore) ?: 0f
+    } else {
+        0f
+    }
     val performance = when {
         progress < 0.25f -> "Bajo"
         progress < 0.5f -> "Medio-bajo"
         progress < 0.75f -> "Medio-alto"
         else -> "Alto"
     }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
-        Text(text = gameName)
+        Text(text = game.name)
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("$bestScore punto(s)")
-            Text("Rendimiento: $performance") //Valores: Bajo, medio-bajo, medio-alto, alto
-        }
+        Text("${game.bestScore} punto(s)")
+        Text("Rendimiento: $performance")
+    }
         Spacer(modifier = Modifier.height(4.dp))
         LinearProgressIndicator(
             progress = { progress },
