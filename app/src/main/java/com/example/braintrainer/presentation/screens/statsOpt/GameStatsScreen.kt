@@ -1,20 +1,14 @@
 package com.example.braintrainer.presentation.screens.statsOpt
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,7 +19,10 @@ import com.example.braintrainer.presentation.ViewModels.GameStatsViewModel
 import com.example.braintrainer.presentation.uiStates.StatsUiState
 
 @Composable
-fun GameStatsScreen(navController: NavHostController, gameStatsViewModel: GameStatsViewModel = hiltViewModel()) {
+fun GameStatsScreen(
+    navController: NavHostController,
+    gameStatsViewModel: GameStatsViewModel = hiltViewModel()
+) {
     val uiState = gameStatsViewModel.uiState.collectAsState()
 
     when (val state = uiState.value) {
@@ -43,15 +40,22 @@ fun GameStatsList(categories: List<GameCategory>) {
             .padding(16.dp)
     ) {
         items(categories) { category ->
-            Text(
-                text = category.name,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
-            )
-            category.games.forEach { game ->
-                GameStatsItem(game)
-            }
+            CategoryItem(category)
+        }
+    }
+}
+
+@Composable
+fun CategoryItem(category: GameCategory) {
+    Column {
+        Text(
+            text = category.name,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp)
+        )
+        category.games.forEach { game ->
+            GameStatsItem(game)
         }
     }
 }
@@ -63,31 +67,11 @@ fun GameStatsItem(game: Game) {
     } else {
         0f
     }
-    val performance = when {
-        progress < 0.25f -> "Bajo"
-        progress < 0.5f -> "Medio-bajo"
-        progress < 0.75f -> "Medio-alto"
-        else -> "Alto"
-    }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Text(text = game.name)
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("${game.bestScore} punto(s)")
-            Text("Rendimiento: $performance")
-        }
-        Spacer(modifier = Modifier.height(4.dp))
-        LinearProgressIndicator(
-            progress = { progress },
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
+    StatItem(
+        title = game.name,
+        score = game.bestScore.toString(),
+        performance = getPerformance(progress),
+        progress = progress
+    )
 }
