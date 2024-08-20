@@ -26,91 +26,99 @@ import com.example.braintrainer.presentation.uiStates.OverallPerformance
 import com.example.braintrainer.presentation.uiStates.StatsUiState
 
 @Composable
-fun GeneralStatsScreen(navController: NavHostController, generalStatsViewModel: GeneralStatsViewModel = hiltViewModel()) {
+fun GeneralStatsScreen(
+    navController: NavHostController,
+    generalStatsViewModel: GeneralStatsViewModel = hiltViewModel()
+) {
     val uiState = generalStatsViewModel.uiState.collectAsState()
 
     when (val state = uiState.value) {
         is StatsUiState.Loading -> LoadingScreen()
-        is StatsUiState.Success -> GeneralStatsList(state.categories, state.overallPerformance)
+        is StatsUiState.Success -> StatsContent(state)
         is StatsUiState.Error -> ErrorScreen(state.message)
     }
 }
 
 @Composable
-fun GeneralStatsList(categories: List<GameCategory>, overallPerformance: OverallPerformance?){
+fun StatsContent(state: StatsUiState.Success) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        items(categories) { category ->
+        items(state.categories) { category ->
             CategoryStatsItem(category)
         }
-        item { overallPerformance?.let {
-            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-            OverallPerformanceItem(it)
-        } }
+        item {
+            state.overallPerformance?.let {
+                HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
+                OverallPerformanceItem(it)
+            }
+        }
     }
 }
 
 @Composable
 fun CategoryStatsItem(category: GameCategory) {
-    val performance = when {
-        category.progress!! < 0.25f -> "Bajo"
-        category.progress < 0.5f -> "Medio-bajo"
-        category.progress < 0.75f -> "Medio-alto"
-        else -> "Alto"
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-    ) {
-        Text(text = category.name)
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth()
+    category.progress?.let { getPerformance(it) }?.let {
+        StatItem(
+            title = category.name,
+            score = category.totalBestScore.toString(),
+            performance = it
         ) {
-            Text("${category.totalBestScore} punto(s)")
-            Text("Rendimiento: $performance")
+            LinearProgressIndicator(
+                progress = { category.progress },
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
-        Spacer(modifier = Modifier.height(4.dp))
+    }
+}
+
+@Composable
+fun OverallPerformanceItem(overallPerformance: OverallPerformance) {
+    StatItem(
+        title = "Rendimiento general",
+        score = overallPerformance.totalBestScore.toString(),
+        performance = getPerformance(overallPerformance.progress)
+    ) {
         LinearProgressIndicator(
-            progress = { category.progress },
+            progress = { overallPerformance.progress },
             modifier = Modifier.fillMaxWidth(),
         )
     }
 }
 
 @Composable
-fun OverallPerformanceItem(overallPerformance: OverallPerformance) {
-    val performance = when {
-        overallPerformance.progress < 0.25f -> "Bajo"
-        overallPerformance.progress < 0.5f -> "Medio-bajo"
-        overallPerformance.progress < 0.75f -> "Medio-alto"
-        else -> "Alto"
-    }
-
+fun StatItem(
+    title: String,
+    score: String,
+    performance: String,
+    progressIndicator: @Composable () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
-        Text(text = "Rendimiento general")
+        Text(text = title)
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("${overallPerformance.totalBestScore} punto(s)")
+            Text("$score punto(s)")
             Text("Rendimiento: $performance")
         }
         Spacer(modifier = Modifier.height(4.dp))
-        LinearProgressIndicator(
-            progress = { overallPerformance.progress },
-            modifier = Modifier.fillMaxWidth(),
-        )
+        progressIndicator()
+    }
+}
+
+private fun getPerformance(progress: Float): String {
+    return when {
+        progress < 0.25f -> "Bajo"
+        progress < 0.5f -> "Medio-bajo"
+        progress < 0.75f -> "Medio-alto"
+        else -> "Alto"
     }
 }
