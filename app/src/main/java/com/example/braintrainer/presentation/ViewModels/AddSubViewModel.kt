@@ -56,7 +56,8 @@ class AddSubViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : 
         }
         answers.shuffle()
 
-        _uiState.value = _uiState.value.copy(num1 = num1, num2 = num2, operation = operation, answers = answers)
+        _uiState.value =
+            _uiState.value.copy(num1 = num1, num2 = num2, operation = operation, answers = answers)
     }
 
     fun checkAnswer(selectedAnswer: Int) {
@@ -81,7 +82,8 @@ class AddSubViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : 
             _uiState.value = _uiState.value.copy(showResult = false)
 
             if (_uiState.value.currentOperation < _uiState.value.maxOperations && remainingTime > 0) {
-                _uiState.value = _uiState.value.copy(currentOperation = _uiState.value.currentOperation + 1)
+                _uiState.value =
+                    _uiState.value.copy(currentOperation = _uiState.value.currentOperation + 1)
                 generateNewOperation()
                 startTimer()
             }

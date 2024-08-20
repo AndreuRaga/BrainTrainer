@@ -45,7 +45,11 @@ class GameStatsViewModel @Inject constructor(
                 }
             }
             .onFailure { e ->
-                _uiState.update { StatsUiState.Error(e.message ?: "Error al cargar las estadísticas") }
+                _uiState.update {
+                    StatsUiState.Error(
+                        e.message ?: "Error al cargar las estadísticas"
+                    )
+                }
             }
     }
 

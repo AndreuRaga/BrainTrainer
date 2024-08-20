@@ -62,7 +62,7 @@ class AuthViewModel @Inject constructor(
                 )
                 viewModelScope.launch {
                     if (success) {
-                            createUser(user!!)
+                        createUser(user!!)
                     }
                 }
             }
@@ -122,17 +122,20 @@ class AuthViewModel @Inject constructor(
         return String(CharArray(16) { allowedChars.random() })
     }
 
-    private fun handleSignInResult(result: GetCredentialResponse, onSignInComplete: (Boolean) -> Unit) {
+    private fun handleSignInResult(
+        result: GetCredentialResponse,
+        onSignInComplete: (Boolean) -> Unit
+    ) {
         val credential = result.credential
         if (credential is CustomCredential && credential.type == GoogleIdTokenCredential.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL) {
-                    try {
-                        val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
-                        Log.d("Credentials", "User successfully signed in!")
-                        firebaseAuthWithGoogle(googleIdTokenCredential.idToken, onSignInComplete)
-                    } catch (e: GoogleIdTokenParsingException) {
-                        Log.e("Credentials", "Invalid Google ID Token response", e)
-                        onSignInComplete(false)
-                    }
+            try {
+                val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                Log.d("Credentials", "User successfully signed in!")
+                firebaseAuthWithGoogle(googleIdTokenCredential.idToken, onSignInComplete)
+            } catch (e: GoogleIdTokenParsingException) {
+                Log.e("Credentials", "Invalid Google ID Token response", e)
+                onSignInComplete(false)
+            }
         } else {
             Log.e("Credentials", "Unexpected type of credential")
             onSignInComplete(false)

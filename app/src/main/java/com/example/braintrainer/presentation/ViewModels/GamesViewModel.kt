@@ -12,14 +12,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GamesViewModel @Inject constructor(private val gameCategoryRepository: GameCategoryRepository) : ViewModel() {
+class GamesViewModel @Inject constructor(private val gameCategoryRepository: GameCategoryRepository) :
+    ViewModel() {
     private val _uiState = MutableStateFlow(GamesUiState())
     val uiState = _uiState.asStateFlow()
+
     init {
         viewModelScope.launch {
             getCategories()
         }
     }
+
     private suspend fun getCategories() {
         gameCategoryRepository.getCategoriesFromDB().onSuccess { categories ->
             _uiState.value = _uiState.value.copy(gameCategories = categories)
@@ -28,6 +31,7 @@ class GamesViewModel @Inject constructor(private val gameCategoryRepository: Gam
         }
     }
 }
+
 //GamesUiState.kt
 data class GamesUiState(
     val gameCategories: List<GameCategory> = emptyList()

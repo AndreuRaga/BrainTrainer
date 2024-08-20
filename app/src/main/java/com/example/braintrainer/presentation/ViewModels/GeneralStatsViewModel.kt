@@ -44,33 +44,50 @@ class GeneralStatsViewModel @Inject constructor(
                         calculateCategoryStats(category, userId)
                     }
                     val overallPerformance = calculateOverallPerformance(categoriesWithStats)
-                    _uiState.update { StatsUiState.Success(categoriesWithStats, overallPerformance) }
+                    _uiState.update {
+                        StatsUiState.Success(
+                            categoriesWithStats,
+                            overallPerformance
+                        )
+                    }
                 } else {
                     _uiState.update { StatsUiState.Error("No se pudo obtener el ID del usuario") }
                 }
             }
             .onFailure { e ->
-                _uiState.update { StatsUiState.Error(e.message ?: "Error al cargar las estadísticas") }
+                _uiState.update {
+                    StatsUiState.Error(
+                        e.message ?: "Error al cargar las estadísticas"
+                    )
+                }
             }
     }
 
-    private suspend fun calculateCategoryStats(category: GameCategory, userId: String): GameCategory {
+    private suspend fun calculateCategoryStats(
+        category: GameCategory,
+        userId: String
+    ): GameCategory {
         val (totalBestScore, totalMaxScore) = category.games.fold(0 to 0) { acc, game ->
             val bestScore = scoreRepository.getScore(userId, game.id).getOrNull() ?: 0
             (acc.first + bestScore) to (acc.second + game.maxScore)
         }
-        val categoryProgress = if (totalMaxScore > 0) totalBestScore.toFloat() / totalMaxScore else 0f
+        val categoryProgress =
+            if (totalMaxScore > 0) totalBestScore.toFloat() / totalMaxScore else 0f
         return category.copy(
             totalBestScore = totalBestScore,
             totalMaxScore = totalMaxScore,
             progress = categoryProgress
         )
     }
+
     private fun calculateOverallPerformance(categories: List<GameCategory>): OverallPerformance {
         val (totalBestScore, totalMaxScore) = categories.fold(0 to 0) { acc, category ->
             (acc.first + category.totalBestScore!!) to (acc.second + category.totalMaxScore!!)
         }
-        Log.d("GeneralStatsViewModel", "Total Best Score: $totalBestScore, Total Max Score: $totalMaxScore")
+        Log.d(
+            "GeneralStatsViewModel",
+            "Total Best Score: $totalBestScore, Total Max Score: $totalMaxScore"
+        )
         val progress = if (totalMaxScore > 0) totalBestScore.toFloat() / totalMaxScore else 0f
         return OverallPerformance(totalBestScore, totalMaxScore, progress)
     }

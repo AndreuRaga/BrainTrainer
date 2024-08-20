@@ -20,7 +20,7 @@ class InstructionsViewModel @Inject constructor(
     private val scoreRepository: ScoreRepository,
     private val authRepository: AuthRepository,
     savedStateHandle: SavedStateHandle
-) : ViewModel()  {
+) : ViewModel() {
     private val _uiState = MutableStateFlow(InstructionsUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -58,7 +58,11 @@ class InstructionsViewModel @Inject constructor(
                     )
                 }
                 .onFailure { exception ->
-                    Log.e("InstructionsViewModel", "Error al obtener la mejor puntuación", exception)
+                    Log.e(
+                        "InstructionsViewModel",
+                        "Error al obtener la mejor puntuación",
+                        exception
+                    )
                 }
         } else {
             Log.e("InstructionsViewModel", "Usuario no autenticado")
