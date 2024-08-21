@@ -11,6 +11,7 @@ import com.example.braintrainer.presentation.ViewModels.AuthViewModel
 import com.example.braintrainer.presentation.screens.AuthScreen
 import com.example.braintrainer.presentation.screens.ConfigScreen
 import com.example.braintrainer.presentation.screens.gamesOpt.AddSubScreen
+import com.example.braintrainer.presentation.screens.gamesOpt.CardsScreen
 import com.example.braintrainer.presentation.screens.gamesOpt.EndGameScreen
 import com.example.braintrainer.presentation.screens.gamesOpt.GamesScreen
 import com.example.braintrainer.presentation.screens.gamesOpt.InstructionsScreen
@@ -47,6 +48,9 @@ fun AppNavigation() {
         }
         composable(AppScreens.AddSubScreen.route) {
             AddSubScreen(navController)
+        }
+        composable(AppScreens.CardsScreen.route) {
+            CardsScreen(navController)
         }
         composable(
             route = AppScreens.EndGameScreen.route + "/{gameId}/{points}",

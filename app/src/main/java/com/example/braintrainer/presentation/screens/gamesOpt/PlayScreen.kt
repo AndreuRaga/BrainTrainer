@@ -65,6 +65,7 @@ fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = 
         ) {
             when (game.value?.id) {
                 "add_sub" -> AddSubScreen(navController)
+                "cards" -> CardsScreen(navController)
                 else -> Text("Juego no disponible")
             }
             if (showDialog) {
