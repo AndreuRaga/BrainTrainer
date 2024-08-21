@@ -26,7 +26,10 @@ import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.ViewModels.CardsViewModel
 
 @Composable
-fun CardsScreen(navController: NavHostController, cardsViewModel: CardsViewModel = hiltViewModel()) {
+fun CardsScreen(
+    navController: NavHostController,
+    cardsViewModel: CardsViewModel = hiltViewModel()
+) {
     val uiState = cardsViewModel.uiState.collectAsState()
     Column(
         modifier = Modifier
@@ -37,7 +40,9 @@ fun CardsScreen(navController: NavHostController, cardsViewModel: CardsViewModel
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth().padding(16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
             Text("Puntos: 0")
             Text("Intentos: 1/25")
