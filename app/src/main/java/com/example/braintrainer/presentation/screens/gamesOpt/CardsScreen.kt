@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -35,13 +34,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.braintrainer.R
 import com.example.braintrainer.presentation.ViewModels.CardsViewModel
+import com.example.braintrainer.presentation.uiStates.CardData
 import kotlinx.coroutines.delay
-
-data class CardData(
-    val id: Int,
-    val image: Int,
-    var isRevealed: Boolean = false
-)
 
 @Composable
 fun CardsScreen(
@@ -49,24 +43,7 @@ fun CardsScreen(
     cardsViewModel: CardsViewModel = hiltViewModel()
 ) {
     val uiState = cardsViewModel.uiState.collectAsState()
-    val cards = remember { mutableStateListOf<CardData>() }
-
-    // Inicializar las cartas al inicio
-    LaunchedEffect(Unit) {
-        val images = listOf(
-            R.drawable.card0,
-            R.drawable.card1,
-            R.drawable.card2,
-            R.drawable.card3,
-            R.drawable.card4,
-            R.drawable.card5,
-            R.drawable.card6,
-            R.drawable.card7
-        )
-        val pairs = (images + images).shuffled()
-        cards.addAll(pairs.mapIndexed { index, image -> CardData(index, image) })
-    }
-
+    val cards = uiState.value.cards
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -98,7 +75,7 @@ fun CardsScreen(
 
 @Composable
 fun CardItem(card: CardData) {
-    var isRevealed by remember { mutableStateOf(true) } // Estado de la carta
+    var isRevealed by remember { mutableStateOf(card.isRevealed) }
 
     Card(
         modifier = Modifier.aspectRatio(1f),
@@ -116,7 +93,6 @@ fun CardItem(card: CardData) {
             ),
             shape = RectangleShape,
             border = ButtonDefaults.outlinedButtonBorder
-
         ) {
             Image(
                 painter = painterResource(id = if (isRevealed) card.image else R.drawable.card_background),
