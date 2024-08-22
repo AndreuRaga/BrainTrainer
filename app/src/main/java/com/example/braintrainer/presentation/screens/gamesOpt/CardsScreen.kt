@@ -46,7 +46,8 @@ fun CardsScreen(
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
-                .fillMaxWidth().padding(16.dp)
+                .fillMaxWidth()
+                .padding(16.dp)
         ) {
             Text("Puntos: 0")
             Text("Intentos: 1/25")
