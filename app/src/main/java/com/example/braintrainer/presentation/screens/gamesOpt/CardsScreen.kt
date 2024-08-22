@@ -36,6 +36,17 @@ fun CardsScreen(
     cardsViewModel: CardsViewModel = hiltViewModel()
 ) {
     val uiState = cardsViewModel.uiState.collectAsState()
+    val cards = listOf(
+        R.drawable.card0,
+        R.drawable.card1,
+        R.drawable.card2,
+        R.drawable.card3,
+        R.drawable.card4,
+        R.drawable.card5,
+        R.drawable.card6,
+        R.drawable.card7
+    )
+    val background = R.drawable.card_background
     Column(
         modifier = Modifier
             .fillMaxSize()
