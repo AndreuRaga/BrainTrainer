@@ -1,5 +1,6 @@
 package com.example.braintrainer.presentation.screens.gamesOpt
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,6 +13,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -20,9 +22,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.example.braintrainer.R
 import com.example.braintrainer.presentation.ViewModels.CardsViewModel
 
 @Composable
@@ -56,23 +61,32 @@ fun CardsScreen(
             items(getCards()) { card ->
                 Card(
                     modifier = Modifier.aspectRatio(1f),
+                    shape = RectangleShape,
                     colors = CardDefaults.cardColors(
                         containerColor = Color.LightGray
                     )
                 ) {
                     Button(
-                        onClick = { /* Acción al pulsar el botón */ },
+                        onClick = { /* Acción al hacer clic en la carta */ },
                         modifier = Modifier.fillMaxSize(),
-                        contentPadding = PaddingValues(0.dp)
+                        contentPadding = PaddingValues(0.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color.Transparent
+                        ),
+                        shape = RectangleShape,
+                        border = ButtonDefaults.outlinedButtonBorder
+
                     ) {
-                        // Aquí puedes mostrar la imagen correspondiente a la carta
-                        // Por ejemplo,usando una Image con la URL de la imagen
+                        Image(
+                            painter = painterResource(id = R.drawable.card0),
+                            contentDescription = "Imagen que funciona como botón",
+                            modifier = Modifier.fillMaxSize()
+                        )
                     }
                 }
             }
         }
     }
-
 }
 
 // Función para obtener las cartas (reemplaza con tu lógica)
