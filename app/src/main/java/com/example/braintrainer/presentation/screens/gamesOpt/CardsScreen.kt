@@ -89,7 +89,7 @@ fun CardsScreen(
     }
 }
 
-// Función para obtener las cartas (reemplaza con tu lógica)
+// Función para obtener las cartas
 fun getCards(): List<Int> {
     val cards = listOf(
         R.drawable.card0,
