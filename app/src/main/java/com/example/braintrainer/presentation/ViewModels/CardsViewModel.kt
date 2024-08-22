@@ -6,6 +6,7 @@ import com.example.braintrainer.R
 import com.example.braintrainer.presentation.uiStates.CardData
 import com.example.braintrainer.presentation.uiStates.CardsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -17,11 +18,7 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
     val uiState = _uiState.asStateFlow()
     private val gameId = checkNotNull(savedStateHandle["gameId"])
 
-    init {
-        initializeCards()
-    }
-
-    private fun initializeCards() {
+    suspend fun startGame() {
         val images = listOf(
             R.drawable.card0,
             R.drawable.card1,
@@ -35,6 +32,10 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
         val pairs = (images + images).shuffled()
         _uiState.update {
             it.copy(cards = pairs.mapIndexed { index, image -> CardData(index, image, true) })
+        }
+        delay(2000L)
+        _uiState.update {
+            it.copy(cards = it.cards.map { it.copy(isRevealed = false) })
         }
     }
 }

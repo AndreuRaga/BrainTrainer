@@ -20,10 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,7 +31,6 @@ import androidx.navigation.NavHostController
 import com.example.braintrainer.R
 import com.example.braintrainer.presentation.ViewModels.CardsViewModel
 import com.example.braintrainer.presentation.uiStates.CardData
-import kotlinx.coroutines.delay
 
 @Composable
 fun CardsScreen(
@@ -44,6 +39,11 @@ fun CardsScreen(
 ) {
     val uiState = cardsViewModel.uiState.collectAsState()
     val cards = uiState.value.cards
+
+    LaunchedEffect(Unit) { // Llamar a startGame dentro de LaunchedEffect
+        cardsViewModel.startGame()
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,17 +66,13 @@ fun CardsScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(cards) { card ->
-                CardItem(card)
-            }
+            items(cards) { card -> CardItem(card) }
         }
     }
 }
 
 @Composable
 fun CardItem(card: CardData) {
-    var isRevealed by remember { mutableStateOf(card.isRevealed) }
-
     Card(
         modifier = Modifier.aspectRatio(1f),
         shape = RectangleShape,
@@ -85,7 +81,7 @@ fun CardItem(card: CardData) {
         )
     ) {
         Button(
-            onClick = { isRevealed = !isRevealed },
+            onClick = { /* No hacer nada aquí, ya que no se controla el estado en CardItem */ },
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(0.dp),
             colors = ButtonDefaults.buttonColors(
@@ -95,18 +91,10 @@ fun CardItem(card: CardData) {
             border = ButtonDefaults.outlinedButtonBorder
         ) {
             Image(
-                painter = painterResource(id = if (isRevealed) card.image else R.drawable.card_background),
+                painter = painterResource(id = if (card.isRevealed) card.image else R.drawable.card_background),
                 contentDescription = "Imagen que funciona como botón",
                 modifier = Modifier.fillMaxSize()
             )
-        }
-    }
-
-    // Dar la vuelta a la carta después de un tiempo
-    LaunchedEffect(key1 = isRevealed) {
-        if (isRevealed) {
-            delay(1000L) // Esperar 1 segundo
-            isRevealed = false
         }
     }
 }
