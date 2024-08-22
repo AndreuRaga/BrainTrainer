@@ -13,5 +13,4 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
     private val _uiState = MutableStateFlow(CardsUiState())
     val uiState = _uiState.asStateFlow()
     private val gameId = checkNotNull(savedStateHandle["gameId"])
-
 }
