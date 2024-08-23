@@ -61,7 +61,7 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
         if (uiState.value.areCardsBlocked || card.isRevealed) return
             viewModelScope.launch {
                 checkMatch(card)
-        }
+            }
     }
 
     private suspend fun checkMatch(card: CardData) {
