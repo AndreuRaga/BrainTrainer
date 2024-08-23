@@ -1,6 +1,5 @@
 package com.example.braintrainer.presentation.screens.gamesOpt
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,19 +39,16 @@ fun CardsScreen(
     navController: NavHostController,
     cardsViewModel: CardsViewModel = hiltViewModel()
 ) {
-    val uiState = cardsViewModel.uiState.collectAsState()
-    val gameId = uiState.value.gameId
-    val cards = uiState.value.cards
-    val numberOfPairs = uiState.value.cards.size / 2
-    val areCardsBlocked = uiState.value.areCardsBlocked
-    val points = uiState.value.points
-    val attempts = uiState.value.attempts
-    val maxAttempts = uiState.value.maxAttempts
+    val uiState by cardsViewModel.uiState.collectAsState()
+    val gameId = uiState.gameId
+    val cards = uiState.cards
+    val points = uiState.points
+    val attempts = uiState.attempts
+    val maxAttempts = uiState.maxAttempts
 
     LaunchedEffect(points, attempts) {
-        if (points == numberOfPairs || attempts == maxAttempts) {
+        if (points == cards.size / 2 || attempts == maxAttempts) {
             navController.navigate(AppScreens.EndGameScreen.route + "/$gameId/$points")
-            Log.d("CardsScreen", "Fin del juego")
         }
     }
 
@@ -62,26 +59,34 @@ fun CardsScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Text("Puntos: $points")
-            Text("Intentos: $attempts/$maxAttempts")
-        }
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(4),
-            contentPadding = PaddingValues(8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(cards) { card ->
-                CardItem(card, areCardsBlocked) { cardId ->
-                    cardsViewModel.onCardClicked(cardId)
-                }
-            }
+        ScoreBoard(points, attempts, maxAttempts)
+        CardsGrid(cards, uiState.areCardsBlocked, cardsViewModel::onCardClicked)
+    }
+}
+
+@Composable
+fun ScoreBoard(points: Int, attempts: Int, maxAttempts: Int) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ) {
+        Text("Puntos: $points")
+        Text("Intentos: $attempts/$maxAttempts")
+    }
+}
+
+@Composable
+fun CardsGrid(cards: List<CardData>, areCardsBlocked: Boolean, onCardClicked: (CardData) -> Unit) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(4),
+        contentPadding = PaddingValues(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(cards) { card ->
+            CardItem(card, areCardsBlocked, onCardClicked)
         }
     }
 }
@@ -104,7 +109,7 @@ fun CardItem(card: CardData, isBlocked: Boolean, onCardClicked: (CardData) -> Un
             ),
             shape = RectangleShape,
             border = ButtonDefaults.outlinedButtonBorder,
-            enabled = !isBlocked || !card.isRevealed // Deshabilitar el botón si la carta está bloqueada o si está revelada
+            enabled = !isBlocked && !card.isRevealed // Deshabilitar el botón si la carta está bloqueada o si está revelada
         ) {
             Image(
                 painter = painterResource(id = if (card.isRevealed) card.image else R.drawable.card_background),
