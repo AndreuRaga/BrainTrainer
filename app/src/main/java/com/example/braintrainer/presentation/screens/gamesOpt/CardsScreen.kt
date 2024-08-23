@@ -40,6 +40,7 @@ fun CardsScreen(
     val uiState = cardsViewModel.uiState.collectAsState()
     val cards = uiState.value.cards
     val canRevealCards = uiState.value.canRevealCards
+    val isGameInitialized = uiState.value.isGameInitialized
 
     LaunchedEffect(Unit) {
         cardsViewModel.startGame()
@@ -67,7 +68,7 @@ fun CardsScreen(
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(cards) { card ->
-                CardItem(card, canRevealCards) { cardId ->
+                CardItem(card, canRevealCards && isGameInitialized) { cardId ->
                     cardsViewModel.onCardClicked(cardId)
                 }
             }
