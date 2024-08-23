@@ -1,6 +1,5 @@
 package com.example.braintrainer.presentation.ViewModels
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -23,6 +22,7 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
 
     private var firstCard: CardData? = null
     private var secondCard: CardData? = null
+
     init {
         _uiState.value = _uiState.value.copy(gameId = gameId.toString())
         viewModelScope.launch {
@@ -105,16 +105,6 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
                     )
                 }
             }
-            /*
-            val points = _uiState.value.points
-            val numberOfPairs = _uiState.value.cards.size / 2
-            val attempts = _uiState.value.attempts
-            val maxAttempts = _uiState.value.maxAttempts
-            if (points == numberOfPairs || attempts == maxAttempts) { // Fin del juego
-                // Lógica para navegar a EndGameScreen
-                Log.d("MathScreen", "Fin del juego")
-            }
-             */
         }
     }
 }
