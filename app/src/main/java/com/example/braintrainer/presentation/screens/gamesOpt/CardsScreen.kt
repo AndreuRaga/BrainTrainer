@@ -18,7 +18,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,15 +37,12 @@ fun CardsScreen(
     cardsViewModel: CardsViewModel = hiltViewModel()
 ) {
     val uiState = cardsViewModel.uiState.collectAsState()
+    val gameId = uiState.value.gameId
     val cards = uiState.value.cards
     val areCardsBlocked = uiState.value.areCardsBlocked
     val points = uiState.value.points
     val attempts = uiState.value.attempts
     val maxAttempts = uiState.value.maxAttempts
-
-    LaunchedEffect(Unit) {
-        cardsViewModel.startGame()
-    }
 
     Column(
         modifier = Modifier

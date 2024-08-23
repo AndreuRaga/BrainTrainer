@@ -23,8 +23,14 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
 
     private var firstCard: CardData? = null
     private var secondCard: CardData? = null
+    init {
+        _uiState.value = _uiState.value.copy(gameId = gameId.toString())
+        viewModelScope.launch {
+            startGame()
+        }
+    }
 
-    suspend fun startGame() {
+    private suspend fun startGame() {
         val images = listOf(
             R.drawable.card0,
             R.drawable.card1,
