@@ -75,7 +75,6 @@ fun CardsScreen(
     }
 }
 
-
 @Composable
 fun CardItem(card: CardData, canReveal: Boolean, onCardClicked: (Int) -> Unit) {
     Card(
