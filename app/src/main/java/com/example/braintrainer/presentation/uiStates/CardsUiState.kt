@@ -2,8 +2,10 @@ package com.example.braintrainer.presentation.uiStates
 
 data class CardsUiState(
     val cards: List<CardData> = emptyList(),
-    val canRevealCards: Boolean = true, // Indica si se pueden revelar más cartas
-    val isGameInitialized: Boolean = false
+    val areCardsBlocked: Boolean = false, //Establece si se puede interactuar con las cartas o no
+    val points: Int = 0,
+    val attempts: Int = 0,
+    val maxAttempts: Int = 12
 )
 
 data class CardData(

@@ -1,7 +1,9 @@
 package com.example.braintrainer.presentation.ViewModels
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.braintrainer.R
 import com.example.braintrainer.presentation.uiStates.CardData
 import com.example.braintrainer.presentation.uiStates.CardsUiState
@@ -10,6 +12,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,7 +21,8 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
     val uiState = _uiState.asStateFlow()
     private val gameId = checkNotNull(savedStateHandle["gameId"])
 
-    private var revealedCards = 0
+    private var firstCard: CardData? = null
+    private var secondCard: CardData? = null
 
     suspend fun startGame() {
         val images = listOf(
@@ -33,29 +37,76 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
         )
         val pairs = (images + images).shuffled()
         _uiState.update {
-            it.copy(cards = pairs.mapIndexed { index, image -> CardData(index, image, true) })
+            it.copy(
+                cards = pairs.mapIndexed { index, image -> CardData(index, image, true) },
+                areCardsBlocked = true
+            )
         }
         delay(2000L)
         _uiState.update {
             it.copy(
                 cards = it.cards.map { it.copy(isRevealed = false) },
-                isGameInitialized = true
+                areCardsBlocked = false
             )
         }
     }
 
-    fun onCardClicked(cardId: Int) {
-        if (revealedCards >= 2) return
+    fun onCardClicked(card: CardData) {
+        if (!_uiState.value.areCardsBlocked) {
+            viewModelScope.launch {
+                checkMatch(card)
+            }
+        }
+    }
 
-        _uiState.update { currentState ->
-            val updatedCards = currentState.cards.toMutableList().also { cards ->
-                val cardIndex = cards.indexOfFirst { it.id == cardId }
-                if (cardIndex != -1) {
-                    cards[cardIndex] = cards[cardIndex].copy(isRevealed = !cards[cardIndex].isRevealed)
+    private suspend fun checkMatch(card: CardData) {
+        if (firstCard == null) {
+            _uiState.update {
+                it.copy(cards = it.cards.map { if (it == card) it.copy(isRevealed = true) else it })
+            }
+            firstCard = card
+        } else if (secondCard == null) {
+            _uiState.update {
+                it.copy(cards = it.cards.map { if (it == card) it.copy(isRevealed = true) else it })
+            }
+            secondCard = card
+            _uiState.update { it.copy(areCardsBlocked = true) }
+            if (firstCard!!.image == secondCard!!.image) { // Si las cartas coinciden
+                firstCard = null
+                secondCard = null
+                _uiState.update {
+                    it.copy(
+                        areCardsBlocked = false,
+                        points = it.points + 1,
+                        attempts = it.attempts + 1
+                    )
+                }
+            } else { // Si las cartas no coinciden
+                delay(1000L)
+                _uiState.update {
+                    it.copy(cards = it.cards.map {
+                        if (it.id == firstCard!!.id || it.id == secondCard!!.id) it.copy(
+                            isRevealed = false
+                        ) else it
+                    })
+                }
+                firstCard = null
+                secondCard = null
+                _uiState.update {
+                    it.copy(
+                        areCardsBlocked = false,
+                        attempts = it.attempts + 1
+                    )
                 }
             }
-            revealedCards = updatedCards.count { it.isRevealed }
-            currentState.copy(cards = updatedCards, canRevealCards = revealedCards < 2)
+            val points = _uiState.value.points
+            val numberOfPairs = _uiState.value.cards.size / 2
+            val attempts = _uiState.value.attempts
+            val maxAttempts = _uiState.value.maxAttempts
+            if (points == numberOfPairs || attempts == maxAttempts) { // Fin del juego
+                // Lógica para navegar a EndGameScreen
+                Log.d("MathScreen", "Fin del juego")
+            }
         }
     }
 }

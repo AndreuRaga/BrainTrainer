@@ -39,8 +39,10 @@ fun CardsScreen(
 ) {
     val uiState = cardsViewModel.uiState.collectAsState()
     val cards = uiState.value.cards
-    val canRevealCards = uiState.value.canRevealCards
-    val isGameInitialized = uiState.value.isGameInitialized
+    val areCardsBlocked = uiState.value.areCardsBlocked
+    val points = uiState.value.points
+    val attempts = uiState.value.attempts
+    val maxAttempts = uiState.value.maxAttempts
 
     LaunchedEffect(Unit) {
         cardsViewModel.startGame()
@@ -59,16 +61,17 @@ fun CardsScreen(
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text("Puntos: 0")
-            Text("Intentos: 1/25")
+            Text("Puntos: $points")
+            Text("Intentos: $attempts/$maxAttempts")
         }
         LazyVerticalGrid(
             columns = GridCells.Fixed(4),
             contentPadding = PaddingValues(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             items(cards) { card ->
-                CardItem(card, canRevealCards && isGameInitialized) { cardId ->
+                CardItem(card, areCardsBlocked) { cardId ->
                     cardsViewModel.onCardClicked(cardId)
                 }
             }
@@ -77,7 +80,7 @@ fun CardsScreen(
 }
 
 @Composable
-fun CardItem(card: CardData, canReveal: Boolean, onCardClicked: (Int) -> Unit) {
+fun CardItem(card: CardData, isBlocked: Boolean, onCardClicked: (CardData) -> Unit) {
     Card(
         modifier = Modifier.aspectRatio(1f),
         shape = RectangleShape,
@@ -86,7 +89,7 @@ fun CardItem(card: CardData, canReveal: Boolean, onCardClicked: (Int) -> Unit) {
         )
     ) {
         Button(
-            onClick = { if (canReveal) onCardClicked(card.id) },
+            onClick = { onCardClicked(card) },
             modifier = Modifier.fillMaxSize(),
             contentPadding = PaddingValues(0.dp),
             colors = ButtonDefaults.buttonColors(
@@ -94,7 +97,7 @@ fun CardItem(card: CardData, canReveal: Boolean, onCardClicked: (Int) -> Unit) {
             ),
             shape = RectangleShape,
             border = ButtonDefaults.outlinedButtonBorder,
-            enabled = canReveal // Deshabilitar el botón si no se pueden revelar más cartas
+            enabled = !isBlocked || !card.isRevealed // Deshabilitar el botón si no se puede interactuar con las cartas
         ) {
             Image(
                 painter = painterResource(id = if (card.isRevealed) card.image else R.drawable.card_background),
