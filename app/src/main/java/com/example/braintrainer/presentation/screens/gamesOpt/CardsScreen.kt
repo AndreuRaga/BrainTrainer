@@ -97,7 +97,7 @@ fun CardItem(card: CardData, isBlocked: Boolean, onCardClicked: (CardData) -> Un
             ),
             shape = RectangleShape,
             border = ButtonDefaults.outlinedButtonBorder,
-            enabled = !isBlocked || !card.isRevealed // Deshabilitar el botón si no se puede interactuar con las cartas
+            enabled = !isBlocked || !card.isRevealed // Deshabilitar el botón si la carta está bloqueada o si está revelada
         ) {
             Image(
                 painter = painterResource(id = if (card.isRevealed) card.image else R.drawable.card_background),
