@@ -40,7 +40,7 @@ fun CardsScreen(
     val uiState = cardsViewModel.uiState.collectAsState()
     val cards = uiState.value.cards
 
-    LaunchedEffect(Unit) { // Llamar a startGame dentro de LaunchedEffect
+    LaunchedEffect(Unit) {
         cardsViewModel.startGame()
     }
 
