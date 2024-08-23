@@ -70,7 +70,7 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
                 it.copy(cards = it.cards.map { if (it == card) it.copy(isRevealed = true) else it })
             }
             firstCard = card
-        } else if (secondCard == null && firstCard!!.id != card.id) {
+        } else if (secondCard == null && card.id != firstCard!!.id) {
             _uiState.update {
                 it.copy(cards = it.cards.map { if (it == card) it.copy(isRevealed = true) else it })
             }
