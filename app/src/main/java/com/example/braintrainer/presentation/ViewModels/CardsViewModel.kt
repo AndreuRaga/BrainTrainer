@@ -18,6 +18,8 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
     val uiState = _uiState.asStateFlow()
     private val gameId = checkNotNull(savedStateHandle["gameId"])
 
+    private var revealedCards = 0
+
     suspend fun startGame() {
         val images = listOf(
             R.drawable.card0,
@@ -36,6 +38,21 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
         delay(2000L)
         _uiState.update {
             it.copy(cards = it.cards.map { it.copy(isRevealed = false) })
+        }
+    }
+
+    fun onCardClicked(cardId: Int) {
+        if (revealedCards >= 2) return
+
+        _uiState.update { currentState ->
+            val updatedCards = currentState.cards.toMutableList().also { cards ->
+                val cardIndex = cards.indexOfFirst { it.id == cardId }
+                if (cardIndex != -1) {
+                    cards[cardIndex] = cards[cardIndex].copy(isRevealed = !cards[cardIndex].isRevealed)
+                }
+            }
+            revealedCards = updatedCards.count { it.isRevealed }
+            currentState.copy(cards = updatedCards, canRevealCards = revealedCards < 2)
         }
     }
 }
