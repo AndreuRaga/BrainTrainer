@@ -34,7 +34,7 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             Log.d("AuthRepository", "User reauthenticated")
             true
         } catch (e: FirebaseAuthInvalidCredentialsException) {
-            Log.d("AuthRepository", "User not reauthenticated")
+            Log.e("AuthRepository", "User not reauthenticated", e)
             false
         }
     }
