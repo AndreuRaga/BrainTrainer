@@ -58,10 +58,9 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
     }
 
     fun onCardClicked(card: CardData) {
-        if (!_uiState.value.areCardsBlocked) {
+        if (uiState.value.areCardsBlocked || card.isRevealed) return
             viewModelScope.launch {
                 checkMatch(card)
-            }
         }
     }
 
