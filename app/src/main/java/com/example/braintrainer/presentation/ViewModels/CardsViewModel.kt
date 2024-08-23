@@ -71,7 +71,7 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
                 it.copy(cards = it.cards.map { if (it == card) it.copy(isRevealed = true) else it })
             }
             firstCard = card
-        } else if (secondCard == null) {
+        } else if (secondCard == null && firstCard!!.id != card.id) {
             _uiState.update {
                 it.copy(cards = it.cards.map { if (it == card) it.copy(isRevealed = true) else it })
             }
@@ -105,6 +105,7 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
                     )
                 }
             }
+            /*
             val points = _uiState.value.points
             val numberOfPairs = _uiState.value.cards.size / 2
             val attempts = _uiState.value.attempts
@@ -113,6 +114,7 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
                 // Lógica para navegar a EndGameScreen
                 Log.d("MathScreen", "Fin del juego")
             }
+             */
         }
     }
 }

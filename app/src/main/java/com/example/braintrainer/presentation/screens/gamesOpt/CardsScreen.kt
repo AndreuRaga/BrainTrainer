@@ -1,5 +1,6 @@
 package com.example.braintrainer.presentation.screens.gamesOpt
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.braintrainer.R
 import com.example.braintrainer.presentation.ViewModels.CardsViewModel
+import com.example.braintrainer.presentation.navigation.AppScreens
 import com.example.braintrainer.presentation.uiStates.CardData
 
 @Composable
@@ -39,10 +42,18 @@ fun CardsScreen(
     val uiState = cardsViewModel.uiState.collectAsState()
     val gameId = uiState.value.gameId
     val cards = uiState.value.cards
+    val numberOfPairs = uiState.value.cards.size / 2
     val areCardsBlocked = uiState.value.areCardsBlocked
     val points = uiState.value.points
     val attempts = uiState.value.attempts
     val maxAttempts = uiState.value.maxAttempts
+
+    LaunchedEffect(points, attempts) {
+        if (points == numberOfPairs || attempts == maxAttempts) {
+            navController.navigate(AppScreens.EndGameScreen.route + "/$gameId/$points")
+            Log.d("CardsScreen", "Fin del juego")
+        }
+    }
 
     Column(
         modifier = Modifier
