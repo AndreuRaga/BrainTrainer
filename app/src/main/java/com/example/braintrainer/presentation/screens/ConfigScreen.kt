@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -89,6 +90,7 @@ fun ProfileInfoSection(uiState: AuthUiState) {
 
 @Composable
 fun AccountActionsSection(authViewModel: AuthViewModel) {
+    val context = LocalContext.current
     var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     Button(
         onClick = { showDeleteConfirmationDialog = true },
@@ -109,7 +111,7 @@ fun AccountActionsSection(authViewModel: AuthViewModel) {
             text = { Text("¿Estás seguro de que quieres borrar tu cuenta? Ten en cuenta que perderás todo tu pogreso en Brain Trainer.") },
             confirmButton = {
                 Button(onClick = {
-                    authViewModel.deleteUser()
+                    authViewModel.deleteUser(context)
                     showDeleteConfirmationDialog = false
                 }) {
                     Text("Sí")

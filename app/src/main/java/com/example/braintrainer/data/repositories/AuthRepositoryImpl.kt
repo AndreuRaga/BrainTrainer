@@ -54,6 +54,18 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
         }
     }
 
+    override suspend fun reauthenticateWithGoogle(idToken: String): Boolean {
+        return try {
+            val credential = GoogleAuthProvider.getCredential(idToken, null)
+            firebaseAuth.currentUser?.reauthenticateAndRetrieveData(credential)?.await()
+            Log.d("AuthRepository", "User reauthenticated with Google")
+            true
+        } catch (e: Exception) {
+            Log.e("AuthRepository", "Reauthentication failed", e)
+            false
+        }
+    }
+
     override fun isUserSignedIn(): Boolean {
         return firebaseAuth.currentUser != null
     }

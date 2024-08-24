@@ -21,6 +21,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -154,35 +155,64 @@ class AuthViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(isUserSignedIn = false)
     }
 
-    fun deleteUser() {
+    fun deleteUser(context: Context) {
         viewModelScope.launch {
-            val uid = authRepository.getCurrentUser()!!.uid
-            val success = authRepository.deleteUser()
-            if (success) {
-                userRepository.deleteUser(uid)
-                _uiState.value = _uiState.value.copy(isUserSignedIn = false)
-            } else {
+            _uiState.update { it.copy(isLoading = true) }
+            try {
+                val uid = authRepository.getCurrentUser()!!.uid
+                val success = authRepository.deleteUser()
+                if (success) {
+                    userRepository.deleteUser(uid)
+                    _uiState.value = _uiState.value.copy(isUserSignedIn = false, isLoading = false)
+                } else {
+                    _uiState.value = _uiState.value.copy(
+                        requiresReauthentication = true,
+                        isLoading = false
+                    )
+                    reauthenticateAndDeleteUser(context) // Llamar a la función para re-autenticar y eliminar
+                }
+            } catch (e: Exception) {
+                Log.e("AuthViewModel", "Error deleting user", e)
                 _uiState.value = _uiState.value.copy(
-                    showDialog = true,
-                    requiresReauthentication = true
+                    errorMessage = "Error al borrar la cuenta.",
+                    isLoading = false
                 )
             }
         }
     }
 
-    fun reauthUser(password: String) {
+    private fun reauthenticateAndDeleteUser(context: Context) {
         viewModelScope.launch {
-            val success = authRepository.reauthUser(password)
-            if (success) {
-                deleteUser()
-            } else {
-                _uiState.value = _uiState.value.copy(showErrorDialog = true)
+            _uiState.update { it.copy(isLoading = true) }
+            try {
+                val request = createGoogleIdRequest(false) // Obtener token de Google
+                val result = credentialManager.getCredential(context, request)
+                if (result.credential is CustomCredential) {
+                    val customCredential = result.credential as CustomCredential
+                    val googleIdTokenCredential =
+                        GoogleIdTokenCredential.createFrom(customCredential.data)
+                    val idToken = googleIdTokenCredential.idToken
+
+
+                    val success = authRepository.reauthenticateWithGoogle(idToken) // Re-autenticar
+                    if (success) {
+                        deleteUser(context) // Intentar eliminar de nuevo
+                    } else {
+                        _uiState.value =
+                            _uiState.value.copy(
+                                errorMessage = "Error al re-autenticar.",
+                                isLoading = false
+                            )
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e("AuthViewModel", "Error during reauthentication", e)
+                _uiState.value = _uiState.value.copy(
+                    errorMessage = "Error al re-autenticar.",
+                    isLoading = false
+                )
             }
         }
-    }
-
-    fun showDialog(show: Boolean) {
-        _uiState.value = _uiState.value.copy(showDialog = show, showErrorDialog = show)
     }
 
     fun showErrorDialog(show: Boolean) {

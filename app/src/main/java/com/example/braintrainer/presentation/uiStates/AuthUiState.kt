@@ -8,5 +8,6 @@ data class AuthUiState(
     val showDialog: Boolean = false,
     val showErrorDialog: Boolean = false,
     val errorMessage: String? = null,
-    val requiresReauthentication: Boolean = false
+    val requiresReauthentication: Boolean = false,
+    val isLoading: Boolean = false
 )

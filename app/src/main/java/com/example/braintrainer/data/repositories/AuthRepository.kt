@@ -9,4 +9,5 @@ interface AuthRepository {
     suspend fun deleteUser(): Boolean
     fun isUserSignedIn(): Boolean
     fun getCurrentUser(): FirebaseUser?
+    suspend fun reauthenticateWithGoogle(idToken: String): Boolean
 }
