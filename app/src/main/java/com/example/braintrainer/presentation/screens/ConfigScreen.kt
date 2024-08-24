@@ -54,22 +54,22 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
         ) {
             ProfileInfo(uiState)
             Spacer(modifier = Modifier.height(32.dp))
-            DeleteAccountButton(
-                onDeleteClicked = { showDeleteConfirmationDialog = true }
-            )
-            if (showDeleteConfirmationDialog) {
-                DeleteConfirmationDialog(
-                    onConfirm = {
-                        authViewModel.deleteUser(context)
-                        showDeleteConfirmationDialog = false
-                    },
-                    onDismiss = { showDeleteConfirmationDialog = false }
-                )
-            }
+            DeleteAccountButton(onDeleteClicked = { showDeleteConfirmationDialog = true })
             SignOutButton(authViewModel)
-            NavigateOnSignOut(uiState, navController)
         }
     }
+
+    if (showDeleteConfirmationDialog) {
+        DeleteConfirmationDialog(
+            onConfirm = {
+                authViewModel.deleteUser(context)
+                showDeleteConfirmationDialog = false
+            },
+            onDismiss = { showDeleteConfirmationDialog = false }
+        )
+    }
+
+    NavigateOnSignOut(uiState, navController)
 }
 
 @Composable
