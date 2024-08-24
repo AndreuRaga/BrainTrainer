@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.braintrainer.R
@@ -83,7 +82,7 @@ fun WelcomeText() {
 @Composable
 fun AppIcon() {
     Image(
-        painter = painterResource(id = R.drawable.app_icon), // Reemplaza con tu icono
+        painter = painterResource(id = R.drawable.app_icon),
         contentDescription = "Logo",
         modifier = Modifier.size(150.dp)
     )
@@ -137,10 +136,4 @@ fun ErrorDialog(errorMessage: String, onDismiss: () -> Unit) {
             }
         }
     )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun AuthScreenPreview() {
-    //AuthScreen()
 }

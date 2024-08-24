@@ -40,8 +40,8 @@ import com.example.braintrainer.presentation.uiStates.AuthUiState
 fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val uiState by authViewModel.uiState.collectAsState()
 
-    // Mostrar diálogo de re-autenticación si es necesario
     /*
+    // Mostrar diálogo de re-autenticación si es necesario
     if (uiState.showDialog) {
         ReauthDialog(
             errorPassword = uiState.showErrorDialog,
@@ -60,7 +60,7 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
             verticalArrangement = Arrangement.Center
         ) {
             ProfileInfoSection(uiState)
-            Spacer(modifier = Modifier.height(32.dp)) // Espacio entre el email y los botones
+            Spacer(modifier = Modifier.height(32.dp))
             AccountActionsSection(authViewModel)
             NavigateOnSignOut(uiState, navController)
         }
