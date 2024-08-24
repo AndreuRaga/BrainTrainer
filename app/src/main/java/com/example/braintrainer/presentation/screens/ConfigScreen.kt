@@ -10,17 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,9 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -51,6 +41,7 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
     val uiState by authViewModel.uiState.collectAsState()
 
     // Mostrar diálogo de re-autenticación si es necesario
+    /*
     if (uiState.showDialog) {
         ReauthDialog(
             errorPassword = uiState.showErrorDialog,
@@ -58,6 +49,7 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
             onDismiss = { authViewModel.showDialog(false) }
         )
     }
+     */
     Scaffold(bottomBar = { BottomBarMenu(navController) }) { innerPadding ->
         Column(
             modifier = Modifier
@@ -162,7 +154,7 @@ fun NavigateOnSignOut(uiState: AuthUiState, navController: NavHostController) {
         }
     }
 }
-
+/*
 @Composable
 fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
     var password by remember { mutableStateOf("") }
@@ -228,3 +220,4 @@ fun PasswordVisibilityToggle(isVisible: Boolean, onToggle: (Boolean) -> Unit) {
         Icon(imageVector = image, contentDescription = description)
     }
 }
+ */
