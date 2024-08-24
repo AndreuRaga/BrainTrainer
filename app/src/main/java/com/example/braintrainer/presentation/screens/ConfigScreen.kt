@@ -50,16 +50,17 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            ProfileInfoSection(uiState)
+            ProfileInfo(uiState)
             Spacer(modifier = Modifier.height(32.dp))
             AccountActionsSection(authViewModel)
+            SignOutButton(authViewModel)
             NavigateOnSignOut(uiState, navController)
         }
     }
 }
 
 @Composable
-fun ProfileInfoSection(uiState: AuthUiState) {
+fun ProfileInfo(uiState: AuthUiState) {
     uiState.profilePictureUrl?.let {
         AsyncImage(
             model = it,
@@ -124,7 +125,10 @@ fun AccountActionsSection(authViewModel: AuthViewModel) {
             }
         )
     }
+}
 
+@Composable
+fun SignOutButton(authViewModel: AuthViewModel) {
     Button(
         onClick = { authViewModel.signOut() },
         modifier = Modifier
