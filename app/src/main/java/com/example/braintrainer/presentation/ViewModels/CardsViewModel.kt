@@ -18,10 +18,10 @@ import javax.inject.Inject
 class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : ViewModel() {
     private val _uiState = MutableStateFlow(CardsUiState())
     val uiState = _uiState.asStateFlow()
+
     private val gameId = checkNotNull(savedStateHandle["gameId"])
 
-    private var firstCard: CardData? = null
-    private var secondCard: CardData? = null
+    private var cardsToCompare: List<CardData> = emptyList()
 
     init {
         _uiState.value = _uiState.value.copy(gameId = gameId.toString())
@@ -60,50 +60,60 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
     fun onCardClicked(card: CardData) {
         if (uiState.value.areCardsBlocked || card.isRevealed) return
         viewModelScope.launch {
-            checkMatch(card)
+            revealCard(card)
+            checkMatch()
         }
     }
 
-    private suspend fun checkMatch(card: CardData) {
-        if (firstCard == null) {
-            _uiState.update {
-                it.copy(cards = it.cards.map { if (it == card) it.copy(isRevealed = true) else it })
+    private fun revealCard(card: CardData) {
+        _uiState.update { currentState ->
+            val updatedCards = currentState.cards.map {
+                if (it.id == card.id) it.copy(isRevealed = true) else it
             }
-            firstCard = card
-        } else if (secondCard == null && card.id != firstCard!!.id) {
-            _uiState.update {
-                it.copy(cards = it.cards.map { if (it == card) it.copy(isRevealed = true) else it })
-            }
-            secondCard = card
+            currentState.copy(cards = updatedCards)
+        }
+        cardsToCompare += card
+    }
+
+    private suspend fun checkMatch() {
+        if (cardsToCompare.size == 2) {
             _uiState.update { it.copy(areCardsBlocked = true) }
-            if (firstCard!!.image == secondCard!!.image) { // Si las cartas coinciden
-                firstCard = null
-                secondCard = null
-                _uiState.update {
-                    it.copy(
-                        areCardsBlocked = false,
-                        points = it.points + 1,
-                        attempts = it.attempts + 1
-                    )
-                }
-            } else { // Si las cartas no coinciden
-                delay(1000L)
-                _uiState.update {
-                    it.copy(cards = it.cards.map {
-                        if (it.id == firstCard!!.id || it.id == secondCard!!.id) it.copy(
-                            isRevealed = false
-                        ) else it
-                    })
-                }
-                firstCard = null
-                secondCard = null
-                _uiState.update {
-                    it.copy(
-                        areCardsBlocked = false,
-                        attempts = it.attempts + 1
-                    )
-                }
+            if (cardsToCompare[0].image == cardsToCompare[1].image) {
+                onCardsMatch()
+            } else {
+                onCardsMismatch()
             }
         }
+    }
+
+    private fun onCardsMatch() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                points = currentState.points + 1,
+                attempts = currentState.attempts + 1
+            )
+        }
+        resetSelection()
+    }
+
+    private suspend fun onCardsMismatch() {
+        delay(1000L)
+        _uiState.update { currentState ->
+            val updatedCards = currentState.cards.map {
+                if (it.id == cardsToCompare[0].id || it.id == cardsToCompare[1].id) it.copy(
+                    isRevealed = false
+                ) else it
+            }
+            currentState.copy(
+                cards = updatedCards,
+                attempts = currentState.attempts + 1
+            )
+        }
+        resetSelection()
+    }
+
+    private fun resetSelection() {
+        cardsToCompare = emptyList()
+        _uiState.update { it.copy(areCardsBlocked = false) }
     }
 }
