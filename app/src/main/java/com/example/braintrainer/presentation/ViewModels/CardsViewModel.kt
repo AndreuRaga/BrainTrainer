@@ -51,7 +51,7 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
         delay(2000L)
         _uiState.update {
             it.copy(
-                cards = it.cards.map { it.copy(isRevealed = false) },
+                cards = it.cards.map { card -> card.copy(isRevealed = false) },
                 areCardsBlocked = false
             )
         }
