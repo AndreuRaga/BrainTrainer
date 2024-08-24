@@ -40,6 +40,8 @@ import com.example.braintrainer.presentation.uiStates.AuthUiState
 @Composable
 fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val uiState by authViewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
 
     Scaffold(bottomBar = { BottomBarMenu(navController) }) { innerPadding ->
         Column(
@@ -52,7 +54,18 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
         ) {
             ProfileInfo(uiState)
             Spacer(modifier = Modifier.height(32.dp))
-            AccountActionsSection(authViewModel)
+            DeleteAccountButton(
+                onDeleteClicked = { showDeleteConfirmationDialog = true }
+            )
+            if (showDeleteConfirmationDialog) {
+                DeleteConfirmationDialog(
+                    onConfirm = {
+                        authViewModel.deleteUser(context)
+                        showDeleteConfirmationDialog = false
+                    },
+                    onDismiss = { showDeleteConfirmationDialog = false}
+                )
+            }
             SignOutButton(authViewModel)
             NavigateOnSignOut(uiState, navController)
         }
@@ -90,11 +103,9 @@ fun ProfileInfo(uiState: AuthUiState) {
 }
 
 @Composable
-fun AccountActionsSection(authViewModel: AuthViewModel) {
-    val context = LocalContext.current
-    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
+fun DeleteAccountButton(onDeleteClicked: () -> Unit) {
     Button(
-        onClick = { showDeleteConfirmationDialog = true },
+        onClick = onDeleteClicked,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
@@ -104,26 +115,6 @@ fun AccountActionsSection(authViewModel: AuthViewModel) {
         )
     ) {
         Text("Borrar cuenta")
-    }
-    if (showDeleteConfirmationDialog) {
-        AlertDialog(
-            onDismissRequest = { showDeleteConfirmationDialog = false },
-            title = { Text("¡Atención!") },
-            text = { Text("¿Estás seguro de que quieres borrar tu cuenta? Ten en cuenta que perderás todo tu pogreso en Brain Trainer.") },
-            confirmButton = {
-                Button(onClick = {
-                    authViewModel.deleteUser(context)
-                    showDeleteConfirmationDialog = false
-                }) {
-                    Text("Sí")
-                }
-            },
-            dismissButton = {
-                Button(onClick = { showDeleteConfirmationDialog = false }) {
-                    Text("No")
-                }
-            }
-        )
     }
 }
 
@@ -138,6 +129,25 @@ fun SignOutButton(authViewModel: AuthViewModel) {
     ) {
         Text("Cerrar sesión")
     }
+}
+
+@Composable
+fun DeleteConfirmationDialog(onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("¡Atención!") },
+        text = { Text("¿Estás seguro de que quieres borrar tu cuenta? Ten en cuenta que perderás todo tu pogreso en Brain Trainer.") },
+        confirmButton = {
+            Button(onClick = onConfirm) {
+                Text("Sí")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onDismiss) {
+                Text("No")
+            }
+        }
+    )
 }
 
 @Composable
