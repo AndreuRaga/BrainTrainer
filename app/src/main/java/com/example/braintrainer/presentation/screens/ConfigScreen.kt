@@ -40,16 +40,6 @@ import com.example.braintrainer.presentation.uiStates.AuthUiState
 fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel) {
     val uiState by authViewModel.uiState.collectAsState()
 
-    /*
-    // Mostrar diálogo de re-autenticación si es necesario
-    if (uiState.showDialog) {
-        ReauthDialog(
-            errorPassword = uiState.showErrorDialog,
-            onConfirm = { password -> authViewModel.reauthUser(password) },
-            onDismiss = { authViewModel.showDialog(false) }
-        )
-    }
-     */
     Scaffold(bottomBar = { BottomBarMenu(navController) }) { innerPadding ->
         Column(
             modifier = Modifier
@@ -154,70 +144,3 @@ fun NavigateOnSignOut(uiState: AuthUiState, navController: NavHostController) {
         }
     }
 }
-/*
-@Composable
-fun ReauthDialog(errorPassword: Boolean, onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
-    var password by remember { mutableStateOf("") }
-    var passwordVisible by remember { mutableStateOf(false) }
-    val visualTransformation =
-        if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation()
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text("¡Atención!", fontWeight = FontWeight.Bold) },
-        text = {
-            Column {
-                Text("Ten en cuenta que si borras tu cuenta se perderá todo tu pogreso en Brain Trainer.")
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text("Introduce tu contraseña") },
-                    visualTransformation = visualTransformation,
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    supportingText = {
-                        if (errorPassword) Text(
-                            "Contraseña incorrecta.",
-                            color = Color.Red
-                        )
-                    },
-                    isError = errorPassword,
-                    trailingIcon = {
-                        PasswordVisibilityToggle(passwordVisible) { passwordVisible = !it }
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
-            }
-        },
-        confirmButton = {
-            Button(
-                onClick = { onConfirm(password) },
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Text("Confirmar")
-            }
-        },
-        dismissButton = {
-            Button(
-                onClick = onDismiss,
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Text("Cancelar")
-            }
-        },
-        shape = RoundedCornerShape(8.dp),
-        containerColor = MaterialTheme.colorScheme.surface
-    )
-}
-
-@Composable
-fun PasswordVisibilityToggle(isVisible: Boolean, onToggle: (Boolean) -> Unit) {
-    val image = if (isVisible) Icons.Filled.VisibilityOff else Icons.Filled.Visibility
-    val description = if (isVisible) "Hide password" else "Show password"
-
-    IconButton(onClick = { onToggle(isVisible) }) {
-        Icon(imageVector = image, contentDescription = description)
-    }
-}
- */
