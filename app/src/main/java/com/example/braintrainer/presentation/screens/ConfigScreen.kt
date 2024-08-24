@@ -107,18 +107,40 @@ fun ProfileInfoSection(uiState: AuthUiState) {
 
 @Composable
 fun AccountActionsSection(authViewModel: AuthViewModel) {
+    var showDeleteConfirmationDialog by remember { mutableStateOf(false) }
     Button(
-        onClick = { authViewModel.deleteUser() },
+        onClick = { showDeleteConfirmationDialog = true },
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Red // Cambiar color del botón
+            containerColor = Color.Red
         )
     ) {
         Text("Borrar cuenta")
     }
+    if (showDeleteConfirmationDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirmationDialog = false },
+            title = { Text("¡Atención!") },
+            text = { Text("¿Estás seguro de que quieres borrar tu cuenta? Ten en cuenta que perderás todo tu pogreso en Brain Trainer.") },
+            confirmButton = {
+                Button(onClick = {
+                    authViewModel.deleteUser()
+                    showDeleteConfirmationDialog = false
+                }) {
+                    Text("Sí")
+                }
+            },
+            dismissButton = {
+                Button(onClick = { showDeleteConfirmationDialog = false }) {
+                    Text("No")
+                }
+            }
+        )
+    }
+
     Button(
         onClick = { authViewModel.signOut() },
         modifier = Modifier
