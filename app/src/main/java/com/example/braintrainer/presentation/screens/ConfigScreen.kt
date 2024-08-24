@@ -63,7 +63,7 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
                         authViewModel.deleteUser(context)
                         showDeleteConfirmationDialog = false
                     },
-                    onDismiss = { showDeleteConfirmationDialog = false}
+                    onDismiss = { showDeleteConfirmationDialog = false }
                 )
             }
             SignOutButton(authViewModel)
