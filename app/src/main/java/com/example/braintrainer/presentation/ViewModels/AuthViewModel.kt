@@ -90,7 +90,7 @@ class AuthViewModel @Inject constructor(
                     val result = credentialManager.getCredential(context, request)
                     handleSignInResult(result, onSignInComplete)
                 } catch (e: GetCredentialException) {
-                    Log.d("SignedIn", "Something went very, very, very wrong!!!")
+                    Log.d("SignedIn", "Error during sign in.")
                     onSignInComplete(false)
                 }
             }
