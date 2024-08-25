@@ -40,14 +40,14 @@ class AuthViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
-                isUserSignedIn = authRepository.isUserSignedIn(),
+                isUserSignedIn = authRepository.getCurrentUser() != null,
                 profilePictureUrl = authRepository.getCurrentUser()?.photoUrl.toString(),
                 userName = authRepository.getCurrentUser()?.displayName,
                 userEmail = authRepository.getCurrentUser()?.email
             )
         }
     }
-    */
+     */
 
     fun handleGoogleSignIn(context: Context) {
         viewModelScope.launch {
