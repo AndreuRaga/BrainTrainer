@@ -64,19 +64,34 @@ fun CardsScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = if (timeLeft > 0) "$timeLeft" else "¡A jugar!")
+        Timer(timeLeft)
         ScoreBoard(points, attempts, maxAttempts)
         CardsGrid(cards, isGameBlocked, cardsViewModel::onCardClicked)
     }
 }
 
 @Composable
+fun Timer(timeLeft: Int) {
+    Box( // Centrar el texto del temporizador
+        modifier = Modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = if (timeLeft > 0) "$timeLeft" else "¡A jugar!",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = Color.Red // Ejemplo de color
+        )
+    }
+}
+
+@Composable
 fun ScoreBoard(points: Int, attempts: Int, maxAttempts: Int) {
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceAround,
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
