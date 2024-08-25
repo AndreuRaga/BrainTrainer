@@ -2,7 +2,6 @@ package com.example.braintrainer.data.repositories
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
@@ -47,10 +46,6 @@ class AuthRepositoryImpl @Inject constructor(private val firebaseAuth: FirebaseA
             Log.e("AuthRepository", "Reauthentication failed", e)
             false
         }
-    }
-
-    override fun isUserSignedIn(): Boolean {
-        return firebaseAuth.currentUser != null
     }
 
     override fun getCurrentUser(): FirebaseUser? {
