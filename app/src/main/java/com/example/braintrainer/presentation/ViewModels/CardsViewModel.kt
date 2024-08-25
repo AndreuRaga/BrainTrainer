@@ -24,7 +24,7 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
     private var time = uiState.value.timeLeft
 
     init {
-        _uiState.value = _uiState.value.copy(gameId = gameId.toString())
+        _uiState.update { it.copy(gameId = gameId.toString()) }
         viewModelScope.launch {
             startGame()
         }
@@ -48,6 +48,7 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
                 areCardsBlocked = true
             )
         }
+        delay(1000L)
         startTimer()
         _uiState.update {
             it.copy(
