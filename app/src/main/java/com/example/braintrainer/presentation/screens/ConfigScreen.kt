@@ -55,7 +55,7 @@ fun ConfigScreen(navController: NavHostController, authViewModel: AuthViewModel)
             ProfileInfo(uiState)
             Spacer(modifier = Modifier.height(32.dp))
             DeleteAccountButton(onDeleteClicked = { showDeleteConfirmationDialog = true })
-            SignOutButton(authViewModel)
+            SignOutButton(onSignOutClicked = { authViewModel.signOut() })
         }
     }
 
@@ -119,9 +119,9 @@ fun DeleteAccountButton(onDeleteClicked: () -> Unit) {
 }
 
 @Composable
-fun SignOutButton(authViewModel: AuthViewModel) {
+fun SignOutButton(onSignOutClicked: () -> Unit) {
     Button(
-        onClick = { authViewModel.signOut() },
+        onClick = onSignOutClicked,
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
