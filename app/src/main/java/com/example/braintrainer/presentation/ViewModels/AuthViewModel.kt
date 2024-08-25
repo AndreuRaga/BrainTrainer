@@ -53,14 +53,16 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             googleOneTapSignIn(context) { success ->
                 val user = authRepository.getCurrentUser()
-                _uiState.value = _uiState.value.copy(
-                    isUserSignedIn = success,
-                    profilePictureUrl = user?.photoUrl.toString(),
-                    userName = user?.displayName,
-                    userEmail = user?.email,
-                    showErrorDialog = !success,
-                    errorMessage = if (!success) "Error al iniciar sesión." else null
-                )
+                _uiState.update {
+                    it.copy(
+                        isUserSignedIn = success,
+                        profilePictureUrl = user?.photoUrl.toString(),
+                        userName = user?.displayName,
+                        userEmail = user?.email,
+                        showErrorDialog = !success,
+                        errorMessage = if (!success) "Error al iniciar sesión." else null
+                    )
+                }
                 viewModelScope.launch {
                     if (success) {
                         createUser(user!!)
@@ -152,31 +154,45 @@ class AuthViewModel @Inject constructor(
 
     fun signOut() {
         authRepository.signOut()
-        _uiState.value = _uiState.value.copy(isUserSignedIn = false)
+        _uiState.update { it.copy(isUserSignedIn = false) }
     }
 
     fun deleteUser(context: Context) {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
-                val uid = authRepository.getCurrentUser()!!.uid
-                val success = authRepository.deleteUser()
-                if (success) {
-                    userRepository.deleteUser(uid)
-                    _uiState.value = _uiState.value.copy(isUserSignedIn = false, isLoading = false)
+                val user = authRepository.getCurrentUser()
+                if (user != null) {
+                    val uid = user.uid
+                    val success = authRepository.deleteUser()
+                    if (success) {
+                        userRepository.deleteUser(uid)
+                        _uiState.update { it.copy(isUserSignedIn = false, isLoading = false) }
+                    } else {
+                        _uiState.update {
+                            it.copy(
+                                requiresReauthentication = true,
+                                isLoading = false
+                            )
+                        }
+                        reauthenticateAndDeleteUser(context)
+                    }
                 } else {
-                    _uiState.value = _uiState.value.copy(
-                        requiresReauthentication = true,
-                        isLoading = false
-                    )
-                    reauthenticateAndDeleteUser(context) // Llamar a la función para re-autenticar y eliminar
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = "Error al obtener el usuario actual"
+                        )
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("AuthViewModel", "Error deleting user", e)
-                _uiState.value = _uiState.value.copy(
-                    errorMessage = "Error al borrar la cuenta.",
-                    isLoading = false
-                )
+                _uiState.update {
+                    it.copy(
+                        errorMessage = "Error al borrar la cuenta.",
+                        isLoading = false
+                    )
+                }
             }
         }
     }
@@ -193,29 +209,31 @@ class AuthViewModel @Inject constructor(
                         GoogleIdTokenCredential.createFrom(customCredential.data)
                     val idToken = googleIdTokenCredential.idToken
 
-
                     val success = authRepository.reauthenticateWithGoogle(idToken) // Re-autenticar
                     if (success) {
                         deleteUser(context) // Intentar eliminar de nuevo
                     } else {
-                        _uiState.value =
-                            _uiState.value.copy(
+                        _uiState.update {
+                            it.copy(
                                 errorMessage = "Error al re-autenticar.",
                                 isLoading = false
                             )
+                        }
                     }
                 }
             } catch (e: Exception) {
                 Log.e("AuthViewModel", "Error during reauthentication", e)
-                _uiState.value = _uiState.value.copy(
-                    errorMessage = "Error al re-autenticar.",
-                    isLoading = false
-                )
+                _uiState.update {
+                    it.copy(
+                        errorMessage = "Error al re-autenticar.",
+                        isLoading = false
+                    )
+                }
             }
         }
     }
 
     fun showErrorDialog(show: Boolean) {
-        _uiState.value = _uiState.value.copy(showErrorDialog = show)
+        _uiState.update { it.copy(showErrorDialog = show) }
     }
 }
