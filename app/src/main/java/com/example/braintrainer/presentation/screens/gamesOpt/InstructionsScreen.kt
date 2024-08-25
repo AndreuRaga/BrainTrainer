@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -37,14 +38,14 @@ fun InstructionsScreen(
     navController: NavHostController,
     instructionsViewModel: InstructionsViewModel = hiltViewModel()
 ) {
-    val uiState = instructionsViewModel.uiState.collectAsState()
+    val uiState by instructionsViewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = uiState.value.gameName,
+                        text = uiState.gameName,
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -68,12 +69,12 @@ fun InstructionsScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            InstructionsCard(uiState.value.gameInstructions)
+            InstructionsCard(uiState.gameInstructions)
             Spacer(modifier = Modifier.height(16.dp))
-            BestScoreSection(uiState.value.bestScore)
+            BestScoreSection(uiState.bestScore)
             Spacer(modifier = Modifier.height(32.dp))
             PlayButton(
-                onClick = { navController.navigate(AppScreens.PlayScreen.route + "/${uiState.value.gameId}") }
+                onClick = { navController.navigate(AppScreens.PlayScreen.route + "/${uiState.gameId}") }
             )
         }
     }

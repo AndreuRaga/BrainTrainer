@@ -19,6 +19,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,18 +36,18 @@ fun AddSubScreen(
     navController: NavHostController,
     addSubViewModel: AddSubViewModel = hiltViewModel()
 ) {
-    val uiState = addSubViewModel.uiState.collectAsState()
-    val gameId = uiState.value.gameId
-    val num1 = uiState.value.num1
-    val num2 = uiState.value.num2
-    val operation = uiState.value.operation
-    val answers = uiState.value.answers
-    val points = uiState.value.points
-    val timer = uiState.value.timer
-    val currentOperation = uiState.value.currentOperation
-    val maxOperations = uiState.value.maxOperations
-    val showResult = uiState.value.showResult
-    val isCorrect = uiState.value.isCorrect
+    val uiState by addSubViewModel.uiState.collectAsState()
+    val gameId = uiState.gameId
+    val num1 = uiState.num1
+    val num2 = uiState.num2
+    val operation = uiState.operation
+    val answers = uiState.answers
+    val points = uiState.points
+    val timer = uiState.timer
+    val currentOperation = uiState.currentOperation
+    val maxOperations = uiState.maxOperations
+    val showResult = uiState.showResult
+    val isCorrect = uiState.isCorrect
     LaunchedEffect(currentOperation, timer) {
         if (currentOperation >= maxOperations || timer <= 0) {
             navController.navigate(AppScreens.EndGameScreen.route + "/$gameId/$points")

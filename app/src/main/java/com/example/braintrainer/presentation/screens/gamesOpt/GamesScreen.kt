@@ -12,6 +12,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -26,7 +28,8 @@ fun GamesScreen(
     navController: NavHostController,
     gamesViewModel: GamesViewModel = hiltViewModel()
 ) {
-    val gameCategories = gamesViewModel.uiState
+    val uiState by gamesViewModel.uiState.collectAsState()
+    val gameCategories = uiState.gameCategories
     Scaffold(bottomBar = { BottomBarMenu(navController) }) { innerPadding ->
         LazyColumn(
             contentPadding = PaddingValues(
@@ -36,7 +39,7 @@ fun GamesScreen(
                 bottom = innerPadding.calculateBottomPadding() + 16.dp
             )
         ) {
-            items(gameCategories.value.gameCategories) { category ->
+            items(gameCategories) { category ->
                 Text(
                     text = category.name,
                     style = MaterialTheme.typography.headlineMedium,

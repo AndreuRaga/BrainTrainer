@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -33,10 +34,10 @@ fun EndGameScreen(
     navController: NavHostController,
     endGameViewModel: EndGameViewModel = hiltViewModel()
 ) {
-    val uiState = endGameViewModel.uiState.collectAsState()
-    val points = uiState.value.currentPoints
-    val bestScore = uiState.value.bestScore
-    val isNewRecord = uiState.value.isNewRecord
+    val uiState by endGameViewModel.uiState.collectAsState()
+    val points = uiState.currentPoints
+    val bestScore = uiState.bestScore
+    val isNewRecord = uiState.isNewRecord
 
     Box(
         modifier = Modifier
