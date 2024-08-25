@@ -42,9 +42,11 @@ fun CardsScreen(
     val uiState by cardsViewModel.uiState.collectAsState()
     val gameId = uiState.gameId
     val cards = uiState.cards
+    val isGameBlocked = uiState.isGameBlocked
     val points = uiState.points
     val attempts = uiState.attempts
     val maxAttempts = uiState.maxAttempts
+    val timeLeft = uiState.timeLeft
 
     LaunchedEffect(points, attempts) {
         if (points == cards.size / 2 || attempts == maxAttempts) {
@@ -59,13 +61,9 @@ fun CardsScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (uiState.timeLeft > 0) {
-            Text("${uiState.timeLeft}")
-        } else {
-            Text("¡A jugar!")
-        }
+        Text(text = if (timeLeft > 0) "$timeLeft" else "¡A jugar!")
         ScoreBoard(points, attempts, maxAttempts)
-        CardsGrid(cards, uiState.areCardsBlocked, cardsViewModel::onCardClicked)
+        CardsGrid(cards, isGameBlocked, cardsViewModel::onCardClicked)
     }
 }
 
@@ -117,10 +115,14 @@ fun CardItem(card: CardData, isBlocked: Boolean, onCardClicked: (CardData) -> Un
             enabled = !isBlocked && !card.isRevealed // Deshabilitar el botón si la carta está bloqueada o si está revelada
         ) {
             Image(
-                painter = painterResource(id = if (card.isRevealed) card.image else R.drawable.card_background),
+                painter = painterResource(id = getCardImage(card)),
                 contentDescription = "Imagen que funciona como botón",
                 modifier = Modifier.fillMaxSize()
             )
         }
     }
+}
+
+private fun getCardImage(card: CardData): Int {
+    return if (card.isRevealed) card.image else R.drawable.card_background
 }

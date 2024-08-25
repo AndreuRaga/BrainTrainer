@@ -21,7 +21,6 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
 
     private val gameId = checkNotNull(savedStateHandle["gameId"])
     private var cardsToCompare: List<CardData> = emptyList()
-    private var time = uiState.value.timeLeft
 
     init {
         _uiState.update { it.copy(gameId = gameId.toString()) }
@@ -31,6 +30,17 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
     }
 
     private suspend fun startGame() {
+        _uiState.update { it.copy(cards = createCards(), isGameBlocked = true) }
+        startTimer()
+        _uiState.update {
+            it.copy(
+                cards = it.cards.map { card -> card.copy(isRevealed = false) },
+                isGameBlocked = false
+            )
+        }
+    }
+
+    private fun createCards(): List<CardData> {
         val images = listOf(
             R.drawable.card0,
             R.drawable.card1,
@@ -42,33 +52,19 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
             R.drawable.card7
         )
         val pairs = (images + images).shuffled()
-        _uiState.update {
-            it.copy(
-                cards = pairs.mapIndexed { index, image -> CardData(index, image, true) },
-                areCardsBlocked = true
-            )
-        }
-        delay(1000L)
-        startTimer()
-        _uiState.update {
-            it.copy(
-                cards = it.cards.map { card -> card.copy(isRevealed = false) },
-                areCardsBlocked = false
-            )
-        }
+        return pairs.mapIndexed { index, image -> CardData(index, image, true) }
     }
 
     private suspend fun startTimer() {
-        _uiState.update { it.copy(timeLeft = time) }
-        while (time > 0) {
+        delay(1000L)
+        repeat(uiState.value.timeLeft) {
+            _uiState.update { it.copy(timeLeft = it.timeLeft - 1) }
             delay(1000L)
-            time--
-            _uiState.update { it.copy(timeLeft = time) }
         }
     }
 
     fun onCardClicked(card: CardData) {
-        if (uiState.value.areCardsBlocked || card.isRevealed) return
+        if (uiState.value.isGameBlocked || card.isRevealed) return
         viewModelScope.launch {
             revealCard(card)
             checkMatch()
@@ -87,7 +83,7 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
 
     private suspend fun checkMatch() {
         if (cardsToCompare.size == 2) {
-            _uiState.update { it.copy(areCardsBlocked = true) }
+            _uiState.update { it.copy(isGameBlocked = true) }
             if (cardsToCompare[0].image == cardsToCompare[1].image) {
                 onCardsMatch()
             } else {
@@ -97,10 +93,10 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
     }
 
     private fun onCardsMatch() {
-        _uiState.update { currentState ->
-            currentState.copy(
-                points = currentState.points + 1,
-                attempts = currentState.attempts + 1
+        _uiState.update {
+            it.copy(
+                points = it.points + 1,
+                attempts = it.attempts + 1
             )
         }
         resetSelection()
@@ -108,15 +104,16 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
 
     private suspend fun onCardsMismatch() {
         delay(1000L)
-        _uiState.update { currentState ->
-            val updatedCards = currentState.cards.map {
-                if (it.id == cardsToCompare[0].id || it.id == cardsToCompare[1].id) it.copy(
-                    isRevealed = false
-                ) else it
-            }
-            currentState.copy(
-                cards = updatedCards,
-                attempts = currentState.attempts + 1
+        _uiState.update {
+            it.copy(
+                cards = it.cards.map { card ->
+                    if (card.id == cardsToCompare[0].id || card.id == cardsToCompare[1].id) {
+                        card.copy(isRevealed = false)
+                    } else {
+                        card
+                    }
+                },
+                attempts = it.attempts + 1
             )
         }
         resetSelection()
@@ -124,6 +121,6 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
 
     private fun resetSelection() {
         cardsToCompare = emptyList()
-        _uiState.update { it.copy(areCardsBlocked = false) }
+        _uiState.update { it.copy(isGameBlocked = false) }
     }
 }
