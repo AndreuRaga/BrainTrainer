@@ -32,14 +32,14 @@ import com.example.braintrainer.presentation.ViewModels.PlayViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = hiltViewModel()) {
-    val game = playViewModel.uiState.collectAsState()
+    val game by playViewModel.uiState.collectAsState()
     var showDialog by remember { mutableStateOf(false) }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = game.value?.name ?: "Nombre del juego",
+                        text = game?.name ?: "Nombre del juego",
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -63,7 +63,7 @@ fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = 
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            when (game.value?.id) {
+            when (game?.id) {
                 "add_sub" -> AddSubScreen(navController)
                 "cards" -> CardsScreen(navController)
                 else -> Text("Juego no disponible")
