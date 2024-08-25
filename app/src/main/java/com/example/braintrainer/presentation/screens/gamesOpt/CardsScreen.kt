@@ -59,6 +59,11 @@ fun CardsScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        if (uiState.timeLeft > 0) {
+            Text("${uiState.timeLeft}")
+        } else {
+            Text("¡A jugar!")
+        }
         ScoreBoard(points, attempts, maxAttempts)
         CardsGrid(cards, uiState.areCardsBlocked, cardsViewModel::onCardClicked)
     }

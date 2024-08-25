@@ -20,8 +20,8 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
     val uiState = _uiState.asStateFlow()
 
     private val gameId = checkNotNull(savedStateHandle["gameId"])
-
     private var cardsToCompare: List<CardData> = emptyList()
+    private var time = uiState.value.timeLeft
 
     init {
         _uiState.value = _uiState.value.copy(gameId = gameId.toString())
@@ -48,12 +48,21 @@ class CardsViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : V
                 areCardsBlocked = true
             )
         }
-        delay(2000L)
+        startTimer()
         _uiState.update {
             it.copy(
                 cards = it.cards.map { card -> card.copy(isRevealed = false) },
                 areCardsBlocked = false
             )
+        }
+    }
+
+    private suspend fun startTimer() {
+        _uiState.update { it.copy(timeLeft = time) }
+        while (time > 0) {
+            delay(1000L)
+            time--
+            _uiState.update { it.copy(timeLeft = time) }
         }
     }
 

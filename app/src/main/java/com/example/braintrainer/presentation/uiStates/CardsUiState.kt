@@ -6,7 +6,8 @@ data class CardsUiState(
     val areCardsBlocked: Boolean = false, //Establece si se puede interactuar con las cartas o no
     val points: Int = 0,
     val attempts: Int = 0,
-    val maxAttempts: Int = 12
+    val maxAttempts: Int = 12,
+    val timeLeft: Int = 5 // Tiempo inicial en segundos
 )
 
 data class CardData(
