@@ -37,10 +37,15 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
 
     override suspend fun deleteUser(userId: String) {
         try {
+            val scoresCollectionRef = db.collection("users").document(userId).collection("scores")
+            val scoresDocuments = scoresCollectionRef.get().await().documents
+            for (document in scoresDocuments) {
+                scoresCollectionRef.document(document.id).delete().await()
+            }
             db.collection("users").document(userId).delete().await()
-            Log.d("UserRepository", "User deleted successfully")
+            Log.d("UserRepository", "User data deleted successfully from DB")
         } catch (e: Exception) {
-            Log.w("UserRepository", "Error deleting user", e)
+            Log.w("UserRepository", "Error deleting user data from DB", e)
         }
     }
 }
