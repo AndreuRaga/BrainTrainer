@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.braintrainer.R
@@ -64,8 +65,10 @@ fun AuthScreen(navController: NavHostController, authViewModel: AuthViewModel) {
         AppIcon()
         Spacer(modifier = Modifier.height(50.dp))
         SignInSection(authViewModel, context)
+        /*
         Spacer(modifier = Modifier.height(16.dp))
         SignUpSection()
+         */
     }
 }
 
@@ -90,7 +93,10 @@ fun AppIcon() {
 
 @Composable
 fun SignInSection(authViewModel: AuthViewModel, context: Context) {
-    Text("¿Ya tienes cuenta?")
+    Text(
+        text = "Necesitas una cuenta de Google para poder usar la aplicación.",
+        textAlign = TextAlign.Center
+    )
     GoogleSignInButton(authViewModel, context)
 }
 
@@ -112,7 +118,7 @@ fun GoogleSignInButton(authViewModel: AuthViewModel, context: Context) {
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.size(8.dp))
-        Text("Inicia sesión")
+        Text("Iniciar sesión")
     }
 }
 
