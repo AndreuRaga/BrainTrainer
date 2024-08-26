@@ -75,7 +75,7 @@ fun CardsScreen(
 
 @Composable
 fun Timer(timeLeft: Int) {
-    Box( // Centrar el texto del temporizador
+    Box(
         modifier = Modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
@@ -83,7 +83,7 @@ fun Timer(timeLeft: Int) {
             text = if (timeLeft > 0) "$timeLeft" else "¡A jugar!",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            color = Color.Red // Ejemplo de color
+            color = Color.Red
         )
     }
 }
