@@ -1,4 +1,4 @@
-package com.example.braintrainer
+package com.example.braintrainer.di
 
 import android.content.Context
 import androidx.credentials.CredentialManager

@@ -1,4 +1,4 @@
-package com.example.braintrainer
+package com.example.braintrainer.di
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
