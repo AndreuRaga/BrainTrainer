@@ -78,7 +78,8 @@ fun WelcomeText() {
         text = "¡Bienvenido/a a Brain Trainer!",
         style = MaterialTheme.typography.headlineMedium,
         fontWeight = FontWeight.Bold,
-        color = Color.Black
+        color = Color.Black,
+        textAlign = TextAlign.Center
     )
 }
 
