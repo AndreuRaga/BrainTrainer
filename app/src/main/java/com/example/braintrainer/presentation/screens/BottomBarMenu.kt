@@ -3,20 +3,19 @@ package com.example.braintrainer.presentation.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.navigation.AppScreens
 
 @Composable
 fun BottomBarMenu(navController: NavHostController) {
     val items = listOf(AppScreens.GamesScreen, AppScreens.StatsScreen, AppScreens.ConfigScreen)
-    NavigationBar(containerColor = MaterialTheme.colorScheme.surfaceVariant) {
+    NavigationBar(containerColor = Color(0xFF495D92)) {
         items.forEach { screen ->
             NavigationBarItem(
                 selected = navController.currentDestination?.route == screen.route,
@@ -37,17 +36,17 @@ fun BottomBarMenu(navController: NavHostController) {
                             imageVector = screen.icon!!,
                             contentDescription = screen.title,
                             tint = if (navController.currentDestination?.route == screen.route) {
-                                MaterialTheme.colorScheme.primary // Color del icono seleccionado
+                                Color(0xFF495D92) // Color del icono seleccionado
                             } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant // Color del icono no seleccionado
+                                Color.White // Color del icono no seleccionado
                             }
                         )
                         Text(
                             text = screen.title ?: "",
                             color = if (navController.currentDestination?.route == screen.route) {
-                                MaterialTheme.colorScheme.primary // Color del texto seleccionado
+                                Color(0xFF495D92) // Color del texto seleccionado
                             } else {
-                                MaterialTheme.colorScheme.onSurfaceVariant // Color del texto no seleccionado
+                                Color.White // Color del texto no seleccionado
                             }
                         )
                     }
@@ -55,10 +54,4 @@ fun BottomBarMenu(navController: NavHostController) {
             )
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun BottomBarMenuPreview() {
-
 }

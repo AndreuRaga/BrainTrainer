@@ -133,7 +133,7 @@ fun SignOutButton(onSignOutClicked: () -> Unit) {
             .padding(vertical = 4.dp),
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF428BCA)
+            containerColor = Color(0xFF495D92)
         )
     ) {
         Text("Cerrar sesión",
