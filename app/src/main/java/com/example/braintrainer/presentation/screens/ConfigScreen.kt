@@ -87,6 +87,7 @@ fun ProfileInfo(uiState: AuthUiState) {
     uiState.userName?.let {
         Text(
             text = it,
+            color = Color.Black,
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             maxLines = 1,
@@ -96,6 +97,7 @@ fun ProfileInfo(uiState: AuthUiState) {
     uiState.userEmail?.let {
         Text(
             text = it,
+            color = Color.Black,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
         )
@@ -114,7 +116,11 @@ fun DeleteAccountButton(onDeleteClicked: () -> Unit) {
             containerColor = Color.Red
         )
     ) {
-        Text("Borrar cuenta")
+        Text(
+            text = "Borrar cuenta",
+            color = Color.White,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
@@ -125,9 +131,15 @@ fun SignOutButton(onSignOutClicked: () -> Unit) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF428BCA)
+        )
     ) {
-        Text("Cerrar sesión")
+        Text("Cerrar sesión",
+            color = Color.White,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
