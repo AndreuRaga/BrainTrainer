@@ -96,7 +96,8 @@ fun AppIcon() {
 fun SignInSection(authViewModel: AuthViewModel, context: Context) {
     Text(
         text = "Necesitas una cuenta de Google para poder usar la aplicación.",
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        color = Color.Black
     )
     GoogleSignInButton(authViewModel, context)
 }
@@ -119,7 +120,11 @@ fun GoogleSignInButton(authViewModel: AuthViewModel, context: Context) {
             modifier = Modifier.size(24.dp)
         )
         Spacer(modifier = Modifier.size(8.dp))
-        Text("Iniciar sesión")
+        Text(
+            text = "Iniciar sesión",
+            fontWeight = FontWeight.Bold,
+            color = Color.Black
+        )
     }
 }
 
