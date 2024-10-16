@@ -107,7 +107,12 @@ fun ScoreBoard(points: Int, attempts: Int, maxAttempts: Int) {
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Puntos: $points", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = "Puntos: $points",
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
 
@@ -123,7 +128,8 @@ fun ScoreBoard(points: Int, attempts: Int, maxAttempts: Int) {
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    "Intentos: $attempts/$maxAttempts",
+                    text = "Intentos: $attempts/$maxAttempts",
+                    color = Color.Black,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
