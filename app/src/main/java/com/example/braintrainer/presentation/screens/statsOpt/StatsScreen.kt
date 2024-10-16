@@ -59,17 +59,17 @@ fun StatsTabs(tabs: List<AppScreens>, selectedTabIndex: Int, onTabSelected: (Int
         modifier = Modifier.padding(16.dp),
         selectedTabIndex = selectedTabIndex,
         containerColor = Color.Transparent, // Eliminar el color de fondo por defecto
-        contentColor = MaterialTheme.colorScheme.primary, // Cambiar el color de las tabs
+        contentColor = Color(0xFF495D92), // Cambiar el color de las tabs
         indicator = { tabPositions ->
             SecondaryIndicator(
                 Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex]),
-                color = MaterialTheme.colorScheme.primary // Cambiar el color del indicador
+                color = Color(0xFF495D92) // Cambiar el color del indicador
             )
         }
     ) {
         tabs.forEachIndexed { index, screen ->
             Tab(
-                text = { Text(screen.title!!, fontWeight = FontWeight.Bold) },
+                text = { Text(text = screen.title!!, color = Color(0xFF495D92), fontWeight = FontWeight.Bold) },
                 selected = selectedTabIndex == index,
                 onClick = { onTabSelected(index) }
             )
@@ -79,12 +79,12 @@ fun StatsTabs(tabs: List<AppScreens>, selectedTabIndex: Int, onTabSelected: (Int
 
 @Composable
 fun LoadingScreen() {
-    Text("Cargando estadísticas...", modifier = Modifier.padding(16.dp))
+    Text(text = "Cargando estadísticas...", modifier = Modifier.padding(16.dp))
 }
 
 @Composable
 fun ErrorScreen(message: String) {
-    Text("Error: $message", modifier = Modifier.padding(16.dp))
+    Text(text = "Error: $message", modifier = Modifier.padding(16.dp))
 }
 
 @Composable
@@ -94,7 +94,7 @@ fun StatItem(title: String, score: String, performance: String, progress: Float)
             .fillMaxWidth()
             .padding(vertical = 4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            containerColor = Color.LightGray,
         )
     ) {
         Column(
@@ -102,21 +102,21 @@ fun StatItem(title: String, score: String, performance: String, progress: Float)
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            Text(text = title, style = MaterialTheme.typography.titleMedium)
+            Text(text = title, color = Color.Black, style = MaterialTheme.typography.titleMedium)
             Spacer(modifier = Modifier.height(8.dp))
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("$score punto(s)", style = MaterialTheme.typography.bodyMedium)
-                Text("Rendimiento: $performance", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "$score punto(s)", color = Color.Black, style = MaterialTheme.typography.bodyMedium)
+                Text(text = "Rendimiento: $performance", color = Color.Black, style = MaterialTheme.typography.bodyMedium)
             }
             Spacer(modifier = Modifier.height(8.dp))
             LinearProgressIndicator(
                 progress = { progress },
                 modifier = Modifier.fillMaxWidth(),
-                color = MaterialTheme.colorScheme.primary,
+                color = Color(0xFF495D92),
                 trackColor = Color.White
             )
         }
