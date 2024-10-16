@@ -23,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,6 +41,7 @@ fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = 
                 title = {
                     Text(
                         text = game?.name ?: "Nombre del juego",
+                        color = Color.Black,
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -48,7 +50,8 @@ fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = 
                     IconButton(onClick = { showDialog = true }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Volver"
+                            contentDescription = "Volver",
+                            tint = Color.Black
                         )
                     }
                 }
@@ -66,7 +69,10 @@ fun PlayScreen(navController: NavHostController, playViewModel: PlayViewModel = 
             when (game?.id) {
                 "add_sub" -> AddSubScreen(navController)
                 "cards" -> CardsScreen(navController)
-                else -> Text("Juego no disponible")
+                else -> Text(
+                    text = "Juego no disponible",
+                    color = Color.Black
+                )
             }
             if (showDialog) {
                 AlertDialog(
