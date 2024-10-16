@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +22,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -42,7 +44,7 @@ fun EndGameScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(Color.White)
             .padding(16.dp),
         contentAlignment = Alignment.Center
     ) {
@@ -65,7 +67,7 @@ fun ScoreSection(bestScore: Int, points: Int) {
             .fillMaxWidth()
             .padding(8.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
+            containerColor = Color.LightGray,
         )
     ) {
         Row(
@@ -88,14 +90,14 @@ fun ScoreColumn(title: String, score: Int) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = Color.Black
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "$score punto(s)",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = Color.Black
         )
     }
 }
@@ -110,6 +112,7 @@ fun ResultMessage(isNewRecord: Boolean) {
 
     Text(
         text = message,
+        color = Color.Black,
         style = MaterialTheme.typography.headlineMedium,
         fontWeight = FontWeight.Bold,
         textAlign = TextAlign.Center
@@ -120,8 +123,16 @@ fun ResultMessage(isNewRecord: Boolean) {
 fun PlayOtherGamesButton(navController: NavHostController) {
     Button(
         onClick = { navController.navigate(AppScreens.GamesScreen.route) },
-        modifier = Modifier.width(200.dp)
+        modifier = Modifier.width(200.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF495D92)
+        )
     ) {
-        Text("Jugar a otros juegos")
+        Text(
+            text = "Jugar a otros juegos",
+            color = Color.White,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
     }
 }
