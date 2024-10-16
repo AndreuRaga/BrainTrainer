@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -42,6 +43,7 @@ fun GamesScreen(
             items(gameCategories) { category ->
                 Text(
                     text = category.name,
+                    color = Color.Black,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -52,7 +54,7 @@ fun GamesScreen(
                             .padding(vertical = 4.dp),
                         shape = RoundedCornerShape(8.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            containerColor = Color.LightGray
                         ),
                         onClick = {
                             navController.navigate(AppScreens.InstructionsScreen.route + "/${game.id}")
@@ -60,6 +62,7 @@ fun GamesScreen(
                     ) {
                         Text(
                             text = game.name,
+                            color = Color.Black,
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(16.dp),
                             fontWeight = FontWeight.Medium
