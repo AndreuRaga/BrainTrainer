@@ -12,7 +12,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -25,7 +27,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
@@ -46,6 +50,7 @@ fun InstructionsScreen(
                 title = {
                     Text(
                         text = uiState.gameName,
+                        color = Color.Black,
                         style = MaterialTheme.typography.headlineMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -54,7 +59,8 @@ fun InstructionsScreen(
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Volver"
+                            contentDescription = "Volver",
+                            tint = Color.Black
                         )
                     }
                 }
@@ -86,19 +92,27 @@ fun InstructionsCard(instructions: String) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color.LightGray
+        )
     ) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
         ) {
             Text(
-                text = "Instrucciones:",
+                text = "Instrucciones",
+                color = Color.Black,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(8.dp))
-            Text(instructions)
+            Text(
+                text = instructions,
+                color = Color.Black,
+                style = MaterialTheme.typography.bodyMedium
+            )
         }
     }
 }
@@ -110,15 +124,26 @@ fun BestScoreSection(bestScore: Int?) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Mejor puntuación:",
+            text = "Mejor puntuación",
+            color = Color.Black,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold
         )
-        Spacer(modifier = Modifier.height(8.dp))
+        //Spacer(modifier = Modifier.height(8.dp))
         if (bestScore != null) {
-            Text(text = "$bestScore punto(s)")
+            Text(
+                text = "$bestScore punto(s)",
+                color = Color.Black,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
         } else {
-            Text(text = "Aún no has jugado a este juego.")
+            Text(
+                text = "Aún no has jugado a este juego.",
+                color = Color.Black,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Center
+            )
         }
     }
 }
@@ -129,8 +154,15 @@ fun PlayButton(onClick: () -> Unit) {
     Button(
         onClick = onClick,
         modifier = Modifier.width(200.dp),
-        shape = RoundedCornerShape(20.dp)
+        shape = RoundedCornerShape(20.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF495D92)
+        )
     ) {
-        Text("Jugar")
+        Text(
+            text = "Jugar",
+            color = Color.White,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
