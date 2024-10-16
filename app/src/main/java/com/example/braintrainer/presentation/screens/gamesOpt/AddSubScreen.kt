@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
@@ -76,7 +77,8 @@ fun AddSubScreen(
         }
 
         Text(
-            "$num1 $operation $num2",
+            text = "$num1 $operation $num2",
+            color = Color.Black,
             fontSize = 30.sp,
             fontWeight = FontWeight.Bold
         )
@@ -117,7 +119,11 @@ fun TimerCard(timer: Int) {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("$timer s", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(text = "$timer s",
+                color = Color.Black,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
@@ -135,7 +141,11 @@ fun ScoreCard(points: Int) {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("Puntos: $points", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+            Text(text = "Puntos: $points",
+                color = Color.Black,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
@@ -153,7 +163,11 @@ fun OperationCard(currentOperation: Int, maxOperations: Int) {
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text("$currentOperation/$maxOperations", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            Text(text = "$currentOperation/$maxOperations",
+                color = Color.Black,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
         }
     }
 }
@@ -165,16 +179,22 @@ fun AnswerButton(answer: Int, onClick: (Int) -> Unit) {
         modifier = Modifier
             .width(120.dp)
             .height(60.dp),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF495D92))
     ) {
-        Text(answer.toString(), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+        Text(
+            text = answer.toString(),
+            color = Color.White,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
     }
 }
 
 @Composable
 fun ResultText(isCorrect: Boolean) {
     Text(
-        if (isCorrect) "¡Correcto!" else "¡Incorrecto!",
+        text = if (isCorrect) "¡Correcto!" else "¡Incorrecto!",
         fontSize = 24.sp,
         fontWeight = FontWeight.Bold,
         color = if (isCorrect) Color.Green else Color.Red
