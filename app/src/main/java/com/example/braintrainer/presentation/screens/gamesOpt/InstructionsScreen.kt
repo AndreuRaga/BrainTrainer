@@ -76,7 +76,7 @@ fun InstructionsScreen(
             verticalArrangement = Arrangement.Center
         ) {
             InstructionsCard(uiState.gameInstructions)
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(32.dp))
             BestScoreSection(uiState.bestScore)
             Spacer(modifier = Modifier.height(32.dp))
             PlayButton(
