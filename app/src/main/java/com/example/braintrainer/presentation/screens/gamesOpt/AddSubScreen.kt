@@ -31,6 +31,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.braintrainer.presentation.ViewModels.AddSubViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
+import kotlinx.coroutines.delay
 
 @Composable
 fun AddSubScreen(
@@ -49,8 +50,10 @@ fun AddSubScreen(
     val maxOperations = uiState.maxOperations
     val showResult = uiState.showResult
     val isCorrect = uiState.isCorrect
-    LaunchedEffect(currentOperation, timer) {
-        if (currentOperation >= maxOperations || timer <= 0) {
+    val hasAnswered = uiState.hasAnswered
+    LaunchedEffect(timer, currentOperation, hasAnswered) {
+        if ( timer <= 0 || (currentOperation == maxOperations && hasAnswered)) {
+            delay(1000)
             navController.navigate(AppScreens.EndGameScreen.route + "/$gameId/$points")
             Log.d("MathScreen", "Fin del juego")
         }
@@ -93,7 +96,7 @@ fun AddSubScreen(
                 horizontalArrangement = Arrangement.SpaceAround
             ) {
                 row.forEach { answer ->
-                    AnswerButton(answer = answer) {
+                    AnswerButton(answer = answer, hasAnswered = hasAnswered) {
                         addSubViewModel.checkAnswer(it)
                     }
                 }
@@ -173,12 +176,13 @@ fun OperationCard(currentOperation: Int, maxOperations: Int) {
 }
 
 @Composable
-fun AnswerButton(answer: Int, onClick: (Int) -> Unit) {
+fun AnswerButton(answer: Int, hasAnswered: Boolean,onClick: (Int) -> Unit) {
     Button(
         onClick = { onClick(answer) },
         modifier = Modifier
             .width(120.dp)
             .height(60.dp),
+        enabled = !hasAnswered,
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF495D92))
     ) {

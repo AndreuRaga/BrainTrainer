@@ -9,7 +9,8 @@ data class MathUiState(
     val points: Int = 0,
     val timer: Int = 35,
     val currentOperation: Int = 1,
-    val maxOperations: Int = 25,
+    val maxOperations: Int = 5,
     val showResult: Boolean = false,
-    val isCorrect: Boolean = false
+    val isCorrect: Boolean = false,
+    val hasAnswered: Boolean = false
 )
