@@ -39,6 +39,7 @@ import com.example.braintrainer.R
 import com.example.braintrainer.presentation.ViewModels.CardsViewModel
 import com.example.braintrainer.presentation.navigation.AppScreens
 import com.example.braintrainer.presentation.uiStates.CardData
+import kotlinx.coroutines.delay
 
 @Composable
 fun CardsScreen(
@@ -56,6 +57,7 @@ fun CardsScreen(
 
     LaunchedEffect(points, attempts) {
         if (points == cards.size / 2 || attempts == maxAttempts) {
+            delay(1000)
             navController.navigate(AppScreens.EndGameScreen.route + "/$gameId/$points")
         }
     }
