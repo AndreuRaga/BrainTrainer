@@ -79,11 +79,15 @@ class AddSubViewModel @Inject constructor(savedStateHandle: SavedStateHandle) : 
             isTimerRunning = false
             remainingTime = _uiState.value.timer
             delay(1000)
-            _uiState.value = _uiState.value.copy(showResult = false, hasAnswered = false) // Podría usar hasAnswered para bloquear los botones
+            //_uiState.value = _uiState.value.copy(showResult = false, hasAnswered = false)
 
             if (_uiState.value.currentOperation < _uiState.value.maxOperations && remainingTime > 0) {
                 _uiState.value =
-                    _uiState.value.copy(currentOperation = _uiState.value.currentOperation + 1)
+                    _uiState.value.copy(
+                        currentOperation = _uiState.value.currentOperation + 1,
+                        showResult = false,
+                        hasAnswered = false // Podría usar hasAnswered para bloquear los botones
+                    )
                 generateNewOperation()
                 startTimer()
             }
