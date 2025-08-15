@@ -37,7 +37,7 @@ A diferencia de muchas apps del sector, Brain Trainer **no bloquea funcionalidad
 Brain Trainer sigue los principios de **Clean Architecture** para garantizar mantenibilidad y escalabilidad:
 
 - **Capa de presentación (Screens + ViewModels + UI States):** Responsable de la interacción con el usuario, mostrando la información y gestionando las acciones del usuario.
-- **Capa de datos (Repositorios + Fuentes de datos + Modelos de datos:** Se encarga de la gestión de los datos de la aplicación, incluyendo el acceso a las fuentes de datos y la abstracción de la lógica de acceso a datos. Se comunica con Firebase.
+- **Capa de datos (Repositorios + Fuentes de datos + Modelos de datos):** Se encarga de la gestión de los datos de la aplicación, incluyendo el acceso a las fuentes de datos y la abstracción de la lógica de acceso a datos. Se comunica con Firebase.
 
 ---
 
