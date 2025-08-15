@@ -51,10 +51,19 @@ Brain Trainer sigue los principios de **Clean Architecture** para garantizar man
 | :-------------: |
 | <img width="402" height="708" alt="image" src="https://github.com/user-attachments/assets/3b12e429-762f-43e0-a66c-cc0513f69acc" /> |
 
+| Instrucciones |
+| :-----------: |
+| <img width="400" height="705" alt="image" src="https://github.com/user-attachments/assets/bd8ed2de-7374-42d6-a8f7-6011c9553fec" /> |
+
+
+Ejemplo de juego
+
+Fin de partida
+
 | Estadísticas |
 | :----------: |
 ||
 
-| Instrucciones | Fin de partida | Configuración |
-| :-----------: | :------------: | :-----------: |
-| ![](docs/instructions.png) | ![](docs/gameover.png) | ![](docs/settings.png) |
+Configuracin
+
+
