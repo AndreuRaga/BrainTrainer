@@ -49,35 +49,3 @@ Brain Trainer sigue los principios de **Clean Architecture** para garantizar man
 | Instrucciones | Fin de partida | Configuración |
 |---------------|---------------|---------------|
 | ![](docs/instructions.png) | ![](docs/gameover.png) | ![](docs/settings.png) |
-
-*(Las imágenes son ejemplos; sustituye por capturas reales del proyecto)*
-
----
-
-## 📊 Resultados y validación
-- ✅ **Pruebas de usabilidad** con 10 participantes, evaluando facilidad de uso, diseño y funcionalidad.
-- ✅ Cumplimiento de **estándares de diseño Android**.
-- ✅ **Rendimiento fluido** (60 FPS) y estabilidad sin ANR.
-- ✅ Gestión segura de datos con cifrado y mínima recolección de permisos.
-
----
-
-## 🚀 Futuras mejoras
-- Sistema de logros y desafíos.
-- Notificaciones y recordatorios personalizados.
-- Tema oscuro y soporte para dispositivos plegables.
-- Expansión del catálogo de juegos.
-
----
-
-## 📄 Licencia
-Este proyecto está licenciado bajo la licencia [MIT](LICENSE).
-
----
-
-## 👤 Autor
-**Andreu [Tu Apellido]**  
-Graduado en Ingeniería Informática – Especialidad en Ingeniería del Software  
-[LinkedIn](https://www.linkedin.com/in/tu-perfil) | [GitHub](https://github.com/tu-usuario)
-
----
