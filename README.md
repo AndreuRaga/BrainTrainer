@@ -43,18 +43,18 @@ Brain Trainer sigue los principios de **Clean Architecture** para garantizar man
 
 ## 📷 Capturas de pantalla
 | Inicio de sesión |
-|------------------|
+| :--------------: |
 | <img width="397" height="698" alt="image" src="https://github.com/user-attachments/assets/a063b6c7-823e-45cb-80f4-a4c501284375" /> <img width="400" height="699" alt="image" src="https://github.com/user-attachments/assets/e8f9e576-2643-414e-8eac-8c6748c43bfe" /> |
 
 
 | Lista de juegos |
-|-----------------|
+| :-------------: |
 | <img width="402" height="708" alt="image" src="https://github.com/user-attachments/assets/3b12e429-762f-43e0-a66c-cc0513f69acc" /> |
 
 | Estadísticas |
-|--------------|
+| :----------: |
 ||
 
 | Instrucciones | Fin de partida | Configuración |
-|---------------|---------------|---------------|
+| :-----------: | :------------: | :-----------: |
 | ![](docs/instructions.png) | ![](docs/gameover.png) | ![](docs/settings.png) |
