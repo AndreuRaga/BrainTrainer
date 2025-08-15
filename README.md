@@ -27,9 +27,9 @@ A diferencia de muchas apps del sector, Brain Trainer **no bloquea funcionalidad
   - Authentication  
   - Firestore Database  
   - Crashlytics
-- **Integración Google:** Google Play Services, Credential Manager
+- **Integración Google:** Credential Manager
 - **IDE:** Android Studio
-- **Control de versiones:** Git & GitHub
+- **Control de versiones:** GitHub
 
 ---
 
