@@ -46,7 +46,6 @@ Brain Trainer sigue los principios de **Clean Architecture** para garantizar man
 | :--------------: |
 | <img width="397" height="698" alt="image" src="https://github.com/user-attachments/assets/a063b6c7-823e-45cb-80f4-a4c501284375" /> <img width="400" height="699" alt="image" src="https://github.com/user-attachments/assets/e8f9e576-2643-414e-8eac-8c6748c43bfe" /> |
 
-
 | Lista de juegos |
 | :-------------: |
 | <img width="402" height="708" alt="image" src="https://github.com/user-attachments/assets/3b12e429-762f-43e0-a66c-cc0513f69acc" /> |
@@ -55,15 +54,18 @@ Brain Trainer sigue los principios de **Clean Architecture** para garantizar man
 | :-----------: |
 | <img width="400" height="705" alt="image" src="https://github.com/user-attachments/assets/bd8ed2de-7374-42d6-a8f7-6011c9553fec" /> |
 
+| Ejemplo de juego |
+| :--------------: |
+| <img width="400" height="702" alt="image" src="https://github.com/user-attachments/assets/742010b9-21d2-4615-87e1-0402a89ba18c" /> |
 
-Ejemplo de juego
-
-Fin de partida
+| Fin de partida |
+| :------------: |
+| <img width="401" height="710" alt="image" src="https://github.com/user-attachments/assets/fc6f4da3-22f5-4e86-b3dd-80a9a2f7ac54" />  <img width="404" height="709" alt="image" src="https://github.com/user-attachments/assets/48f2599d-a13a-4c1f-a1e6-fce848fc2593" /> |
 
 | Estadísticas |
 | :----------: |
-||
+| <img width="401" height="702" alt="image" src="https://github.com/user-attachments/assets/c5acaac9-bc42-4ce6-8b39-8754e38547f3" /> <img width="404" height="710" alt="image" src="https://github.com/user-attachments/assets/10e6c4a8-c13b-435f-9ac4-00f2ce12c9e6" /> |
 
-Configuracin
-
-
+| Configuración |
+| :-----------: |
+| <img width="399" height="705" alt="image" src="https://github.com/user-attachments/assets/995eff03-03d9-4108-84bb-06cb0f664d4f" /> |
