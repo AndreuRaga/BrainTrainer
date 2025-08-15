@@ -2,7 +2,7 @@
 ![Brain Trainer Icon](app/src/main/res/drawable/app_icon.png)
 
 ## 📌 Descripción
-Brain Trainer es una aplicación Android cuyo objetivo es mejorar **la memoria, la atención, la velocidad de procesamiento y la flexibilidad mental** a través de minijuegos divertidos y accesibles.  
+Brain Trainer es una aplicación Android cuyo objetivo es mejorar las **habilidades cognitivas** como la memoria, la atención, la velocidad de procesamiento y la flexibilidad mental a través de **minijuegos** divertidos y accesibles.  
 A diferencia de muchas apps del sector, Brain Trainer **no bloquea funcionalidades esenciales** tras un muro de pago: el modelo de negocio es no intrusivo y accesible para todos.
 
 ---
@@ -10,11 +10,11 @@ A diferencia de muchas apps del sector, Brain Trainer **no bloquea funcionalidad
 ## 🎯 Características principales
 - 🎮 **Catálogo de juegos cognitivos** clasificados por categorías.
 - 📊 **Seguimiento de progreso y estadísticas** (generales y por juego).
-- 🔐 **Inicio de sesión seguro con Google** (*Credential Manager* de Jetpack).
+- 🔐 **Inicio de sesión seguro con Google** mediante *Credential Manager*.
 - 🎨 **Interfaz moderna y responsiva** creada con Jetpack Compose.
 - ☁️ **Datos en la nube** con Firebase Firestore.
-- 🏗️ **Arquitectura escalable** basada en Clean Architecture.
-- 📱 Modelo inclusivo: acceso completo a las funcionalidades desde el primer uso.
+- 🏗️ **Arquitectura escalable y mantenible** basada en la *Clean Architecture*.
+- 📱 **Acceso completo** a todas las funcionalidades desde el principio.
 
 ---
 
